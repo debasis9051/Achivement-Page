@@ -77,7 +77,7 @@ body.addEventListener("click",function(e){
 document.getElementById("generate").onclick= function()
 {
     let elemArr = document.querySelectorAll(".add-member")
-    console.log(elemArr)
+    // console.log(elemArr)
 
     let candidates_company = document.getElementById("company").value
 
@@ -98,23 +98,7 @@ document.getElementById("generate").onclick= function()
       }
       candidates.push(candidate)     
     } 
-
-    console.log(elemArr[0].firstElementChild[5].files[0])
-
-    let f=elemArr[0].firstElementChild[5].files[0]
-    let test_img= new FileReader()
-
-    test_img.onload= function(ev){
-        let dataUrl = ev.target.result,
-            img     = document.createElement("img");
-
-        img.src = dataUrl;
-        document.body.appendChild(img);
-    }
-    test_img.readAsDataURL(f)
-
     
-
     // console.log(candidates_company)
     // for(let i=0;i<candidates.length;i++)
     // {
@@ -126,6 +110,21 @@ document.getElementById("generate").onclick= function()
     //     console.log(candidates[i].a_pack)
     //     console.log(" ")
     // }
+
+
+    // console.log(elemArr[0].firstElementChild[5].files[0])
+
+    // let f=elemArr[0].firstElementChild[5].files[0]
+    // let test_img= new FileReader()
+
+    // test_img.onload= function(ev){
+    //     let dataUrl = ev.target.result,
+    //         img     = document.createElement("img");
+
+    //     img.src = dataUrl;
+    //     document.body.appendChild(img);
+    // }
+    // test_img.readAsDataURL(f) 
+    
 }
 
-    
