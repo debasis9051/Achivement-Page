@@ -65,10 +65,7 @@ body.addEventListener("click",function(e){
     if(e.target.classList.contains("remove")==true)
     {
         let curr_sec = e.target.parentElement.parentElement.parentElement
-        // console.log(curr_sec)
-
-        let sec_par = curr_sec.parentElement
-        sec_par.removeChild(curr_sec)
+        curr_sec.remove()
     }
 
 })
@@ -77,7 +74,7 @@ body.addEventListener("click",function(e){
 document.getElementById("generate").onclick= function()
 {
     let elemArr = document.querySelectorAll(".add-member")
-    // console.log(elemArr)
+    console.log(elemArr)
 
     let candidates_company = document.getElementById("company").value
 
@@ -99,6 +96,7 @@ document.getElementById("generate").onclick= function()
       candidates.push(candidate)     
     } 
     
+    //DATA INPUTS
     // console.log(candidates_company)
     // for(let i=0;i<candidates.length;i++)
     // {
@@ -109,22 +107,43 @@ document.getElementById("generate").onclick= function()
     //     console.log(candidates[i].file_link)
     //     console.log(candidates[i].a_pack)
     //     console.log(" ")
-    // }
-
-
-    // console.log(elemArr[0].firstElementChild[5].files[0])
-
-    // let f=elemArr[0].firstElementChild[5].files[0]
-    // let test_img= new FileReader()
-
-    // test_img.onload= function(ev){
-    //     let dataUrl = ev.target.result,
-    //         img     = document.createElement("img");
-
-    //     img.src = dataUrl;
-    //     document.body.appendChild(img);
-    // }
-    // test_img.readAsDataURL(f) 
+    // } 
     
-}
 
+    //MAKING THE PDF WITH JSPDF
+    let doc = new jsPDF()
+
+    // let width = doc.internal.pageSize.getWidth();
+    // let height = doc.internal.pageSize.getHeight();
+
+    // doc.rect(0, 0, width, height)
+    doc.setFillColor(60, 179, 113)
+    doc.rect(0, 0, 300, 300, 'FD')
+
+    let x=25
+    let y=40
+    let offsetx=60
+    let offsety=100
+    let opt={align: 'center'}
+
+    // doc.addImage(imgData, 'JPEG', 50, 10, 110, 10)
+
+    doc.setFontSize(20)
+    doc.text(candidates_company, 80, 30)
+
+    doc.setFontSize(15)
+    for(let i=0;i<2;i++)
+    {
+        for(let j=0;j<3;j++)
+        {
+        // doc.addImage(imgData, 'JPEG', x+offsetx*j, y+offsety*i, 40, 40)
+        doc.text(candidates[0].fname+' '+candidates[0].lname, x-5+offsetx*j, y+50+offsety*i, opt)
+        doc.text('Stream '+'Year', x+5+offsetx*j, y+60+offsety*i, opt)
+        doc.text('AnnualPackage', x+2+offsetx*j, y+70+offsety*i, opt)
+        }
+    }
+
+    // doc.save("Sample pdf")
+    window.open(doc.output('bloburl'))
+
+}
