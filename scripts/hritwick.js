@@ -70,6 +70,20 @@ body.addEventListener("click",function(e){
 
 })
 
+// let f = elemArr[0].firstElementChild[5].files[0]
+// console.log(f)
+
+// let t= new FileReader()
+// let dataURL
+// t.onload = function()
+// {
+//   dataURL = t.result;
+//   console.log(dataURL)
+//   return(dataURL)
+// }
+// t.readAsDataURL(f)
+// console.log(dataURL)
+
 //Generate Button
 document.getElementById("generate").onclick= function()
 {
@@ -79,6 +93,38 @@ document.getElementById("generate").onclick= function()
     let candidates_company = document.getElementById("company").value
 
     let candidates =[]
+
+
+    //////////////////////////////////////
+    let f = elemArr[0].firstElementChild[5].files[0]
+    // console.log(f)
+
+    // let t= new FileReader()
+    // t.onload = function()
+    // {
+    //   let dataURL = t.result;
+    //   // console.log(dataURL)
+    //   for(let i=0;i<elemArr.length;i++)
+    //   {
+    //     let k=0
+    //     if(i==0)
+    //       k=1;
+
+    //     let candidate ={
+    //         fname : elemArr[i].firstElementChild[0+k].value,
+    //         lname : elemArr[i].firstElementChild[1+k].value,
+    //         year : elemArr[i].firstElementChild[2+k].value,
+    //         stream : elemArr[i].firstElementChild[3+k].value,
+    //         a_pack : elemArr[i].firstElementChild[5+k].value
+    //     }
+    //     candidate.file_link = dataURL
+
+    //     candidates.push(candidate)     
+    //   }
+    // }
+    // t.readAsDataURL(f)
+    ////////////////////////////
+
     for(let i=0;i<elemArr.length;i++)
     {
       let k=0
@@ -90,26 +136,43 @@ document.getElementById("generate").onclick= function()
           lname : elemArr[i].firstElementChild[1+k].value,
           year : elemArr[i].firstElementChild[2+k].value,
           stream : elemArr[i].firstElementChild[3+k].value,
-          file_link : elemArr[i].firstElementChild[4+k].value,
           a_pack : elemArr[i].firstElementChild[5+k].value
       }
+
       candidates.push(candidate)     
     } 
     
     //DATA INPUTS
-    // console.log(candidates_company)
-    // for(let i=0;i<candidates.length;i++)
-    // {
-    //     console.log(candidates[i].fname)
-    //     console.log(candidates[i].lname)
-    //     console.log(candidates[i].year)
-    //     console.log(candidates[i].stream)
-    //     console.log(candidates[i].file_link)
-    //     console.log(candidates[i].a_pack)
-    //     console.log(" ")
-    // } 
+    console.log(candidates_company)
+    for(let i=0;i<candidates.length;i++)
+    {
+        console.log(candidates[i].fname)
+        console.log(candidates[i].lname)
+        console.log(candidates[i].year)
+        console.log(candidates[i].stream)
+        console.log(candidates[i].file_link)
+        console.log(candidates[i].a_pack)
+        console.log(" ")
+    } 
     
+    let test = elemArr[0].firstElementChild[5].files[0]
+    console.log(test)
 
+    let t= new FileReader()
+    t.onload = function(callBacke)
+    {
+      let dataURL = t.result
+      // console.log(dataURL)
+      callBacke(dataURL)
+    }
+    t.readAsDataURL(test)
+
+    let c
+    function callBack(str)
+    {
+      c=str
+    }
+    console.log(c);
     //MAKING THE PDF WITH JSPDF
     let doc = new jsPDF()
 
@@ -124,7 +187,7 @@ document.getElementById("generate").onclick= function()
     let y=40
     let offsetx=60
     let offsety=100
-    let opt={align: 'center'}
+    let opt={align: 'center'}   //fix this
 
     // doc.addImage(imgData, 'JPEG', 50, 10, 110, 10)
 
@@ -132,18 +195,20 @@ document.getElementById("generate").onclick= function()
     doc.text(candidates_company, 80, 30)
 
     doc.setFontSize(15)
+    let cnt=0
     for(let i=0;i<2;i++)
     {
         for(let j=0;j<3;j++)
         {
         // doc.addImage(imgData, 'JPEG', x+offsetx*j, y+offsety*i, 40, 40)
-        doc.text(candidates[0].fname+' '+candidates[0].lname, x-5+offsetx*j, y+50+offsety*i, opt)
-        doc.text('Stream '+'Year', x+5+offsetx*j, y+60+offsety*i, opt)
-        doc.text('AnnualPackage', x+2+offsetx*j, y+70+offsety*i, opt)
+        // doc.text(candidates[cnt].fname+' '+candidates[cnt].lname, x-5+offsetx*j, y+50+offsety*i, opt)
+        // doc.text(candidates[cnt].stream+' '+candidates[cnt].year, x+5+offsetx*j, y+60+offsety*i, opt)
+        // doc.text(candidates[cnt].a_pack, x+2+offsetx*j, y+70+offsety*i, opt)
+        cnt++
         }
     }
 
     // doc.save("Sample pdf")
-    window.open(doc.output('bloburl'))
+    // window.open(doc.output('bloburl'))
 
 }
