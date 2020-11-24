@@ -96,7 +96,7 @@ document.getElementById("generate").onclick= function()
 
 
     //////////////////////////////////////
-    let f = elemArr[0].firstElementChild[5].files[0]
+    // let f = elemArr[0].firstElementChild[5].files[0]
     // console.log(f)
 
     // let t= new FileReader()
@@ -125,6 +125,22 @@ document.getElementById("generate").onclick= function()
     // t.readAsDataURL(f)
     ////////////////////////////
 
+    // let test = elemArr[0].firstElementChild[5].files[0]
+    // console.log(test)
+
+    // let t= new FileReader()
+    // t.onload = function(event)
+    // {
+    //   var dataURL = t.result
+    //   console.log(t)
+    // }
+    // t.readAsDataURL(test)
+
+    let test = elemArr[0].firstElementChild[5].files[0]
+    let reader = new FileReaderSync();
+    let result_base64 = reader.readAsDataURL(test); 
+    console.log("hello"+result_base64);
+
     for(let i=0;i<elemArr.length;i++)
     {
       let k=0
@@ -139,40 +155,25 @@ document.getElementById("generate").onclick= function()
           a_pack : elemArr[i].firstElementChild[5+k].value
       }
 
+      candidate.file_link = tobase64(elemArr[i].firstElementChild[4+i].files[0])
+
       candidates.push(candidate)     
     } 
     
     //DATA INPUTS
-    console.log(candidates_company)
-    for(let i=0;i<candidates.length;i++)
-    {
-        console.log(candidates[i].fname)
-        console.log(candidates[i].lname)
-        console.log(candidates[i].year)
-        console.log(candidates[i].stream)
-        console.log(candidates[i].file_link)
-        console.log(candidates[i].a_pack)
-        console.log(" ")
-    } 
+    // console.log(candidates_company)
+    // for(let i=0;i<candidates.length;i++)
+    // {
+    //     console.log(candidates[i].fname)
+    //     console.log(candidates[i].lname)
+    //     console.log(candidates[i].year)
+    //     console.log(candidates[i].stream)
+    //     console.log(candidates[i].file_link)
+    //     console.log(candidates[i].a_pack)
+    //     console.log(" ")
+    // } 
+   
     
-    let test = elemArr[0].firstElementChild[5].files[0]
-    console.log(test)
-
-    let t= new FileReader()
-    t.onload = function(callBacke)
-    {
-      let dataURL = t.result
-      // console.log(dataURL)
-      callBacke(dataURL)
-    }
-    t.readAsDataURL(test)
-
-    let c
-    function callBack(str)
-    {
-      c=str
-    }
-    console.log(c);
     //MAKING THE PDF WITH JSPDF
     let doc = new jsPDF()
 
@@ -211,4 +212,9 @@ document.getElementById("generate").onclick= function()
     // doc.save("Sample pdf")
     // window.open(doc.output('bloburl'))
 
+}
+
+function tobase64()
+{
+  
 }
