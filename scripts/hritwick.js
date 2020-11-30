@@ -186,3 +186,6 @@ function c_pdf(doc, candidates)
   }
   window.open(doc.output('bloburl'))
 }
+
+
+console.log();
