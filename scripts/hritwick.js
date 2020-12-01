@@ -140,52 +140,57 @@ function makepdf(candidates_company,candidates)
   {
       for(let j=0;j<3;j++)
       {
-        if(cnt>0)
+        if(cnt>=6)
         {
           continue
         }
-      // doc.addImage(imgData, 'JPEG', x+offsetx*j, y+offsety*i, 40, 40)
         doc.text(candidates[cnt].fname+' '+candidates[cnt].lname, x-5+offsetx*j, y+50+offsety*i, opt)
         doc.text(candidates[cnt].stream+' '+candidates[cnt].year, x+5+offsetx*j, y+60+offsety*i, opt)
         doc.text(candidates[cnt].a_pack, x+2+offsetx*j, y+70+offsety*i, opt)
         cnt++
       }
   }
+  readmultifiles(candidates)
+  function readmultifiles(candidates)
+  {
+      var reader = new FileReader();  
+
+      function readFile(index)
+      {
+        if(index>= candidates.length) 
+        {
+          window.open(doc.output('bloburl'))
+          return;
+        }
+
+        var file = candidates[index].file_link;
+        reader.onload = function(e)
+        {   
+          var bin = e.target.result;
+          // check if any problems with let
+          // distribute index into row and column
+
+          let row = Math.floor(index/3)
+          let col = index%3
+          console.log(row, col)
+
+          doc.addImage(bin, "JPG", x+offsetx*col, y+offsety*row, 40, 40)
+          readFile(index+1)
+        }
+        reader.readAsBinaryString(file)
+      }
+
+      readFile(0)
+  }
+
+
   
-  c_pdf(doc, candidates)
+    // doc.addImage(dataURL, 'JPEG', , , 40, 40)
+  
+  
+ 
+
   // doc.save("Sample pdf")
   // window.open(doc.output('bloburl'))
 }
 
-function c_pdf(doc, candidates)
-{
-  
-  let x=25
-  let y=40
-  let offsetx=60
-  let offsety=100
-  let cnt=0
-  for(let i=0;i<2;i++)
-  {
-      for(let j=0;j<3;j++)
-      {
-        if(cnt>0)
-        {
-          continue
-        }
-        let test = candidates[cnt].file_link
-        let t= new FileReader()
-        t.onload = function(event)
-        {
-          let dataURL = t.result
-          doc.addImage(dataURL, 'JPEG', x+offsetx*j, y+offsety*i, 40, 40)
-        }
-        t.readAsDataURL(test)
-        cnt++
-      }
-  }
-  window.open(doc.output('bloburl'))
-}
-
-
-console.log();
