@@ -5,7 +5,7 @@
     height : 5rem;
 }
 .center-button{
-   margin-left: 4rem;
+   margin-left: 7rem;
 }
 .line-height{
     line-height: 24px
@@ -39,8 +39,8 @@
   .hvr-pulse-grow:hover, .hvr-pulse-grow:focus, .hvr-pulse-grow:active {
     -webkit-animation-name: hvr-pulse-grow;
     animation-name: hvr-pulse-grow;
-    -webkit-animation-duration: 0.3s;
-    animation-duration: 0.3s;
+    -webkit-animation-duration: 0.1s;
+    animation-duration: 0.6s;
     -webkit-animation-timing-function: linear;
     animation-timing-function: linear;
     -webkit-animation-iteration-count: infinite;
@@ -48,3 +48,31 @@
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
   }
+
+  .flexing{
+    display : flex;
+    justify-content: space-between;
+  }
+   
+  .upload input[type=file] {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    top: 0;
+  }
+
+  .upload {
+   
+    display: inline-block;
+  }
+
+  .file {
+     letter-spacing : 1px;
+     /* height:50px; */
+  }
+
+.file-icon{
+  padding-right:15px;
+
+}
+
