@@ -54,8 +54,8 @@ document.getElementById("generate").onclick= function()
           lname : elemArr[i].firstElementChild[1].value,
           year : elemArr[i].firstElementChild[2].value,
           stream : elemArr[i].firstElementChild[3].value,
-          file_link : elemArr[i].firstElementChild[4].files[0],
-          a_pack : elemArr[i].firstElementChild[5].value
+          file_link : elemArr[i].firstElementChild[5].files[0],
+          a_pack : elemArr[i].firstElementChild[6].value
       }
 
       candidates.push(candidate)     
