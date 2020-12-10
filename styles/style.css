@@ -99,7 +99,8 @@
     padding : 0
   }
   .center-button {
-    margin : 3em;
+    margin : 2em;
+    width : 14rem;
   }
   body{
     width: 100%;
