@@ -124,3 +124,9 @@
    align-items : space-betwe;
 
  }
+
+
+ body,body:before, body:after{
+   padding: 0;
+   margin: 0;
+ }
