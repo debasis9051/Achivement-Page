@@ -1,9 +1,19 @@
 /**/
+/*Header Li item*/
 .header{
-    /* margin-left: 25rem ; */
-    
+   
     width: 100%;
+    display: flex;
+    justify-content: center;
+ }
+/*Nav Bar Ul*/
+.nav-ul{
+  /* background-color: red; */
+  width : 100%;
+  display : flex;
+  justify-content : flex-start;
 }
+
 /*Spacing Class in body*/
 .spacer{
     height : 5rem;
@@ -92,9 +102,10 @@
   }
  }
  @media only screen and (max-width: 767px) {
-  body{
+ /*For testing*/
+  /* body{
     background-color: white;
-  }
+  } */
   .generate-center{
     padding : 0
   }
@@ -105,4 +116,11 @@
   body{
     width: 100%;
   }
+ }
+
+ .team-area{
+   /* background-color: white; */
+   display : flex;
+   align-items : space-betwe;
+
  }
