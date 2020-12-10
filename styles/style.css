@@ -1,6 +1,10 @@
+/**/
 .header{
-    margin-left: 25rem ;
+    /* margin-left: 25rem ; */
+    
+    width: 100%;
 }
+/*Spacing Class in body*/
 .spacer{
     height : 5rem;
 }
@@ -10,13 +14,16 @@
 .line-height{
     line-height: 24px
 }
+/* About Fb Logo*/
 .fb{
     color:#139CF7;
 }
+/*About icon center*/
 .center{
     text-align:center;
     width:100%
 }
+/*Animations : On hover Pulse Grow*/
 @-webkit-keyframes hvr-pulse-grow {
     to {
       -webkit-transform: scale(1.1);
@@ -48,31 +55,53 @@
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
   }
-
+/*Layout of add and remove button*/
   .flexing{
     display : flex;
     justify-content: space-between;
   }
-   
+   /*Custom design of file upload button*/
   .upload input[type=file] {
     position: absolute;
     opacity: 0;
     left: 0;
     top: 0;
   }
-
-  .upload {
-   
-    display: inline-block;
+   .upload {
+   display: inline-block;
   }
-
   .file {
-     letter-spacing : 1px;
-     /* height:50px; */
+    letter-spacing : 1px;
   }
-
-.file-icon{
-  padding-right:15px;
-
+  .file-icon{
+     padding-right:15px;
 }
-
+/*Responsive Layout for tablet and Phablet*/
+@media only screen and (max-width: 1146px) {
+  .flexing{
+    display : flex;
+    justify-content: space-between;
+  }
+ }
+@media only screen and (max-width: 862px) {
+  .add{
+    font-size : 85%;
+  }
+  .remove{
+    font-size : 85%;
+  }
+ }
+ @media only screen and (max-width: 767px) {
+  body{
+    background-color: white;
+  }
+  .generate-center{
+    padding : 0
+  }
+  .center-button {
+    margin : 3em;
+  }
+  body{
+    width: 100%;
+  }
+ }
