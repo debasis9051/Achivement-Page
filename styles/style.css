@@ -16,7 +16,7 @@
 
 /*Spacing Class in body*/
 .spacer{
-    height : 5rem;
+    height : 3rem;
 }
 .center-button{
    margin-left: 7rem;
@@ -129,4 +129,18 @@
  body,body:before, body:after{
    padding: 0;
    margin: 0;
+ }
+
+
+
+ .output{
+  background: rgb(34,34,34);
+background: linear-gradient(90deg, rgba(34,34,34,0.5746673669467788) 0%, rgba(34,34,34,0.5298494397759104) 100%);
+border-radius: 80px;
+  width:50%;
+  height: 350px;
+  padding : 40px;
+ }
+ .progress{
+   padding-top: 
  }
