@@ -57,6 +57,8 @@ document.getElementById("generate").onclick= function()
           file_link : elemArr[i].firstElementChild[5].files[0],
           a_pack : elemArr[i].firstElementChild[6].value
       }
+           console.log(candidate.file_link)
+
 
       candidates.push(candidate)     
     }
@@ -123,13 +125,13 @@ function makepdf(candidates_company,candidates)
   {
     if(index >= candidates.length) 
     {
-      window.open(doc.output('bloburl'))
       return;
     }
 
     var file = candidates[index].file_link;
     if(file)
-    {
+    { 
+      console.log("true")
       reader.readAsDataURL(file)
       reader.onload = function(e)
       {   
@@ -144,12 +146,58 @@ function makepdf(candidates_company,candidates)
     }
     else
     {
+      console.log("false")
+
       readFile(index+1)
     }
-    
+    // Progress bar
+    progress()
+
+
+ // Outout Section
+      let preview = document.querySelector("#preview")
+      console.log(preview)
+      let download = document.querySelector("#download")
+
+      preview.addEventListener("click",() =>
+      window.open(doc.output('bloburl'))
+      )
+
+      download.addEventListener("click",() =>
+      doc.save("Sample pdf")
+      )
+ 
+      function progress(){
+       var animation= setInterval(animation,15);
+        var width =0;
+        function animation(){
+          width++;
+          width_per=width+"%";
+          console.log(width_per);
+          let progress_bar=document.querySelector(".progress-bar");
+          progress_bar.style.width=width_per;
+          if(width==100){
+            clearInterval(animation);
+            //Output Text
+          let output_log=document.querySelector(".output-log")
+          output_log.innerHTML=`
+          <h3 class="text-info">
+          Pdf Generated!
+          <small class="text-muted"><span class="text-warning">Preview</span> or <span class="text-success">Download</span>  the PDF</small>
+          </h3>
+        `
+       }
+
+     }
+          
   }
-  
-  // doc.save("Sample pdf")
-  // window.open(doc.output('bloburl'))
-}
+
+      
+
+
+
+    }
+
+  }
+ 
 
