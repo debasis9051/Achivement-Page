@@ -121,6 +121,14 @@
  .team-area{
    /* background-color: white; */
    display : flex;
-   align-items : space-betwe;
+   align-items : space-between;
 
  }
+
+ .responsive-button{
+ 
+    width: 100%;
+    min-width: 50px;  
+    max-width: 300px; 
+ 
+}
