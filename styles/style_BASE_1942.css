@@ -121,22 +121,6 @@
  .team-area{
    /* background-color: white; */
    display : flex;
-   align-items : space-between;
+   align-items : space-betwe;
 
  }
-
-<<<<<<< HEAD
- .responsive-button{
- 
-    width: 100%;
-    min-width: 50px;  
-    max-width: 300px; 
- 
-}
-=======
-
- body,body:before, body:after{
-   padding: 0;
-   margin: 0;
- }
->>>>>>> 5dbefdc8b20746caeca69465feba6d455cae651e
