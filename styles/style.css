@@ -1,17 +1,7 @@
 /**/
-/*Header Li item*/
-.header{
-   
-    width: 100%;
-    display: flex;
-    justify-content: center;
- }
-/*Nav Bar Ul*/
-.nav-ul{
-  /* background-color: red; */
-  width : 100%;
+.flexing{
   display : flex;
-  justify-content : flex-start;
+  justify-content : space-between;
 }
 
 /*Spacing Class in body*/
@@ -65,27 +55,23 @@
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
   }
-/*Layout of add and remove button*/
-  .flexing{
-    display : flex;
-    justify-content: space-between;
-  }
-   /*Custom design of file upload button*/
+  
+  /*Custom design of file upload button*/
   .upload input[type=file] {
     position: absolute;
     opacity: 0;
     left: 0;
     top: 0;
+    height: 36px;
   }
-   .upload {
-   display: inline-block;
-  }
+ 
   .file {
     letter-spacing : 1px;
   }
   .file-icon{
      padding-right:15px;
 }
+
 /*Responsive Layout for tablet and Phablet*/
 @media only screen and (max-width: 1146px) {
   .flexing{
@@ -102,7 +88,7 @@
   }
  }
  @media only screen and (max-width: 767px) {
- /*For testing*/
+  /*For testing*/
   /* body{
     background-color: white;
   } */
@@ -115,23 +101,16 @@
   }
   body{
     width: 100%;
-  }
- }
-
- .team-area{
-   /* background-color: white; */
-   display : flex;
-   align-items : space-between;
-
+    }
  }
 
 
- body,body:before, body:after{
+ html,body, body:before, body:after{
    padding: 0;
    margin: 0;
+   overflow-x: hidden;
+
  }
-
-
 
  .output{
    /* background-color : white; */
@@ -139,12 +118,18 @@
   height: 350px;
   padding : 40px;
  }
- .progress{
-
- }
 
  .flex-output{
    display: flex;
    justify-content :space-around;
    padding: 40px;
  }
+
+ .card img{
+  max-width: 100%;
+  height: auto; 
+  }
+
+  .team-column{
+   
+  }

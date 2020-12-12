@@ -1,40 +1,44 @@
+let max_section = 1
 let body = document.body;
 body.addEventListener("click",function(e){
     // Add Candidate
-    let candidate_form = document.querySelector(".add-candidate");
+    let candidate_form = document.querySelector(".add-candidate")
     if(e.target.classList.contains("add")==true)
     {
-      // limit to 6 candidate sections
-        let form = document.getElementById("first-sec") 
-        let newNode = form.cloneNode(true)
-        newNode.removeAttribute("id")
-
-        // newNode.lastElementChild.firstElementChild.nextElementSibling.classList.remove("col-md-2")
-        // newNode.lastElementChild.firstElementChild.nextElementSibling.classList.add("col-md-4")
-
-        let rem = document.createElement("button")
-        rem.type = "button"
-        rem.classList.add("btn")
-        rem.classList.add("btn-danger")
-        rem.classList.add("remove") 
-        rem.innerHTML = "Remove Candidate"
-        newNode.lastElementChild.firstElementChild.nextElementSibling.appendChild(rem)
-
-        console.log(newNode.lastElementChild.firstElementChild.nextElementSibling)
-        
-        for(let i=0;i<6;i++)
+        if(max_section>=6)
         {
-          newNode.firstElementChild[i].value = null
+          console.log("max candidate reached")
         }
-        
-       candidate_form.appendChild(newNode);
+        else
+        {
+          max_section++
+          let form = document.getElementById("first-sec") 
+          let newNode = form.cloneNode(true)
+          newNode.removeAttribute("id")
+
+          let rem = document.createElement("button")
+          rem.type = "button"
+          rem.classList.add("btn")
+          rem.classList.add("btn-danger")
+          rem.classList.add("remove") 
+          rem.innerHTML = "Remove Candidate"
+          newNode.lastElementChild.firstElementChild.nextElementSibling.appendChild(rem)
+          
+          for(let i=0;i<6;i++)
+          {
+            newNode.firstElementChild[i].value = null
+          }
+          
+          candidate_form.appendChild(newNode);
+        }
     }
 
     //Remove Candidate
     if(e.target.classList.contains("remove")==true)
     {
-        let curr_sec = e.target.parentElement.parentElement.parentElement
-        curr_sec.remove()
+      max_section--
+      let curr_sec = e.target.parentElement.parentElement.parentElement
+      curr_sec.remove()
     }
 
 })
@@ -44,6 +48,7 @@ document.getElementById("generate").onclick= function()
 {
     let elemArr = document.querySelectorAll(".add-member")
     console.log(elemArr)
+
     let candidates_company = document.getElementById("company").value
     let candidates =[]
 
@@ -54,11 +59,9 @@ document.getElementById("generate").onclick= function()
           lname : elemArr[i].firstElementChild[1].value,
           year : elemArr[i].firstElementChild[2].value,
           stream : elemArr[i].firstElementChild[3].value,
-          file_link : elemArr[i].firstElementChild[5].files[0],
-          a_pack : elemArr[i].firstElementChild[6].value
+          a_pack : elemArr[i].firstElementChild[4].value,
+          file_link : elemArr[i].firstElementChild[6].files[0]
       }
-           console.log(candidate.file_link)
-
 
       candidates.push(candidate)     
     }
@@ -125,13 +128,13 @@ function makepdf(candidates_company,candidates)
   {
     if(index >= candidates.length) 
     {
+      window.open(doc.output('bloburl'))
       return;
     }
 
     var file = candidates[index].file_link;
     if(file)
     { 
-      console.log("true")
       reader.readAsDataURL(file)
       reader.onload = function(e)
       {   
@@ -146,58 +149,50 @@ function makepdf(candidates_company,candidates)
     }
     else
     {
-      console.log("false")
-
       readFile(index+1)
     }
+    
     // Progress bar
-    progress()
+    // progress()
 
 
- // Outout Section
-      let preview = document.querySelector("#preview")
-      console.log(preview)
-      let download = document.querySelector("#download")
+      // // Output Section
+      // let preview = document.querySelector("#preview")
+      // console.log(preview)
+      // let download = document.querySelector("#download")
 
-      preview.addEventListener("click",() =>
-      window.open(doc.output('bloburl'))
-      )
+      // preview.addEventListener("click",() =>
+      // window.open(doc.output('bloburl'))
+      // )
 
-      download.addEventListener("click",() =>
-      doc.save("Sample pdf")
-      )
+      // download.addEventListener("click",() =>
+      // doc.save("Sample pdf")
+      // )
  
-      function progress(){
-       var animation= setInterval(animation,15);
-        var width =0;
-        function animation(){
-          width++;
-          width_per=width+"%";
-          console.log(width_per);
-          let progress_bar=document.querySelector(".progress-bar");
-          progress_bar.style.width=width_per;
-          if(width==100){
-            clearInterval(animation);
-            //Output Text
-          let output_log=document.querySelector(".output-log")
-          output_log.innerHTML=`
-          <h3 class="text-info">
-          Pdf Generated!
-          <small class="text-muted"><span class="text-warning">Preview</span> or <span class="text-success">Download</span>  the PDF</small>
-          </h3>
-        `
-       }
-
-     }
-          
+      // function progress()
+      // {
+      //  var animation= setInterval(animation,15);
+      //   var width =0;
+      //   function animation()
+      //   {
+      //     width++;
+      //     width_per=width+"%";
+      //     // console.log(width_per);
+      //     let progress_bar=document.querySelector(".progress-bar");
+      //     progress_bar.style.width=width_per;
+      //     if(width==100)
+      //     {
+      //       clearInterval(animation);
+      //       //Output Text
+      //       let output_log=document.querySelector(".output-log")
+      //       output_log.innerHTML=`
+      //       <h3 class="text-info">Pdf Generated!
+      //         <small class="text-muted"><span class="text-warning">Preview</span> or <span class="text-success">Download</span>the PDF</small>
+      //       </h3>`
+      //     }
+      //   }    
+      // }
   }
-
-      
-
-
-
-    }
-
-  }
+}
  
 

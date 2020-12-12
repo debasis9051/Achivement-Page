@@ -1,0 +1,7 @@
+1. progress loading bar 
+2. fix nav bar li item & fix nav.js (done)  / Check  (y/n)
+3. fix image resizing in about.html (done)  /  Check (y/n)
+4. show modal for limiting 6 candidates
+5. seperate output from inside readfile
+6. fix body elements resizing
+7. fix upload button (at last)  (Done by modern problems technique)
