@@ -1,6 +1,27 @@
 let max_section = 1
 let body = document.body;
+let sec =document.querySelectorAll("#add-candidate-form")
 body.addEventListener("click",function(e){
+
+  let photoUpload = document.querySelectorAll("#photo")
+  let photoButton = document.querySelectorAll("#photoButton")
+  // File Name Upload Button
+  if(e.target.classList.contains("file-upload")==true){
+    uploadArray = Array.from(photoUpload)
+    // console.log(photoUpload)
+    // console.log(uploadArray.length)
+    for(let a=0;a<uploadArray.length;a++)
+    {
+      console.log(a)
+      photoUpload[a].addEventListener("change",(e)=>{
+        console.log(e.target.files[0].name)
+       console.log(photoButton[a])
+       photoButton[a].innerHTML=e.target.files[0].name
+  
+     })      
+   }
+  }
+
     // Add Candidate
     let candidate_form = document.querySelector(".add-candidate")
     if(e.target.classList.contains("add")==true)
@@ -15,6 +36,7 @@ body.addEventListener("click",function(e){
           max_section++
           let form = document.getElementById("first-sec") 
           let newNode = form.cloneNode(true)
+          console.log(newNode)
           newNode.removeAttribute("id")
 
           let rem = document.createElement("button")
@@ -24,12 +46,11 @@ body.addEventListener("click",function(e){
           rem.classList.add("remove") 
           rem.innerHTML = "Remove Candidate"
           newNode.lastElementChild.firstElementChild.nextElementSibling.appendChild(rem)
-          
+          newNode.firstElementChild[5].innerHTML=`Upload Candidte Photo`   
           for(let i=0;i<6;i++)
           {
             newNode.firstElementChild[i].value = null
           }
-          
           candidate_form.appendChild(newNode);
         }
     }
@@ -129,7 +150,7 @@ function makepdf(candidates_company,candidates)
   {
     if(index >= candidates.length) 
     {
-      window.open(doc.output('bloburl'))
+      // window.open(doc.output('bloburl'))
       return;
     }
 
@@ -154,46 +175,52 @@ function makepdf(candidates_company,candidates)
     }
     
     // Progress bar
-    // progress()
+    progress()
 
 
-      // // Output Section
-      // let preview = document.querySelector("#preview")
-      // console.log(preview)
-      // let download = document.querySelector("#download")
+      // Output Section
+      let preview = document.querySelector("#preview")
+      console.log(preview)
+      let download = document.querySelector("#download")
 
-      // preview.addEventListener("click",() =>
-      // window.open(doc.output('bloburl'))
-      // )
+      preview.addEventListener("click",() =>
+      window.open(doc.output('bloburl'))
+      )
 
-      // download.addEventListener("click",() =>
-      // doc.save("Sample pdf")
-      // )
+      download.addEventListener("click",() =>
+      doc.save("Sample pdf")
+      )
  
-      // function progress()
-      // {
-      //  var animation= setInterval(animation,15);
-      //   var width =0;
-      //   function animation()
-      //   {
-      //     width++;
-      //     width_per=width+"%";
-      //     // console.log(width_per);
-      //     let progress_bar=document.querySelector(".progress-bar");
-      //     progress_bar.style.width=width_per;
-      //     if(width==100)
-      //     {
-      //       clearInterval(animation);
-      //       //Output Text
-      //       let output_log=document.querySelector(".output-log")
-      //       output_log.innerHTML=`
-      //       <h3 class="text-info">Pdf Generated!
-      //         <small class="text-muted"><span class="text-warning">Preview</span> or <span class="text-success">Download</span>the PDF</small>
-      //       </h3>`
-      //     }
-      //   }    
-      // }
+      function progress()
+      {
+        let output = document.getElementById("outputDiv");
+        output.classList.toggle("closed")
+       var animation= setInterval(animation,15);
+        var width =0;
+        function animation()
+        {
+          width++;
+          width_per=width+"%";
+          // console.log(width_per);
+          let progress_bar=document.querySelector(".progress-bar");
+          progress_bar.style.width=width_per;
+          if(width==100)
+          {
+            clearInterval(animation);
+            //Output Text
+            let output_log=document.querySelector(".output-log")
+            output_log.innerHTML=`
+            <h3 class="text-info">Pdf Generated!
+              <small class="text-muted"><span class="text-warning">Preview</span> or <span class="text-success">Download</span>the PDF</small>
+            </h3>`
+          }
+        }    
+      }
   }
 }
  
 
+
+
+// let photoUpload = document.querySelectorAll("#photo")
+// console.log(photoUpload)

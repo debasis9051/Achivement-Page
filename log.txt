@@ -5,3 +5,4 @@
 5. seperate output from inside readfile
 6. fix body elements resizing  (done)  /  Check (y/n) probably
 7. fix upload button (at last)  (Done by modern problems technique)
+8. File name upload button. (Done )  Bug : Coppies the name of first section  : Bugs Fixed

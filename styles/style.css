@@ -8,9 +8,7 @@
 .spacer{
     height : 3rem;
 }
-.center-button{
-   margin-left: 7rem;
-}
+
 .line-height{
     line-height: 24px
 }
@@ -87,23 +85,7 @@
     font-size : 85%;
   }
  }
- @media only screen and (max-width: 767px) {
-  /*For testing*/
-  /* body{
-    background-color: white;
-  } */
-  .generate-center{
-    padding : 0
-  }
-  .center-button {
-    margin : 2em;
-    width : 14rem;
-  }
-  body{
-    width: 100%;
-    }
- }
-
+ 
 
  html,body, body:before, body:after{
    padding: 0;
@@ -112,12 +94,19 @@
 
  }
 
- .output{
-   /* background-color : white; */
-  width:50%;
-  height: 350px;
-  padding : 40px;
- }
+.output{
+  overflow-y: hidden;
+	max-height: 600px; 
+  box-sizing: border-box;
+
+	transition-property: all;
+	transition-duration: 4s;
+	transition-timing-function: ease;
+}
+
+.output.closed{
+  max-height: 0;
+}
 
  .flex-output{
    display: flex;
