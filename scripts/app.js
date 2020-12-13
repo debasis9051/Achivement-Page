@@ -7,6 +7,7 @@ body.addEventListener("click",function(e){
     {
         if(max_section>=6)
         {
+          $("#max").modal('show');
           console.log("max candidate reached")
         }
         else
