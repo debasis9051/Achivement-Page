@@ -3,7 +3,12 @@ let body = document.body;
 let sec =document.querySelectorAll("#add-candidate-form")
 
 body.addEventListener("change",function(e){
-  e.target.previousElementSibling.innerHTML = e.target.files[0].name
+  console.log("change event fired 🔫")
+  if(e.target.id == "photo")
+  {
+    console.log(e.target.files)
+    e.target.previousElementSibling.innerHTML = e.target.files[0].name
+  }
 })
 
 body.addEventListener("click",function(e){
@@ -13,7 +18,8 @@ body.addEventListener("click",function(e){
     {
         if(max_section>=6)
         {
-          $("#max").modal('show');
+          $("#max").modal('show')
+          modalTimeout()
           console.log("max candidate reached")
         }
         else
@@ -31,12 +37,13 @@ body.addEventListener("click",function(e){
           rem.classList.add("remove") 
           rem.innerHTML = "Remove Candidate"
           newNode.lastElementChild.firstElementChild.nextElementSibling.appendChild(rem)
+        
           //ERASING COPIED NODE DATA
-          for(let i=0;i<6;i++)
+          for(let i=0;i<=6;i++)
           {
             if(i==5)
             {
-              newNode.firstElementChild[i].innerHTML=`Upload Candidte Photo`   
+              newNode.firstElementChild[i].innerHTML=`<i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidte Photo`   
             }
             else
             {
@@ -136,15 +143,17 @@ function makepdf(candidates_company,candidates)
       
   }
 
-  var reader = new FileReader();  
+  var reader = new FileReader()
   readFile(0)
+  // document.getElementById("outputProgress").classList.toggle("closed")
 
+  let tot_progress = 0
   function readFile(index)
   {
     if(index >= candidates.length) 
     {
       // window.open(doc.output('bloburl'))
-      progress()
+      output()
       return;
     }
 
@@ -154,6 +163,9 @@ function makepdf(candidates_company,candidates)
       reader.readAsDataURL(file)
       reader.onload = function(e)
       {   
+        tot_progress += 100 / candidates.length
+        console.log("over")
+
         var bin = e.target.result;
 
         let row = Math.floor(index / 3)
@@ -162,58 +174,61 @@ function makepdf(candidates_company,candidates)
         doc.addImage(bin, "JPG", x+offsetx*col, y+offsety*row, 50, 50)
         readFile(index+1)
       }
+
+      reader.onprogress = function(e)
+      {
+        let each_progress = e.loaded / e.total * 100
+        let actual_progress = each_progress / candidates.length
+        let rounder = tot_progress + actual_progress
+        let pb_width = Math.round(rounder) 
+        console.log(pb_width, candidates.length)
+
+        let width_per = pb_width + "%"
+        console.log(width_per)
+        document.getElementById("progress-bar").style.width = width_per
+      }
     }
     else
     {
       readFile(index+1)
-    }
+    }   
+  }
+
+  // Output Section
+  function output()
+  {
+    document.getElementById("preview").addEventListener("click",() => {
+      window.open(doc.output('bloburl'))
+    })
+    document.getElementById("download").addEventListener("click",() => {
+      doc.save("Daitm pdf")
+    })
     
-    // Progress bar
-    // progress()
-
-    // Output Section
-    let preview = document.querySelector("#preview")
-    let download = document.querySelector("#download")
-
-    preview.addEventListener("click",() =>
-    window.open(doc.output('bloburl'))
-    )
-
-    download.addEventListener("click",() =>
-    doc.save("Sample pdf")
-    )
-
-    function progress()
-    {
-      let output = document.getElementById("outputDiv");
-      output.classList.toggle("closed")
-      var animation= setInterval(animation,15);
-      var width =0;
-      function animation()
-      {
-        width++;
-        width_per=width+"%";
-        // console.log(width_per);
-        let progress_bar=document.querySelector(".progress-bar");
-        progress_bar.style.width=width_per;
-        if(width==100)
-        {
-          clearInterval(animation);
-          //Output Text
-          let output_log=document.querySelector(".output-log")
-          output_log.innerHTML=`
-          <h3 class="text-info">Pdf Generated!
-            <small class="text-muted"><span class="text-warning">Preview</span> or <span class="text-success">Download</span>the PDF</small>
-          </h3>`
-        }
-      }    
+    let outputDiv=document.getElementById("outputDiv")
+    if(outputDiv.classList.contains("closed")===true){
+    outputDiv.classList.remove("closed")
     }
-
+    // Output Text
+    document.getElementById("output-log").innerHTML=`
+    <h3 class="text-info">Pdf Generated!
+      <small class="text-muted"><span class="text-warning">Preview</span> or <span class="text-success">Download</span>the PDF</small>
+    </h3>`
   }
 }
+
+// Moodel Timeout Hidding
+function modalTimeout()
+{
+  let counter = 100;
+  let modalCountdown = setInterval(() => {
+  let counter_per=(counter/100)*100+"%"
+  let modalProgress=document.querySelector("#progress-bar-modal")
+    modalProgress.style.width=counter_per
+    counter--
+    if (counter === 0) {
+      $("#max").modal('hide')
+      clearInterval(modalCountdown);
+    }
+  }, 35);
+}
  
-
-
-
-// let photoUpload = document.querySelectorAll("#photo")
-// console.log(photoUpload)

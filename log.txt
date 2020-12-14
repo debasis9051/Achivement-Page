@@ -1,4 +1,2 @@
-1. progress loading bar 
-2. add timeout in modal for limiting 6 candidates
-3. seperate output from inside readfile 
-4. student section overlap problem
+1. visible timeout bar in footer (done)
+2. student section overlap problem  (Done)

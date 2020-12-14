@@ -46,10 +46,10 @@
 
        <div class="spacer row mt-3 ml-3">
         <div class="col-md-4"></div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-6">
           <h2 class="text-success" id="student-section">Student <small class="text-muted text-success">Section</small> </h2>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-md-2"></div>
       </div>
 
       <section class="add-member center" id="first-sec">
@@ -86,7 +86,7 @@
             </div>
             <div class="form-group col-md-4 upload ">
                 <button class="btn btn-outline-warning btn-block  file  " id="photoButton"><i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidte Photo </button>
-                <input type="file" class="form-control-file file-upload  " id="photo" accept="image/*">
+                <input type="file" class="form-control-file file-upload  " id="photo" accept="">
             </div>
             <div class="col-md-2"></div>
           </div>
@@ -113,14 +113,17 @@
       </div>
 
       <div class="spacer"></div>
-
-      <div class="output container closed" id="outputDiv">
+      
+      <!-- PROGRESS BAR SECTION -->
+      <div class="container pb-4" id="outputProgress">
         <div class="progress ">
-          <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+          <div id="progress-bar" class="progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
         </div>
-        <div class="output-log">
-          
-        </div>
+      </div>
+
+      <!-- OUTPUT SECTION -->
+      <div class="container output closed" id="outputDiv">
+        <div id="output-log"></div>
   
         <div class="text-center flex-output ">
           <button type="submit" class="btn btn-warning " id="preview">Preview</button>
@@ -130,30 +133,28 @@
       
       <div class="spacer"></div>
       
-
-       <!-- Popups or alerts 
-       Max candidates -->
-          <div class="modal fade" id="max">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">PDF Limit Reached</h5>
-                  <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <p>Due to limited page size. Only 6 candidates names are taken.</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
+      <!-- Popups or alerts Max candidates -->
+      <div class="modal fade" id="max">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">PDF Limit Reached</h5>
+              <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Due to limited page size. Only 6 candidates names are taken.</p>
+            </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
+              <div class="progress ">
+                <div id="progress-bar-modal" class="progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
               </div>
             </div>
           </div>
-    
-
-
+        </div>
+      </div>
 
 </body>
 <!-- Javascript File -->
