@@ -86,7 +86,7 @@
             </div>
             <div class="form-group col-md-4 upload ">
                 <button class="btn btn-outline-warning btn-block  file  " id="photoButton"><i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidte Photo </button>
-                <input type="file" class="form-control-file file-upload  " id="photo" accept="">
+                <input type="file" class="form-control-file file-upload  " id="photo" accept=".png,.jpg">
             </div>
             <div class="col-md-2"></div>
           </div>
@@ -115,7 +115,7 @@
       <div class="spacer"></div>
       
       <!-- PROGRESS BAR SECTION -->
-      <div class="container pb-4" id="outputProgress">
+      <div class="container output closed-pr pb-4" id="outputProgress">
         <div class="progress ">
           <div id="progress-bar" class="progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
         </div>
@@ -123,7 +123,9 @@
 
       <!-- OUTPUT SECTION -->
       <div class="container output closed" id="outputDiv">
-        <div id="output-log"></div>
+        <div id="output-log">
+          <h3 class="text-info">Pdf Generated!<small class="text-muted"><span class="text-warning">Preview</span> or <span class="text-success">Download</span> the PDF</small></h3>
+        </div>
   
         <div class="text-center flex-output ">
           <button type="submit" class="btn btn-warning " id="preview">Preview</button>
@@ -133,7 +135,7 @@
       
       <div class="spacer"></div>
       
-      <!-- Popups or alerts Max candidates -->
+      <!-- Popups or alerts -->
       <div class="modal fade" id="max">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -144,12 +146,12 @@
               </button>
             </div>
             <div class="modal-body">
-              <p>Due to limited page size. Only 6 candidates names are taken.</p>
+              <p id="modal-p"></p>
             </div>
             <div class="modal-footer">
               <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
               <div class="progress ">
-                <div id="progress-bar-modal" class="progress-bar-striped progress-bar-animated bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                <div id="progress-bar-modal" class="progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
               </div>
             </div>
           </div>

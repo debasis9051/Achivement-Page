@@ -3,9 +3,9 @@ let body = document.body;
 let sec =document.querySelectorAll("#add-candidate-form")
 
 body.addEventListener("change",function(e){
-  console.log("change event fired 🔫")
   if(e.target.id == "photo")
   {
+    console.log("change event for file input fired 🔫")
     console.log(e.target.files)
     e.target.previousElementSibling.innerHTML = e.target.files[0].name
   }
@@ -18,8 +18,7 @@ body.addEventListener("click",function(e){
     {
         if(max_section>=6)
         {
-          $("#max").modal('show')
-          modalTimeout()
+          modalTimeout(3.5,"Due to limited page size. Only 6 candidates names are taken.")
           console.log("max candidate reached")
         }
         else
@@ -68,40 +67,47 @@ body.addEventListener("click",function(e){
 //Generate Button
 document.getElementById("generate").onclick= function()
 {
-    let elemArr = document.querySelectorAll(".add-member")
-    console.log(elemArr)
+    let candidateForms = document.querySelectorAll(".add-member")
+    console.log(candidateForms)
 
-    let candidates_company = document.getElementById("company").value
-    let candidates =[]
-
-    for(let i=0;i<elemArr.length;i++)
+    if(!formValidation(candidateForms))
     {
-      let candidate ={
-          fname : elemArr[i].firstElementChild[0].value,
-          lname : elemArr[i].firstElementChild[1].value,
-          year : elemArr[i].firstElementChild[2].value,
-          stream : elemArr[i].firstElementChild[3].value,
-          a_pack : elemArr[i].firstElementChild[4].value,
-          file_link : elemArr[i].firstElementChild[6].files[0]
+      modalTimeout(2.5,"There are empty fields in page. Please fill them up before generating PDF")
+    }
+    else
+    {
+      let candidates_company = document.getElementById("company").value
+      let candidates =[]
+
+      for(let i=0;i<candidateForms.length;i++)
+      {
+        let candidate ={
+            fname : candidateForms[i].firstElementChild[0].value,
+            lname : candidateForms[i].firstElementChild[1].value,
+            year : candidateForms[i].firstElementChild[2].value,
+            stream : candidateForms[i].firstElementChild[3].value,
+            a_pack : candidateForms[i].firstElementChild[4].value,
+            file_link : candidateForms[i].firstElementChild[6].files[0]
+        }
+
+        candidates.push(candidate)     
       }
 
-      candidates.push(candidate)     
+      // DATA INPUTS
+      // console.log("company "+candidates_company)
+      // for(let i=0;i<candidates.length;i++)
+      // {
+      //     console.log("fname "+candidates[i].fname)
+      //     console.log("lname "+candidates[i].lname)
+      //     console.log("year "+candidates[i].year)
+      //     console.log("stream "+candidates[i].stream)
+      //     console.log("file "+candidates[i].file_link)
+      //     console.log("apack "+candidates[i].a_pack)
+      //     console.log(" ")
+      // } 
+
+      makepdf(candidates_company, candidates)
     }
-
-    // DATA INPUTS
-    // console.log("company "+candidates_company)
-    // for(let i=0;i<candidates.length;i++)
-    // {
-    //     console.log("fname "+candidates[i].fname)
-    //     console.log("lname "+candidates[i].lname)
-    //     console.log("year "+candidates[i].year)
-    //     console.log("stream "+candidates[i].stream)
-    //     console.log("file "+candidates[i].file_link)
-    //     console.log("apack "+candidates[i].a_pack)
-    //     console.log(" ")
-    // } 
-
-    makepdf(candidates_company, candidates)
 }
 
 function makepdf(candidates_company,candidates)
@@ -143,11 +149,12 @@ function makepdf(candidates_company,candidates)
       
   }
 
+  document.getElementById("outputProgress").classList.remove("closed-pr")
+  let tot_progress = 0
+
   var reader = new FileReader()
   readFile(0)
-  // document.getElementById("outputProgress").classList.toggle("closed")
-
-  let tot_progress = 0
+  
   function readFile(index)
   {
     if(index >= candidates.length) 
@@ -181,7 +188,7 @@ function makepdf(candidates_company,candidates)
         let actual_progress = each_progress / candidates.length
         let rounder = tot_progress + actual_progress
         let pb_width = Math.round(rounder) 
-        console.log(pb_width, candidates.length)
+        console.log(pb_width)
 
         let width_per = pb_width + "%"
         console.log(width_per)
@@ -190,6 +197,10 @@ function makepdf(candidates_company,candidates)
     }
     else
     {
+      tot_progress += 100 / candidates.length
+      let width_per = tot_progress + "%"
+      console.log(width_per)
+      document.getElementById("progress-bar").style.width = width_per
       readFile(index+1)
     }   
   }
@@ -204,31 +215,53 @@ function makepdf(candidates_company,candidates)
       doc.save("Daitm pdf")
     })
     
-    let outputDiv=document.getElementById("outputDiv")
-    if(outputDiv.classList.contains("closed")===true){
-    outputDiv.classList.remove("closed")
-    }
-    // Output Text
-    document.getElementById("output-log").innerHTML=`
-    <h3 class="text-info">Pdf Generated!
-      <small class="text-muted"><span class="text-warning">Preview</span> or <span class="text-success">Download</span>the PDF</small>
-    </h3>`
+    document.getElementById("outputDiv").classList.remove("closed")
   }
 }
 
-// Moodel Timeout Hidding
-function modalTimeout()
+// Moodel Timeout Hiding
+function modalTimeout(time,modal_data)
 {
+  $("#max").modal('show')
+  document.getElementById("modal-p").innerHTML = modal_data
   let counter = 100;
   let modalCountdown = setInterval(() => {
-  let counter_per=(counter/100)*100+"%"
-  let modalProgress=document.querySelector("#progress-bar-modal")
+    let counter_per=counter+"%"
+    let modalProgress=document.querySelector("#progress-bar-modal")
     modalProgress.style.width=counter_per
     counter--
-    if (counter === 0) {
+    if (counter == 0) {
       $("#max").modal('hide')
       clearInterval(modalCountdown);
     }
-  }, 35);
+  }, time * 10);
 }
  
+function formValidation(candidateForms)
+{
+  let check = true
+
+  if(!document.getElementById("company").value)
+  {
+    check = false
+    return check
+  }
+  //for each section
+  for(let i=0;i<candidateForms.length;i++) 
+  {
+    // for each input field in a section
+    for(let j=0;j<=6;j++) 
+    {
+      if(j==5)
+      {
+        continue
+      }
+      if(!candidateForms[i].firstElementChild[j].value)
+      {
+        check = false
+        return check
+      }
+    }
+  }
+  return check; 
+}

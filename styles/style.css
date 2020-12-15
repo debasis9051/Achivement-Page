@@ -107,6 +107,10 @@
   max-height: 0;
 }
 
+.closed-pr{
+  display : none;
+}
+
  .flex-output{
    display: flex;
    justify-content :space-around;
