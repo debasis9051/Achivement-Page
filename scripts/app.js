@@ -265,3 +265,11 @@ function formValidation(candidateForms)
   }
   return check; 
 }
+
+// Offline Support(Progressive Web App)
+if('serviceWorker' in navigator){
+  try {
+    navigator.serviceWorker.register('serviceWorker.js');
+  } catch (error) {
+  }
+}
