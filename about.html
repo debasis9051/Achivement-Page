@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About-Achievement Page</title>
+     <!-- Application Manifest -->
+     <link rel="manifest" href="/manifest.json">
     <script src="https://kit.fontawesome.com/719d7c4744.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -239,7 +241,15 @@ Adipisci rerum vel laboriosam nesciunt dignissimos eaque debitis ipsum libero si
             </div> 
          </div>
         </div>
-
+<script>
+  // Offline Support(Progressive Web App)
+if('serviceWorker' in navigator){
+  try {
+    navigator.serviceWorker.register('serviceWorker.js');
+  } catch (error) {
+  }
+}
+</script>
 
 </body>
 </html>
