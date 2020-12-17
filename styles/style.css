@@ -138,3 +138,13 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     }
+
+    .hidden{
+      display : none;
+    }
+
+    .install-alert{
+      display : flex;
+      justify-content : space-between;
+      align-items: center;
+    }

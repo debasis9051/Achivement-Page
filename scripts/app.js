@@ -273,3 +273,30 @@ if('serviceWorker' in navigator){
   } catch (error) {
   }
 }
+
+// Ask the user for Achivement-Page Installation
+let install=document.getElementById("alert-install")
+window.addEventListener('beforeinstallprompt', (event) => {
+  console.log('User had not yet installed achivement page :', event);
+  window.deferredPrompt = event;
+  install.classList.toggle('hidden', false);
+});
+install.addEventListener('click', () => {
+  const promptEvent = window.deferredPrompt;
+  if (!promptEvent) {
+    return;
+  }
+  promptEvent.prompt();
+  promptEvent.userChoice.then((result) => {
+    if (result.outcome === 'accepted') {
+              console.log('User installed achivement-page');
+            } else {
+              console.log('User installed achivement-page');
+              // For less insisting user to install...xD
+              // install.style.display="none";
+            }
+    window.deferredPrompt = null;
+    install.classList.toggle('hidden', true);
+  });
+});
+
