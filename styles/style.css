@@ -57,11 +57,15 @@
   /*Custom design of file upload button*/
   #photo{
     position: absolute;
+    /* visibility: hidden; */
     opacity: 0;
     left: 0;
     top: 0;
     height: 40px;
   }
+  #photoButton{
+    border: #303030
+   }
  
   .file {
     letter-spacing : 1px;

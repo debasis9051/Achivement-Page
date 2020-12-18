@@ -275,13 +275,14 @@ if('serviceWorker' in navigator){
 }
 
 // Ask the user for Achivement-Page Installation
-let install=document.getElementById("alert-install")
+let installAlert=document.getElementById("alert-install")
+let installBtn=document.getElementById("installBtn")
 window.addEventListener('beforeinstallprompt', (event) => {
   console.log('User had not yet installed achivement page :', event);
   window.deferredPrompt = event;
-  install.classList.toggle('hidden', false);
+  installAlert.classList.toggle('hidden', false);
 });
-install.addEventListener('click', () => {
+installBtn.addEventListener('click', () => {
   const promptEvent = window.deferredPrompt;
   if (!promptEvent) {
     return;
@@ -296,7 +297,12 @@ install.addEventListener('click', () => {
               // install.style.display="none";
             }
     window.deferredPrompt = null;
-    install.classList.toggle('hidden', true);
+    installAlert.classList.toggle('hidden', true);
   });
 });
 
+document.getElementById("photoButton").addEventListener("click",(e)=>{
+  console.log("a")
+  e.preventDefault();
+})
+// document.querySelector('#installBtn').disabled = true;
