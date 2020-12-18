@@ -115,40 +115,39 @@
   display : none;
 }
 
- .flex-output{
+.flex-output{
    display: flex;
    justify-content :space-around;
    padding: 40px;
- }
+   }
 
  .card img{
   max-width: 100%;
   height: auto; 
   }
 
-
-  .modal-footer{
-    display : block;
+.modal-footer{
+  display : block;
   }
 
-  .flex-card{
-    display : flex;
-    justify-content : space-around;
+.flex-card{
+  display : flex;
+  justify-content : space-around;
   }
   
-  .insta{
-    background: #d6249f;
-    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    }
+.insta{
+  background: #d6249f;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  }
 
-    .hidden{
-      display : none;
-    }
+ .hidden{
+  display : none;
+  }
 
-    .install-alert{
-      display : flex;
-      justify-content : space-between;
-      align-items: center;
-    }
+ .install-alert{
+  display : flex;
+  justify-content : space-between;
+  align-items: center;
+ }
