@@ -273,7 +273,7 @@ installBtn.addEventListener('click', () => {
     if (result.outcome === 'accepted') 
     {
       console.log('Prompt:User installed achivement-page');
-      modalTimeout(3.5,"DHONNOBAD BONDHU","INSTALLED")
+      modalTimeout(3.5,"DHONNOBAD, Thanks For Installation","INSTALLED")
     } else {
       console.log('Prompt:User did not installed achivement-page');
       modalTimeout(3.5,"Wish U Bad Luck. Installing the Application will bring U Good Luck!","NOT INSTALLED")
