@@ -16,7 +16,7 @@ body.addEventListener("click",function(e){
     {   //Max 6 Candidates to be added
         if(max_section>=6)
         {
-          modalTimeout(3.5,"Due to limited page size. Only 6 candidates names are taken.")
+          modalTimeout(3.5,"Due to limited page size. Only 6 candidates names are taken.","PDF LIMIT REACHED")
           console.log("max candidate reached")
         }
         else
@@ -67,7 +67,7 @@ document.getElementById("generate").onclick= function()
 
     if(!formValidation(candidateForms))
     {
-      modalTimeout(2.5,"There are empty fields in page. Please fill them up before generating PDF")
+      modalTimeout(2.5,"There are empty fields in page. Please fill them up before generating PDF","EMPTY FIELD")
     }
     else
     {
@@ -200,11 +200,12 @@ function makepdf(candidates_company,candidates)
   }
 }
 
-// Moodel Timeout Hiding 
-function modalTimeout(time,modal_data)
+// Model Timeout Hiding 
+function modalTimeout(time,modal_data,modal_header)
 {
   $("#max").modal('show')
   document.getElementById("modal-p").innerHTML = modal_data
+  document.getElementById("m-head").innerHTML = modal_header
   let counter = 100;
   let modalCountdown = setInterval(() => {
     let counter_per=counter+"%"
@@ -269,13 +270,16 @@ installBtn.addEventListener('click', () => {
   }
   installpromptEvent.prompt();
   installpromptEvent.userChoice.then((result) => {
-    if (result.outcome === 'accepted') {
-              console.log('Prompt:User installed achivement-page');
-            } else {
-              console.log('Prompt:User did not installed achivement-page');
-              // For less insisting user to install...xD
-              // install.style.display="none";
-            }
+    if (result.outcome === 'accepted') 
+    {
+      console.log('Prompt:User installed achivement-page');
+      modalTimeout(3.5,"DHONNOBAD BONDHU","INSTALLED")
+    } else {
+      console.log('Prompt:User did not installed achivement-page');
+      modalTimeout(3.5,"Wish U Bad Luck. Installing the Application will bring U Good Luck!","NOT INSTALLED")
+      // For less insisting user to install...xD
+      // install.style.display="none";
+    }
     window.installPrompt = null;
     installAlert.classList.toggle('hidden', true);
   });
