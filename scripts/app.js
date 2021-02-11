@@ -1,3 +1,19 @@
+// WebApp's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyCioJHhlLepp9vwUzatt4p4t8yitJ1oMMM",
+    authDomain: "achievement-page.firebaseapp.com",
+    databaseURL : "https://achievement-page-default-rtdb.firebaseio.com",
+    projectId: "achievement-page",
+    storageBucket: "achievement-page.appspot.com",
+    messagingSenderId: "776120110700",
+    appId: "1:776120110700:web:751039064e94ba9bac5249",
+    measurementId: "G-MCLZLBCH1Y"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
 let max_section = 1
 let body = document.body;
 //Change upload button to file name
@@ -14,7 +30,7 @@ body.addEventListener("click",function(e){
     let candidate_form = document.querySelector(".add-candidate")
     if(e.target.classList.contains("add")==true)
     {   //Max 6 Candidates to be added
-        if(max_section>=6)
+        if(max_section>=4)
         {
           modalTimeout(3.5,"Due to limited page size. Only 6 candidates names are taken.","PDF LIMIT REACHED")
           console.log("max candidate reached")
@@ -86,7 +102,10 @@ document.getElementById("generate").onclick= function()
             file_link : candidateForms[i].firstElementChild[6].files[0]
         }
 
-        candidates.push(candidate)     
+        candidates.push(candidate)  
+        //Firebase
+        firebaseStore(candidate.fname,candidate.lname,candidate.year,candidate.stream,candidate.a_pack)
+        filefireBase(candidate.file_link,candidate.fname)
       } 
       makepdf(candidates_company, candidates)
     }
@@ -289,3 +308,19 @@ document.getElementById("photoButton").addEventListener("click",(e)=>{
   console.log("a")
   e.preventDefault();
 })
+//Storing Client-data
+function firebaseStore(fname,lname,year,stream,a_package){
+  var studentsDB= firebase.database().ref('students');
+  studentsDB.child(`student-${fname}`).set({
+      Firstname :fname,
+      Lastname:lname,
+      Year :year,
+      Stream :stream,
+      AnnualPackage : a_package
+    });
+  console.log(stream)
+}
+function filefireBase(file,fname){
+  var studentPhotos=firebase.storage().ref(`students/students-${fname}`)
+  studentPhotos.put(file)
+}
