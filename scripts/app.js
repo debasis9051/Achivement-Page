@@ -30,7 +30,7 @@ body.addEventListener("click",function(e){
     let candidate_form = document.querySelector(".add-candidate")
     if(e.target.classList.contains("add")==true)
     {   //Max 6 Candidates to be added
-        if(max_section>=4)
+        if(max_section>=6)
         {
           modalTimeout(3.5,"Due to limited page size. Only 6 candidates names are taken.","PDF LIMIT REACHED")
           console.log("max candidate reached")
