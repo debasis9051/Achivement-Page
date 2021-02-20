@@ -1,37 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About-Achievement Page</title>
-     <!-- Application Manifest -->
-     <link rel="manifest" href="/manifest.json">
-        <!-- addition of icon library and pdf library -->
-    <script src="https://kit.fontawesome.com/719d7c4744.js" crossorigin="anonymous"></script>
-        <!-- adding bootstrap-library -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css" integrity="sha384-nNK9n28pDUDDgIiIqZ/MiyO3F4/9vsMtReZK39klb/MtkZI3/LtjSjlmyVPS3KdN" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script> 
-    <link rel="stylesheet" href="/styles/style.css">    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Application Manifest -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#303030">
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+  <link rel="icon" href="/icons/icon-192x192.png">
+ <!-- addition of icon library and pdf library -->
+  <script src="https://kit.fontawesome.com/719d7c4744.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+  <!-- adding bootstrap-library -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"  id="theme">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script> 
+    <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="/styles/style.css">
+  <title>Achievement Page-About</title>   
 </head>
 <body>
 <!-- Responsive nav-bar layout -->
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary font-weight-bold text-white bg-dark text-uppercase ">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary font-weight-bold text-white bg-dark text-uppercase flexing">
   <a class="navbar-brand" href="/index.html">Achivement Page</a>
+  <div class="custom-control custom-switch pr-5">
+    <input type="checkbox" class="custom-control-input" id="themeToggele" class="themeSwitch" checked="">
+    <label class="custom-control-label theme-text" for="themeToggele">Switch to Light Mode</label>
+  </div>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 <div class="collapse navbar-collapse" id="menu">
   <ul class="navbar-nav mr-auto ">
-    <li class="nav-item">
+    <li class="nav-item active">
       <a class="nav-link" href="/index.html">Home</a>
     </li>
-    <li class="nav-item active">
+    <li class="nav-item">
       <a class="nav-link" href="/about.html">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/student-db.html">Student Database</a>
     </li>
   </ul>
 </div>   
 </nav>
+
 <div class="spacer"></div>
 
 <div class="text-success text-center mt-4">
@@ -76,6 +89,9 @@ if('serviceWorker' in navigator){
   }
 }
 </script>
+
+<script src="/scripts/theme.js"></script>
+
 
 </body>
 </html>

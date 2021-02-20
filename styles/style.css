@@ -1,4 +1,5 @@
-/**/
+/*Custom styles*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 .flexing{
   display : flex;
   justify-content : space-between;
@@ -80,6 +81,9 @@
     display : flex;
     justify-content: space-between;
   }
+
+ 
+
  }
 @media only screen and (max-width: 862px) {
   .add{
@@ -88,8 +92,53 @@
   .remove{
     font-size : 85%;
   }
+
+  .student-details p{
+    font-size : 4vw !important;
+    text-align : left !important;
+    word-spacing: 5px;
+    letter-spacing : 1.2px;
+    font-weight :300 !important;
+    text-align: center;
+    /* margin:0; */
+    padding-left : 0px !important;
+    padding-top: 5px;
+    margin-left: 3vw;
+    /* background-color: #139CF7; */
+  }
+
+  .student-profile{
+    margin: 10px 8vw 10px 8vw  !important;
+    padding :0;
+   }
+
+   .userData {
+   padding-top: 30px;
+  }
+
+  .userData .container
+  {
+    height: 22vw !important;
+    font-size :17px;
+    font-family: 'Poppins', sans-serif;
+  }
+  .navbar{
+    font-weight: 300 !important;
+  }
  }
  
+ @media only screen and (max-width: 350px){
+  .custom-switch{
+    display:none !important;
+  }
+
+  .userData {
+    padding-top: 10px;
+   }
+   .userData .container{
+    font-size :14px;
+   }
+ }
 
  html,body, body:before, body:after{
    padding: 0;
@@ -110,44 +159,96 @@
 .closed{
   max-height: 0;
 }
-
 .closed-pr{
   display : none;
 }
-
 .flex-output{
    display: flex;
    justify-content :space-around;
    padding: 40px;
    }
-
  .card img{
   max-width: 100%;
   height: auto; 
   }
-
 .modal-footer{
   display : block;
   }
-
 .flex-card{
   display : flex;
   justify-content : space-around;
   }
-  
 .insta{
   background: #d6249f;
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   }
-
  .hidden{
   display : none;
   }
-
  .install-alert{
   display : flex;
   justify-content : space-between;
   align-items: center;
  }
+/* Student Profile Section */
+ .student{
+   display : flex;
+   justify-content : space-evenly;
+   align-items: stretch;
+   flex-wrap: wrap;
+ }
+ .student-details{ 
+   flex : 1 0 70%;
+ }
+ .student-image img{
+  height: 100%;
+  width : 100% ;
+ }
+ .student-image {
+  flex : 1 0 30%;
+ }
+ .student-details p{
+   font-size : 20px;
+   word-spacing: 10px;
+   font-family: 'Poppins', sans-serif;
+   font-weight : 500;
+   padding-left : 11vw;
+   padding-top: 1vw;
+   margin-bottom: 0;
+ }
+ .delete{
+   align-self: flex-end;
+  flex: 0 1 100%;
+  margin: 0;
+ }
+ .student-profile{
+  margin: 10px 25vw 10px 25vw;
+  padding :0;
+ }
+ .userData .container{
+   display : flex;
+   flex-direction: row;
+   justify-content:space-between;
+   height: 5vw;
+   align-items: center;
+ }
+.userForm-signUp{
+  display:none;
+}
+.userForm-logIn{
+  display:none;
+}
+/* Info Section */
+.guide
+{
+ display :flex;
+ justify-content: center;
+ padding-bottom: 8px ;
+}
+.info-howto{
+  font-size : 16px;
+  font-family: 'Poppins', sans-serif;
+  word-spacing: 3px;
+}

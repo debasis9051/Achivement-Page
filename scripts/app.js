@@ -14,6 +14,14 @@
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
 
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+
+    } else {
+    
+    }
+  });
+
 let max_section = 1
 let body = document.body;
 //Change upload button to file name
@@ -104,8 +112,11 @@ document.getElementById("generate").onclick= function()
 
         candidates.push(candidate)  
         //Firebase
-        firebaseStore(candidate.fname,candidate.lname,candidate.year,candidate.stream,candidate.a_pack)
-        filefireBase(candidate.file_link,candidate.fname)
+        if(firebase.auth().currentUser){
+          console.log(firebase.auth().currentUser.uid)
+        firebaseStore(candidate.fname,candidate.lname,candidate.year,candidate.stream,candidate.a_pack,candidates_company,firebase.auth().currentUser.uid)
+        filefireBase(candidate.file_link,candidate.fname,firebase.auth().currentUser.uid)
+        }
       } 
       makepdf(candidates_company, candidates)
     }
@@ -309,33 +320,45 @@ document.getElementById("photoButton").addEventListener("click",(e)=>{
   e.preventDefault();
 })
 //Storing Client-data
-function firebaseStore(fname,lname,year,stream,a_package){
-  var studentsDB= firebase.database().ref('students');
-  studentsDB.child(`student-${fname}`).set({
-      Firstname :fname,
-      Lastname:lname,
-      Year :year,
-      Stream :stream,
-      AnnualPackage : a_package
-    });
+function firebaseStore(fname,lname,year,stream,a_package,company,uid){
+  var studentsDB= firebase.database().ref(`Users/${uid}`.trim());
+  studentsDB.child(`Students/${fname}`.trim()).set({
+      Firstname :fname.trim(),
+      Lastname:lname.trim(),
+      Year :year.trim(),
+      Stream :stream.trim(),
+      AnnualPackage : `${a_package} LPA`.trim(),
+      Company :company.trim()
+    })
+    .then(() => {
+      document.querySelector(".delete-toast").classList.toggle("hidden",false)
+         document.querySelector(".delete-toast").innerHTML=`<h4 class="text-center pt-2 pb-2">Student data uploaded to Database !</h4>`
+         setTimeout(()=>   document.querySelector(".delete-toast").classList.toggle("hidden",true),4000)
+      console.log("Data sent to DataBase")
+    })
   console.log(stream)
 }
-function filefireBase(file,fname){
-  var studentPhotos=firebase.storage().ref(`students/students-${fname}`)
+function filefireBase(file,fname,uid){
+  var studentPhotos=firebase.storage().ref(`Users/${uid}/Students/${fname}`.trim())
   studentPhotos.put(file)
+  .then(()=>console.log("Files Uploaded"))
 }
-
-//Theme
-let theme=document.getElementById('theme')
-let themeCheck=document.querySelector('.theme-text')
-document.querySelector('#themeToggele').addEventListener('click',()=>{
-  if(theme.href==="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css")
-  {
-   theme.href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/superhero/bootstrap.min.css"
-   themeCheck.innerText="Switch to Dark mode"
-  }
-  else{
-    theme.href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
-    themeCheck.innerText="Switch to Light mode"
-  }
+// Sign in alert
+let signinAlert=document.getElementById("alert-sign-in")
+let signinBtn=document.getElementById("installBtn")
+firebase.auth().onAuthStateChanged((user)=>
+{
+  if(user)
+{
+signinAlert.classList.toggle('hidden', true);
+}
+else
+{
+  console.log("No User Signer in")
+  signinAlert.classList.toggle('hidden', false);
+}
 })
+function sign()
+{
+  window.location.href="/student-db.html"
+}

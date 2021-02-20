@@ -38,11 +38,16 @@
           <li class="nav-item">
             <a class="nav-link" href="/about.html">About</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/student-db.html">Student Database</a>
+          </li>
         </ul>
       </div>   
     </nav>
 
     <div class="spacer"></div>
+
+      
 
       <div class="form-row mt-3 ml-3 mr-3 pt-5">
         <div class="col-md-4"></div>
@@ -90,7 +95,7 @@
           <div class="form-row ml-3  mr-3">
             <div class="col-md-2"></div>
             <div class="form-group col-md-4"> 
-              <input type="text" class="form-control" id="package" placeholder="Annual Package">
+              <input type="text" class="form-control" id="package" placeholder="Annual Package(LPA)">
             </div>
              <!-- Customized upload button -->
             <div class="form-group col-md-4 upload ">
@@ -115,14 +120,23 @@
   
       <!-- Generic spacing div -->
       <div class="spacer"></div> 
+
+      <div class="guide">
+        <a type="button" class="btn btn-warning  font-weight-bold" id="guide" href="/info.html" style="color :black">FAQ AND Guide</a>
+      </div>
     
       <!-- Generate button div -->
       <div class=" text-center">
-        <button type="submit" class="btn btn-success  " id="generate">Generate</button>
+        <button type="submit" class="btn btn-success  " id="generate">Generate & Upload Student Data</button>
+      </div>
+
+      <div class="delete-toast bg-info container mt-3 hidden ">
+        <h5 class="text-center pt-2 pb-2">Student data uploaded to Database !</h5>
       </div>
 
       <div class="spacer"></div>
-      
+
+     
       <!-- PROGRESS BAR SECTION -->
       <div class="container output closed-pr pb-4" id="outputProgress">
         <div class="progress ">
@@ -142,7 +156,7 @@
         </div>
       </div>
 
-      <!-- Ask User For App Install -->
+         <!-- Ask User For Log in -->
       <div class="form-row ml-3  mr-3">
         <div class="col-md-2"></div>
         <div class="form-group col-md-8">
@@ -154,14 +168,25 @@
             </div>
           </div>
        </div>
-       <div class="col-md-2"></di>
+       <div class="col-md-2"></div>
+      </div>
+
+      <!-- Ask User For App Install -->
+      <div class="form-row ml-3  mr-3">
+        <div class="col-md-2"></div>
+        <div class="form-group col-md-8">
+          <div class="alert alert-dismissible alert-info bg-danger" id="alert-sign-in">
+            <button type="button" class="close" data-dismiss="alert" onclick="">&times;</button>
+            <div class="install-alert">
+              <h4 class="">You are not signed in! Students Data will not be saved</h4>
+              <btn class="btn btn-warning" id="installBtn" onclick="sign()">Sign IN</btn>
+            </div>
+          </div>
+       </div>
+       <div class="col-md-2"></div>
       </div>
       
       <div class="spacer"></div>
-      
-
-       
-      
       <!-- Popups or alerts -->
       <div class="modal fade" id="max">
         <div class="modal-dialog" role="document">
@@ -196,6 +221,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script>
 
 <script src="/scripts/app.js"></script>
+<script src="/scripts/theme.js"></script>
 </html>
 
 
