@@ -64,12 +64,12 @@ async function signIn(){
   try{
     document.querySelector(".userForm-logIn").style.display="block"
     let email=document.querySelectorAll('[data-user="userEmail"]')[1].value
-let password =document.querySelectorAll('[data-user="userPassword"]')[1].value
-  let user= await firebase.auth().signInWithEmailAndPassword(email, password)
+    let password =document.querySelectorAll('[data-user="userPassword"]')[1].value
+    let user= await firebase.auth().signInWithEmailAndPassword(email, password)
      console.log(user.user.uid)
      document.querySelector('.userStat').innerHTML="Sign Out"
      $("#signIn").modal('hide')  
-    }
+  }
   catch(error){
       console.log(error)
   }
@@ -91,8 +91,8 @@ function refresh(){
 document.body.addEventListener('click',(click)=>{
     if(click.target.classList.contains('modal')){
         console.log(click)
-    console.log("CLiocck")
-    window.location.reload();
+        console.log("CLiocck")
+        window.location.reload();
     }
 })
 // Display all student data
@@ -102,26 +102,26 @@ function displayData()
   let acData = document.querySelector('.userData')
   acData.style.display="none"
   elem.style.display="block"
- let dataObj;
- let p= document.getElementById('out')
- let user =  firebase.auth().currentUser;
- let acName=document.querySelector('.accountName'); 
- let acEmail=document.querySelector('.accountEmail'); 
- if(user)
- {
-   acEmail.innerHTML=`Account Email ID : ${user.email}`;
-   acName.innerHTML=`Account Name : ${user.displayName}`;
-   acData.style.display="block"
-  firebase.database().ref(`Users/${user.uid}`).get(`Students`)
-    .then( (value)=>{value.forEach((values)=>{
-        dataObj=values.val()
-        p.innerHTML=JSON.stringify(values.val())
-        p.style.display="none"
-    })
-          let students;
-          if(dataObj){
-             students = Object.keys(dataObj)
-             }
+  let dataObj;
+  let p= document.getElementById('out')
+  let user =  firebase.auth().currentUser;
+  let acName=document.querySelector('.accountName'); 
+  let acEmail=document.querySelector('.accountEmail'); 
+  if(user)
+  {
+    acEmail.innerHTML=`Account Email ID : ${user.email}`;
+    acName.innerHTML=`Account Name : ${user.displayName}`;
+    acData.style.display="block"
+    firebase.database().ref(`Users/${user.uid}`).get(`Students`)
+    .then((value)=>{value.forEach((values)=>{
+            dataObj=values.val()
+            p.innerHTML=JSON.stringify(values.val())
+            p.style.display="none"
+        })
+        let students;
+        if(dataObj){
+          students = Object.keys(dataObj)
+        }
         for ( let j=0;j<students.length;j++)
         {
             let stu = students[j]
@@ -137,13 +137,13 @@ function displayData()
        let orginal=document.querySelector("#orginal")
        orginal.style.display="none"
        deleteStudent(students,user.uid)
-     })
-       .catch(error=>{
-         console.log(error)
-         document.querySelector(".delete-toast").classList.toggle("hidden",false)
-         document.querySelector(".delete-toast").innerHTML=`<h4 class="text-center pt-2 pb-2">No Student Data available!</h4>`
-         setTimeout(()=>   document.querySelector(".delete-toast").classList.toggle("hidden",true),15000)
-        })
+    })
+    .catch(error=>{
+      console.log(error)
+      document.querySelector(".delete-toast").classList.toggle("hidden",false)
+      document.querySelector(".delete-toast").innerHTML=`<h4 class="text-center pt-2 pb-2">No Student Data available!</h4>`
+      setTimeout(()=>   document.querySelector(".delete-toast").classList.toggle("hidden",true),15000)
+    })
   }
 }
 function pic(img,stu,user,dataObj,clone){
@@ -152,14 +152,15 @@ function pic(img,stu,user,dataObj,clone){
   {
     files.items.forEach((file)=>
     {
-    if(file.name===`${dataObj[stu].Firstname}`)
-    {
-      clone.classList.add(`${dataObj[stu].Firstname}`.trim())
-      clone.querySelector(".delete").id=dataObj[stu].Firstname
-      file.getDownloadURL()
-      .then((link)=>img.src=link)
-    }
-  }  ) }  )
+      if(file.name===`${dataObj[stu].Firstname}`)
+      {
+        clone.classList.add(`${dataObj[stu].Firstname}`.trim())
+        clone.querySelector(".delete").id=dataObj[stu].Firstname
+        file.getDownloadURL()
+        .then((link)=>img.src=link)
+      }
+    }) 
+  })
   .catch((error)=>{
     console.log(error)
   })
