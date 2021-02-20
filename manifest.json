@@ -3,7 +3,7 @@
     "background_color": "#222222",
     "display": "standalone",
     "scope": ".",
-    "start_url": ".",
+    "start_url": "./index.html",
     "description": "Generate PDF For College Placements ",
     "name": "Achivement Page",
     "short_name": "Achivement",
