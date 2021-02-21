@@ -41,7 +41,7 @@ self.addEventListener('fetch', event => {
     const req = event.request;
     const url = new URL(req.url);
     console.log(req)
-    if(req=="GET"){
+    if(req==="GET"){
 
     if(url.origin === location.url){
         event.respondWith(cacheFirst(req));
@@ -52,27 +52,25 @@ self.addEventListener('fetch', event => {
 });
 
 async function cacheFirst(req){
-    if(req=="GET"){
+ 
     const cachedResponse = caches.match(req);
     return cachedResponse || fetch(req);
     }
-}
 
 async function newtorkFirst(req){
-    if(req=="GET"){
+ 
     const cache = await caches.open(CACHE_NAME);
     try {
-        if(req=="GET"){
-        const res = await fetch(req);
         
-            console.log(req)
+        const res = await fetch(req);
+           console.log(req)
             cache.put(req, res.clone());
             return res;
-            
-        }
         
+            
+                
     } catch (error) {
         return await cache.match(req);
     }
-}
+
 }
