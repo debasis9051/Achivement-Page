@@ -102,7 +102,7 @@ function displayData()
   let acData = document.querySelector('.userData')
   acData.style.display="none"
   elem.style.display="block"
-  let dataObj;
+  let studentDatabase;
   let p= document.getElementById('out')
   let user =  firebase.auth().currentUser;
   let acName=document.querySelector('.accountName'); 
@@ -114,24 +114,24 @@ function displayData()
     acData.style.display="block"
     firebase.database().ref(`Users/${user.uid}`).get(`Students`)
     .then((value)=>{value.forEach((values)=>{
-            dataObj=values.val()
+            studentDatabase=values.val()
             p.innerHTML=JSON.stringify(values.val())
             p.style.display="none"
         })
         let students;
-        if(dataObj){
-          students = Object.keys(dataObj)
+        if(studentDatabase){
+          students = Object.keys(studentDatabase)
         }
         for ( let j=0;j<students.length;j++)
         {
             let stu = students[j]
             var clone = elem.cloneNode(true);
-            clone.querySelector(".fullname").innerHTML=`${dataObj[stu].Firstname} ${dataObj[stu].Lastname}`
-            clone.querySelector(".stream").innerHTML=`${dataObj[stu].Stream}`
-            clone.querySelector(".year").innerHTML=`${dataObj[stu].Year}`
-            clone.querySelector(".company").innerHTML=`${dataObj[stu].Company}`
-            clone.querySelector(".package").innerHTML=`${dataObj[stu].AnnualPackage}`
-            pic(clone.querySelector(".profileImg"),stu,user,dataObj,clone)
+            clone.querySelector(".fullname").innerHTML=`${studentDatabase[stu].Firstname} ${studentDatabase[stu].Lastname}`
+            clone.querySelector(".stream").innerHTML=`${studentDatabase[stu].Stream}`
+            clone.querySelector(".year").innerHTML=`${studentDatabase[stu].Year}`
+            clone.querySelector(".company").innerHTML=`${studentDatabase[stu].Company}`
+            clone.querySelector(".package").innerHTML=`${studentDatabase[stu].AnnualPackage}`
+            pic(clone.querySelector(".profileImg"),stu,user,studentDatabase,clone)
             elem.after(clone);
        }
        let orginal=document.querySelector("#orginal")
@@ -146,16 +146,16 @@ function displayData()
     })
   }
 }
-function pic(img,stu,user,dataObj,clone){
+function pic(img,stu,user,studentDatabase,clone){
   var studentPhotos=firebase.storage().ref(`Users/${user.uid}/Students`)
   studentPhotos.listAll().then( (files)=>
   {
     files.items.forEach((file)=>
     {
-      if(file.name===`${dataObj[stu].Firstname}`)
+      if(file.name===`${studentDatabase[stu].Firstname}`)
       {
-        clone.classList.add(`${dataObj[stu].Firstname}`.trim())
-        clone.querySelector(".delete").id=dataObj[stu].Firstname
+        clone.classList.add(`${studentDatabase[stu].Firstname}`.trim())
+        clone.querySelector(".delete").id=studentDatabase[stu].Firstname
         file.getDownloadURL()
         .then((link)=>img.src=link)
       }

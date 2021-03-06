@@ -89,9 +89,30 @@ document.getElementById("generate").onclick= function()
     let candidateForms = document.querySelectorAll(".add-member")
     console.log(candidateForms)
 
-    if(!formValidation(candidateForms))
+    let formValidator = formValidation(candidateForms)
+    if(!formValidator.valid)
     {
-      modalTimeout(2.5,"There are empty fields in page. Please fill them up before generating PDF","EMPTY FIELD")
+      let temp
+      if(!formValidator.companyName)
+      {
+        temp = `<h4>Company Name<h4>`
+      }
+      console.log(formValidator)
+      fields = ["First_Name","Last_Name","Year","Stream","Annual_Package","skip","Photo"]
+      for(let i=0;i<6;i++)
+      {
+        if(i in formValidator)
+        {
+          temp+= `<h4>Candidate ${i+1}</h4>`
+          temp+= `<p>`
+          for(let j=0;j<formValidator[i].length;j++)
+          {
+            temp+= `<span class="space">${fields[formValidator[i][j]]}</span>`
+          } 
+          temp+= `</p>`
+        }
+      }
+      modalTimeout(10,temp,"EMPTY FIELDS")
     }
     else
     {
@@ -248,19 +269,30 @@ function modalTimeout(time,modal_data,modal_header)
     }
   }, time * 10);
 }
+let feild;
 // Student Section and Company Form Validation 
 function formValidation(candidateForms)
 {
   let check = true
+  let tempObj = {};
+  tempObj["valid"] = true;
+
   if(!document.getElementById("company").value)
   {
-    check = false
-    return check
+    tempObj["valid"] = false;
+    tempObj["companyName"] = false;
   }
+  else
+  {
+    tempObj["companyName"] = true;
+  }
+
+  console.log(candidateForms)
   //for each section
   for(let i=0;i<candidateForms.length;i++) 
   {
     // for each input field in a section
+    tempObj[i] = []
     for(let j=0;j<=6;j++) 
     {
       if(j==5)
@@ -269,12 +301,17 @@ function formValidation(candidateForms)
       }
       if(!candidateForms[i].firstElementChild[j].value)
       {
-        check = false
-        return check
+        tempObj["valid"] = false;
+        tempObj[i].push(j);
       }
     }
+    if(tempObj[i].length==0)
+    {
+      delete tempObj[i];
+    }
   }
-  return check; 
+
+  return tempObj;
 }
 // Offline Support(Progressive Web App)
 if('serviceWorker' in navigator){
@@ -332,7 +369,7 @@ function firebaseStore(fname,lname,year,stream,a_package,company,uid){
     })
     .then(() => {
       document.querySelector(".delete-toast").classList.toggle("hidden",false)
-         document.querySelector(".delete-toast").innerHTML=`<h4 class="text-center pt-2 pb-2">Student data uploaded to Database !</h4>`
+         document.querySelector(".delete-toast").innerHTML=`< class="text-center pt-2 pb-2">Student data uploaded to Database !</>`
          setTimeout(()=>   document.querySelector(".delete-toast").classList.toggle("hidden",true),4000)
       console.log("Data sent to DataBase")
     })
