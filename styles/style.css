@@ -273,5 +273,9 @@
   padding-bottom: 10px;
 }
 .space{
-  padding-left: 15px;
+  padding-left: 8px;
+}
+
+.modal-body{
+  overflow :hidden;
 }
