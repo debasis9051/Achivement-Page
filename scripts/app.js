@@ -361,7 +361,7 @@ function firebaseStore(fname,lname,year,stream,a_package,company,uid){
     })
     .then(() => {
       document.querySelector(".delete-toast").classList.toggle("hidden",false)
-         document.querySelector(".delete-toast").innerHTML=`< class="text-center pt-2 pb-2">Student data uploaded to Database !</>`
+         document.querySelector(".delete-toast").innerHTML=`<div class="text-center pt-2 pb-2">Student data uploaded to Database !</div>`
          setTimeout(()=>   document.querySelector(".delete-toast").classList.toggle("hidden",true),4000)
       console.log("Data sent to DataBase")
     })
