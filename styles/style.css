@@ -67,14 +67,6 @@
   #photoButton{
     border: #303030
    }
- 
-  .file {
-    letter-spacing : 1px;
-  }
-  .file-icon{
-     padding-right:15px;
-}
-
 /*Responsive Layout for tablet and Phablet*/
 @media only screen and (max-width: 1146px) {
   .flexing{
@@ -275,7 +267,15 @@
 .space{
   padding-left: 8px;
 }
-
 .modal-body{
   overflow :hidden;
+}
+.errorMessage{
+  display :none;
+}
+.error-message{
+  color:#242B2E !important;
+  font-weight :700;
+  font-size :18px;
+  word-spacing: 2.5px;
 }

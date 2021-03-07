@@ -13,15 +13,7 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
-
-  firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-
-    } else {
-    
-    }
-  });
-
+  
 let max_section = 1
 let body = document.body;
 //Change upload button to file name

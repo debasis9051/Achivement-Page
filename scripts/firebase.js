@@ -38,11 +38,12 @@ function accountUi(){
       acData.style.display="none"
 }
 function signUp(){
+  document.querySelector(".userForm-signUp").style.display="block"
+  document.querySelector(".userForm-logIn").style.display="none"
   let email=document.querySelectorAll('[data-user="userEmail"]')
   let password =document.querySelectorAll('[data-user="userPassword"]')  
   let firstName =document.querySelectorAll('[data-user="first-name"]')[0].value
   let lastName =document.querySelectorAll('[data-user="last-name"]')[0].value 
-  document.querySelector(".userForm-signUp").style.display="block"
   firebase.auth().createUserWithEmailAndPassword(email[0].value, password[0].value)
   .then((user)=>{
     console.log(user)
@@ -57,12 +58,26 @@ function signUp(){
     $("#signIn").modal('hide')
   })
   .catch((error)=>{
-    console.log(error)
+    if(error.message=="The email address is badly formatted.")
+    {
+    alertBox.style.display="none"
+    }
+    let errorMSg = error.message
+    let errorTxt = document.querySelector(".error-message")
+    errorTxt.innerHTML=errorMSg;
+    let alertBox=document.querySelector(".errorMessage")
+    alertBox.style.display="block"
+    console.log(errorMSg)
+    if(error.message=="The email address is badly formatted.")
+    {
+    alertBox.style.display="none"
+    }
   })
 }
 async function signIn(){
   try{
     document.querySelector(".userForm-logIn").style.display="block"
+    document.querySelector(".userForm-signUp").style.display="none"
     let email=document.querySelectorAll('[data-user="userEmail"]')[1].value
     let password =document.querySelectorAll('[data-user="userPassword"]')[1].value
     let user= await firebase.auth().signInWithEmailAndPassword(email, password)
@@ -71,7 +86,21 @@ async function signIn(){
      $("#signIn").modal('hide')  
   }
   catch(error){
-      console.log(error)
+    if(error.message=="The email address is badly formatted.")
+    {
+      document.querySelector(".errorMessage").style.display="none"
+    }
+    let errorMSg = error.message
+    let errorTxt = document.querySelector(".error-message")
+    errorTxt.innerHTML=errorMSg;
+    let alertBox=document.querySelector(".errorMessage")
+    alertBox.style.display="block"
+    console.log(errorMSg)
+    if(error.message=="The email address is badly formatted.")
+    {
+    alertBox.style.display="none"
+    }
+      
   }
 }
 // sign in/sign out button
