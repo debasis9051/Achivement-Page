@@ -14,6 +14,19 @@
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
   
+  // let xhr = new XMLHttpRequest();
+  // xhr.open('get', '/about.html');
+  // xhr.send();
+  // xhr.open('get', '/student-db.html');
+  // xhr.send();
+  // xhr.open('get', '/info.html');
+  // xhr.send();
+
+  //theme
+  let themeChoice = localStorage.getItem("UserTheme");
+  let theme=document.getElementById('theme')
+  theme.href=themeChoice;
+
 let max_section = 1
 let body = document.body;
 //Change upload button to file name
@@ -233,12 +246,34 @@ function makepdf(candidates_company,candidates)
   function output()
   {
     document.getElementById("preview").addEventListener("click",() => {
-      window.open(doc.output('bloburl'))
+
+      firebase.auth().onAuthStateChanged((user)=>{
+        if(user)
+      {
+        window.open(doc.output('bloburl'))
+      }
+      else
+      {
+        console.log("No User Signer in")
+        modalTimeout(5,`<h4>Please Sign in or Sign Up from <a href="/student-db.html">Student Database</a> to Download or Preview the PDF</h4>`,"User not signed in")
+      }
+      })
+
+      
     })
     document.getElementById("download").addEventListener("click",() => {
-      doc.save("Daitm pdf")
+      firebase.auth().onAuthStateChanged((user)=>{
+        if(user)
+      {
+        doc.save("Daitm pdf")
+      }
+      else
+      {
+        console.log("No User Signer in")
+        modalTimeout(5,`<h4>Please Sign in or Sign Up from <a href="/student-db.html">Student Database</a> to Download or Preview the PDF</h4>`,"User not signed in")
+      }
+      })
     })
-    
     document.getElementById("outputDiv").classList.remove("closed")
   }
 }
@@ -306,12 +341,10 @@ function formValidation(candidateForms)
   return tempObj;
 }
 // Offline Support(Progressive Web App)
-if('serviceWorker' in navigator){
-  try {
-    navigator.serviceWorker.register('serviceWorker.js');
-  } catch (error) {
-  }
-}
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('../pwabuilder-sw.js');
+  })}
 // Ask the user for Achivement-Page Installation
 let installAlert=document.getElementById("alert-install")
 let installBtn=document.getElementById("installBtn")
