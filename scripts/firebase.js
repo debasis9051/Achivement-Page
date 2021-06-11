@@ -13,6 +13,11 @@ var firebaseConfig = {
   firebase.analytics();
   let orginal= document.querySelector("#orginal")
       orginal.style.visibility="hidden"
+      //theme
+  let themeChoice = localStorage.getItem("UserTheme");
+  let theme=document.getElementById('theme')
+  theme.href=themeChoice;
+
 // Authorization flow
 firebase.auth().onAuthStateChanged(function(user) {
     if (user) 

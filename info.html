@@ -26,6 +26,17 @@
     
     const el = document.createElement('pwa-update');
     document.body.appendChild(el);
+
+    
+
+    </script>
+
+    <script>
+          //theme
+      let themeChoice = localStorage.getItem("UserTheme");
+      let theme=document.getElementById('theme')
+      console.log(themeChoice)
+      theme.href=themeChoice;
     </script>
 
   <title>Achievement Page-FAQ</title>   
@@ -33,7 +44,7 @@
 <body>
 <!-- Responsive nav-bar layout -->
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary font-weight-bold text-white bg-dark text-uppercase flexing">
-  <a class="navbar-brand" href="Build/index.html">Achivement Page</a>
+  <a class="navbar-brand" href="./index.html">Achivement Page</a>
   <div class="custom-control custom-switch pr-5">
     <input type="checkbox" class="custom-control-input" id="themeToggele" class="themeSwitch" checked="">
     <label class="custom-control-label theme-text" for="themeToggele">Switch to Light Mode</label>

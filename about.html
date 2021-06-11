@@ -26,6 +26,12 @@
     
     const el = document.createElement('pwa-update');
     document.body.appendChild(el);
+
+    //theme
+  let themeChoice = localStorage.getItem("UserTheme");
+  let theme=document.getElementById('theme')
+  theme.href=themeChoice;
+
     </script>
 
   <title>Achievement Page-About</title>   
