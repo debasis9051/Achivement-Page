@@ -25,6 +25,7 @@
   //theme
   let themeChoice = localStorage.getItem("UserTheme");
   let theme=document.getElementById('theme')
+  if (themeChoice)
   theme.href=themeChoice;
 
 let max_section = 1
