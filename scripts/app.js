@@ -28,6 +28,53 @@
   if (themeChoice)
   theme.href=themeChoice;
 
+  //UserLoggedIN?
+  let userState = localStorage.getItem("UserSignedIn");
+  let userUid = localStorage.getItem("UserUid");
+  if(userState=="true")
+  {
+    console.log("true",userState)
+    let login=document.querySelector('.login')
+      login.innerHTML="Student Database"
+      login.href="/student-db.html"
+      document.querySelector(".user").innerHTML+=
+      `<a class="btn logout text-secondary font-weight-bold mt-2 ml-3" onclick="logOut()">Log Out</a>`
+  }
+  else
+  {
+    console.log("false",userState)
+    let login=document.querySelector('.login')
+    login.innerHTML="Log In"
+    login.href="/login.html"
+  }
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) 
+    { 
+      window.localStorage.setItem('UserSignedIn', true);
+      window.localStorage.setItem('UserUid', user.uid);
+      let login=document.querySelector('.login')
+      login.innerHTML="Student Database"
+      login.href="/student-db.html"
+      console.log(user.email)
+       
+    } else
+    {
+      window.localStorage.setItem('UserSignedIn', false);
+      let login=document.querySelector('.login')
+      login.innerHTML="Log In"
+      login.href="/login.html"
+      console.log("not")
+    }
+  });
+
+  function logOut(){
+    firebase.auth().signOut().then((a)=>{
+      console.log(a)
+      window.location.href="/index.html"
+      }
+  )
+  }
+
 let max_section = 1
 let body = document.body;
 //Change upload button to file name

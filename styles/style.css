@@ -1,5 +1,6 @@
 /*Custom styles*/
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@500&display=swap');
 .flexing{
   display : flex;
   justify-content : space-between;
@@ -128,6 +129,15 @@
     display:none !important;
   } */
 
+  .formFeilds{
+    margin-top: 13rem !important;
+  }
+
+  .content {
+    width: 18rem !important;
+
+  }
+
   .userData {
     padding-top: 10px;
    }
@@ -149,6 +159,7 @@
    padding: 0;
    margin: 0;
    overflow-x: hidden; 
+   font-family: 'Comfortaa', cursive;
    font-weight: 700 !important;
    letter-spacing: 0.5px;
  }
@@ -341,4 +352,63 @@
 .form-control,.alert{
   border-radius: 255px 55px 245px 55px/35px 255px 25px 255px;
 
+}
+
+.login{
+  background-color :#9bdb35;
+  color: rgba(34, 24, 30, 0.912) !important;
+}
+
+.logout{
+  background-color :#d55f3b;
+  color: rgba(34, 24, 30, 0.912) !important;
+}
+
+:focus {
+  outline: none;
+}
+
+.content {
+  width: 40rem;
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  border: 0;
+  padding: 10px 10px;
+  border-bottom: 2px solid #b4df6f;
+   
+}
+
+.input ~ .border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+}
+
+.input:focus ~ .border {
+  width: 100%;
+  transition: 0.7s;
+}
+
+.input[type=text],.input[type=password] {
+  background-color :#09e98400 !important;
+}
+
+
+.border {
+    border: 2px solid #9BDB35!important;
+}
+
+.formFeilds{
+  /* margin : 60px 90px 0px 90px; */
+  margin-top: 6rem !important;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+ 
 }

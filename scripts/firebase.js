@@ -19,126 +19,64 @@ var firebaseConfig = {
   if (themeChoice)
   theme.href=themeChoice;
 
-// Authorization flow
-firebase.auth().onAuthStateChanged(function(user) {
+  //auth
+  let userState = localStorage.getItem("UserSignedIn");
+  let userUid = localStorage.getItem("UserUid");
+  if(userState=="true")
+  {
+    console.log("true",userState)
+    let login=document.querySelector('.login')
+      login.innerHTML="Log Out"
+      login.href="/student-db.html"
+  }
+  else
+  {
+    console.log("false",userState)
+    let login=document.querySelector('.login')
+    login.innerHTML="Log In"
+    login.href="/login.html"
+  }
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    
     if (user) 
     {
-      let orginal= document.querySelector("#orginal")
-      orginal.style.display="none"
-      $("#signIn").modal('hide')
-      console.log(user.displayName)
-      displayData()    
+      displayData()
+      window.localStorage.setItem('UserSignedIn', true);
+      window.localStorage.setItem('UserUid', user.uid);
+      let login=document.querySelector('.login')
+      login.href="#"
+      login.innerHTML="Log Out"
+      login.onclick = ()=>
+      {
+        console.log("hi")
+        firebase.auth().signOut().then((a)=>{
+          console.log(a)
+          window.location.href="/index.html"
+          })
+      }
+      // login.href="/student-db.html"
+      console.log(user.email)
+       
     } else
     {
-      let elem = document.querySelector('#orginal');
-      elem.style.display="none"
-      accountUi()
-      document.querySelector('.userStat').innerHTML="Sign IN"
+      window.localStorage.setItem('UserSignedIn', false);
+      let login=document.querySelector('.login')
+      login.innerHTML="Log In"
+      login.href="/login.html"
       console.log("not")
     }
   });
-// Account ui
- function accountUi(){
-  $("#signIn").modal('show')
-  document.querySelector('.sign-up').addEventListener('click',signUp);
-  document.querySelector('.log-in').addEventListener('click',signIn);
-      let elem = document.querySelector('#orginal');
-      elem.style.display="none"
-      let acData = document.querySelector('.userData')
-      acData.style.display="none"
-}
-function signUp(){
-  document.querySelector(".userForm-signUp").style.display="block"
-  document.querySelector(".userForm-logIn").style.display="none"
-  let email=document.querySelectorAll('[data-user="userEmail"]')
-  let password =document.querySelectorAll('[data-user="userPassword"]')  
-  let firstName =document.querySelectorAll('[data-user="first-name"]')[0].value
-  let lastName =document.querySelectorAll('[data-user="last-name"]')[0].value 
-  firebase.auth().createUserWithEmailAndPassword(email[0].value, password[0].value)
-  .then((user)=>{
-    console.log(user)
-    let Curuser =  firebase.auth().currentUser;
-    console.log(`${firstName} ${lastName}`)
-    Curuser.updateProfile({displayName: `${firstName} ${lastName}` })
-    .then(()=>{
-      window.location.href="/index.html"
-      console.log(`User updated with name ${Curuser.displayName}`)
-    })
-    console.log(user.uid)
-    $("#signIn").modal('hide')
-  })
-  .catch((error)=>{ 
-    if(error.message=="The email address is badly formatted.")
-    {
-    alertBox.style.display="none"
-    }
-    let errorMSg = error.message
-    let errorTxt = document.querySelector(".error-message")
-    errorTxt.innerHTML=errorMSg;
-    let alertBox=document.querySelector(".errorMessage")
-    alertBox.style.display="block"
-    console.log(errorMSg)
-    if(error.message=="The email address is badly formatted.")
-    {
-    alertBox.style.display="none"
-    }
-  })
-}
-async function signIn(){
-  try{
-    document.querySelector(".userForm-logIn").style.display="block"
-    document.querySelector(".userForm-signUp").style.display="none"
-    let email=document.querySelectorAll('[data-user="userEmail"]')[1].value
-    let password =document.querySelectorAll('[data-user="userPassword"]')[1].value
-    let user= await firebase.auth().signInWithEmailAndPassword(email, password)
-     console.log(user.user.uid)
-     document.querySelector('.userStat').innerHTML="Sign Out"
-     $("#signIn").modal('hide')  
-  }
-  catch(error){
-    if(error.message=="The email address is badly formatted.")
-    {
-      document.querySelector(".errorMessage").style.display="none"
-    }
-    let errorMSg = error.message
-    let errorTxt = document.querySelector(".error-message")
-    errorTxt.innerHTML=errorMSg;
-    let alertBox=document.querySelector(".errorMessage")
-    alertBox.style.display="block"
-    console.log(errorMSg)
-    if(error.message=="The email address is badly formatted.")
-    {
-    alertBox.style.display="none"
-    }
-      
-  }
-}
-// sign in/sign out button
-document.querySelector('.userStat').addEventListener('click',()=>{
-    firebase.auth().signOut().then((a)=>{
-        console.log(a)
-        document.querySelector('.userStat').classList.add('signIN')
-        window.location.href="/index.html"
-        }
-    )
-})
-// User has to sign in for the page
-document.querySelector('.signIN').addEventListener('click',accountUi)
-function refresh(){
-    window.location.reload();
-}
-document.body.addEventListener('click',(click)=>{
-    if(click.target.classList.contains('modal')){
-        console.log(click)
-        console.log("CLiocck")
-        window.location.reload();
-    }
-})
-// Display all student data
- let studentDatabase;
- let user;
+let studentDatabase;
 function displayData()
 {  
+  console.log("start")
+
+  // // let studentDatabase;
+  // let user=firebase.auth().currentUser;
+  let userState = localStorage.getItem("UserSignedIn");
+  let userUid = localStorage.getItem("UserUid");
+  console.log(userState,userUid)
   let orginal= document.querySelectorAll("#orginal")[0]
   orginal.style.visibility="hidden"
 
@@ -147,11 +85,10 @@ function displayData()
   acData.style.display="none"
   elem.style.display="block"
   let p = document.getElementById('out')
-  user =  firebase.auth().currentUser;
   let acName=document.querySelector('.accountName'); 
   let acEmail=document.querySelector('.accountEmail'); 
-  if(user)
-  {
+  firebase.auth().onAuthStateChanged(function(user) {
+    console.log("before DB")
     acEmail.innerHTML=`Account Email ID : ${user.email}`;
     acName.innerHTML=`Account Name : ${user.displayName}`;
     acData.style.display="block"
@@ -196,7 +133,7 @@ function displayData()
       document.querySelector(".delete-toast").innerHTML=`<h4 class="text-center pt-2 pb-2">Connection Lost</h4>`
       setTimeout(()=>   document.querySelector(".delete-toast").classList.toggle("hidden",true),15000)
     })
-  }
+  })
 }
 let studentPhotos
 function pic(img,stu,user,studentDatabase,clone){
@@ -431,6 +368,7 @@ function filterCheckBoxInput(selectedStudents)
 
 function batchSelectList()
 {
+  console.log(studentDatabase)
   let checkList = document.querySelectorAll(".checkBox")
   let stdArray = Object.keys(studentDatabase);
   let len = checkList.length
@@ -562,7 +500,7 @@ function modify(students,uid)
             function pushUpdates()
             {      
               let stu=clicked.target.id.trim()
-              let studentsRef = firebase.database().ref(`Users/${user.uid}/Students/${stu}`)
+              let studentsRef = firebase.database().ref(`Users/${userUid}/Students/${stu}`)
 
               // let firstName=document.querySelectorAll('[data-update="first-name"]')[0].value
               let lastName=document.querySelectorAll('[data-update="last-name"]')[0].value
@@ -641,18 +579,179 @@ function modify(students,uid)
               {
                 detectPhoto=1
               }
+              setInterval(()=>{
+                console.log(detectPhoto,detectData)
+                if((detectData==1)&&(detectPhoto==1)) {
+                  setTimeout(()=>{
+                    location.reload()
+                  },1010)
+                };
+              },500)  
             }
 
-            setInterval(()=>{
-              if((detectData==1)&&(detectPhoto==1)) {
-                setTimeout(()=>{
-                  location.reload()
-                },1010)
-              };
-            },500)   
+         
           
           })
       }
   
 }
 
+function addStudent(){
+  modalDraw
+  (
+    `   <h4 class="text-success">
+          Add
+          <h4 style="padding-left:5px;" class="text-warning"> Student profil</h4>
+        </h4>
+        <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+        </button>`,
+
+  `   <div class="form-row mt-3 ">
+      <div class="form-group col">
+  <input type="text" class="form-control" data-update="first-name" placeholder="First Name">
+</div>
+        <div class="form-group col">
+          <input type="text" class="form-control" data-update="last-name" placeholder="Last Name">
+        </div>
+      </div>   
+      <div class="form-row mt-3 ">
+        <div class="form-group col">
+          <input type="text" class="form-control" data-update="company" placeholder="Company">
+        </div>
+        <div class="form-group col">
+          <input type="text" class="form-control" data-update="package" placeholder="Annual Package">
+        </div>
+      </div>   
+      <div class="form-row mt-3 ">
+        <div class="form-group col">
+          <input type="text" class="form-control" data-update="stream" placeholder="Stream">
+        </div>
+        <div class="form-group col">
+          <input type="text" class="form-control" data-update="year" placeholder="Year">
+        </div>
+      </div>
+      <div class="form-row mt-3 ">
+      <div class="form-group col-md upload ">
+      <button class="btn btn-outline-warning btn-block  file  " id="photoButton"><i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidte Photo </button>
+      <input type="file" class="form-control-file file-upload  " id="photo" accept=".png,.jpg">
+      </div>
+      </div>
+      `,
+
+    ` <button class="btn btn-success addNew" >Add</button>
+      <button class="btn btn-danger"  data-dismiss="modal">Cancel</button> 
+      <div class="errorMessage container">
+        <div class="alert alert-dismissible alert-success">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <p href="#" class="text-secondary error-message"></p> 
+        </div>
+      </div>
+      <div class="photoMessage container hidden">
+        <div class="alert alert-dismissible alert-info">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <p href="#" class="text-secondary photo-message"></p> 
+        </div>
+      </div>
+      <div class="progress photoProgress "  style="visibility:hidden;">
+        <div id="progress-bar-modal" class="progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+      </div>`
+  )
+  document.querySelector(".addNew").addEventListener("click",()=>{
+    let detectData=0,detectPhoto=0;
+
+  // let stu=clicked.target.id.trim()
+  
+
+  let firstName=document.querySelectorAll('[data-update="first-name"]')[0].value
+  let lastName=document.querySelectorAll('[data-update="last-name"]')[0].value
+  let stream=document.querySelectorAll('[data-update="stream"]')[0].value
+  let year=document.querySelectorAll('[data-update="year"]')[0].value
+  let package=document.querySelectorAll('[data-update="package"]')[0].value
+  let company=document.querySelectorAll('[data-update="company"]')[0].value
+
+  let studentsRef = firebase.database().ref(`Users/${userUid}/Students/${firstName}`)
+
+  let updateStudent = {}
+  
+  if(firstName) {  updateStudent.Firstname =firstName.trim()}
+  if(lastName) {  updateStudent.Lastname =lastName.trim()}
+  if(stream)  {updateStudent.Stream =stream.trim()}
+  if(year) { updateStudent.Year =year.trim()}
+  if(package){ updateStudent.AnnualPackage = package.trim()}
+  if(company) { updateStudent.Company =company.trim()}
+
+
+  if(Object.keys(updateStudent).length!=0)
+  {
+    studentsRef.update(updateStudent)
+    .then(()=>{
+        console.log(updateStudent)
+        console.log("Data Updated")
+          let errorTxt = document.querySelector(".error-message")
+          errorTxt.innerHTML=`Student Data Added to database!`;
+          let alertBox=document.querySelector(".errorMessage")
+          alertBox.style.display="block"
+          setTimeout(()=>{
+            alertBox.style.display="none"
+            detectData=1
+          },2500)
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+  }
+  else
+  {
+    detectData=1
+  }
+  
+  let photo = document.querySelector(".file-upload").files[0] 
+  if(photo)
+  {
+      var studentPhotos=firebase.storage().ref(`Users/${userUid}/Students/${firstName}`.trim())
+      document.querySelector(".photoProgress").style.visibility="visible"
+      var task=studentPhotos.put(photo)
+      console.log(task)
+      task.on('state_changed',(snapshot)=>{ 
+        document.querySelector("#progress-bar-modal").style.width=`${(snapshot.bytesTransferred / snapshot.totalBytes) * 100}%`
+      })
+      task.then(()=>{
+        console.log()
+        document.querySelector(".photoProgress").style.visibility="hidden"
+          let errorTxt = document.querySelector(".photo-message")
+          errorTxt.innerHTML=`<h5>Student photo Added to database!</h5>`;
+          let alertBox=document.querySelector(".photoMessage")
+          alertBox.style.display="block"
+          setTimeout(()=>
+          {
+            alertBox.style.display="none"
+            detectPhoto=1
+
+          }
+          ,2500)   
+      })
+      task.catch((error)=>{
+        console.log(error)
+        let errorTxt = document.querySelector(".error-message")
+          errorTxt.innerHTML=error.code;
+          let alertBox=document.querySelector(".errorMessage")
+          alertBox.style.display="block"
+      })
+  }
+  else
+  {
+    detectPhoto=1
+  }
+  setInterval(()=>{
+    console.log(detectPhoto,detectData)
+    if((detectData==1)&&(detectPhoto==1)) {
+      setTimeout(()=>{
+        location.reload()
+      },1010)
+    };
+  },500)  
+  })
+
+  
+}
