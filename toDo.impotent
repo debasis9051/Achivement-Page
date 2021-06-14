@@ -1,0 +1,19 @@
+Auth()
+    from logout login form,
+    add google , phn number Auth
+    add safetycheck to database
+    forget password-> for email
+
+form color changes
+
+add icons
+
+try to ship with webpack
+
+make a dependency  folder
+
+
+
+optimize sigin / signup error messages
+
+optimize fallthroughs in log in / sign up funnels

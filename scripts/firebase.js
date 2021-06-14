@@ -1,3 +1,12 @@
+setInterval(()=>{
+  let userState = localStorage.getItem("UserSignedIn");
+  console.log(userState)
+  if(userState=="false")
+{
+  console.log(userState,"gg")
+window.location="/index.html"
+}
+},500)
 var firebaseConfig = {
     apiKey: "AIzaSyCioJHhlLepp9vwUzatt4p4t8yitJ1oMMM",
     authDomain: "achievement-page.firebaseapp.com",
