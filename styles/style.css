@@ -394,6 +394,8 @@
   border: 0;
   padding: 10px 10px;
   border-bottom: 2px solid #b4df6f;
+  color: #8bf7ce;
+  font-size: 20px;
    
 }
 
@@ -413,6 +415,16 @@
 .input[type=text],.input[type=password] {
   background-color :#09e98400 !important;
 }
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+    -webkit-transition: "color 9999s ease-out, background-color 9999s ease-out";
+    -webkit-transition-delay: 9999s;
+}
+
+
 
 
 .border {
