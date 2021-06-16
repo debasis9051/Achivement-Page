@@ -64,6 +64,10 @@
       login.innerHTML="Log In"
       login.href="/login.html"
       console.log("not")
+      let logout=document.querySelector('.logout')
+      if (logout)
+      logout.style.display="none"
+
     }
   });
 

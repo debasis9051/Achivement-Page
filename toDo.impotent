@@ -1,8 +1,8 @@
 Auth()
-    from logout login form,
+    from logout login form, done
     add google , phn number Auth
     add safetycheck to database
-    forget password-> for email
+    forget password-> for email done
 
 form color changes
 
@@ -14,6 +14,12 @@ make a dependency  folder
 
 
 
-optimize sigin / signup error messages
+optimize sigin / signup error messages ------done
 
-optimize fallthroughs in log in / sign up funnels
+optimize fallthroughs in log in / sign up funnels  -- done
+
+
+add accessibility and footer
+
+
+firebase api -> envirmoent variable and minify

@@ -33,6 +33,8 @@
 
 <script  src="./scripts/app.js" defer></script>
 <script src="./scripts/theme.js" defer></script>
+<script  src="./scripts/font.js" defer></script>
+
 
 <script type="module">
   import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
@@ -66,6 +68,10 @@ document.body.appendChild(el);
         </ul>
       </div>   
       <div class="user">
+        
+        <a class="btn font-increase font text-secondary font-weight-bold mt-2 " >+</a>
+        <a class="btn font-normal  font text-secondary font-weight-bold mt-2">A</a>
+        <a class="btn font-decrease  font text-secondary font-weight-bold mt-2 mr-5">-</a>
         <a class="btn login text-secondary font-weight-bold mt-2" href="./login.html">Log in</a>
       </div>
     </nav>
@@ -74,10 +80,10 @@ document.body.appendChild(el);
 
       
 
-      <div class="form-row mt-5 ml-3 mr-3 pt-5">
+      <div class="form-row mt-5 ml-3 mr-3  firstRow">
         <div class="col-md-4"></div>
         <div class="form-group col-md-4">
-          <h5 class="text-warning ">Company Name</h5>
+          <p class="text-warning mt-2 " style="font-size: 22px;">Company Name</p>
           <input type="text" class="form-control" id="company" placeholder="Company">
         </div>
         <div class="col-md-4"></div>
@@ -86,12 +92,12 @@ document.body.appendChild(el);
        <div class="spacer row mt-3 ml-3">
         <div class="col-md-4"></div>
         <div class="form-group col-md-6">
-          <h2 class="text-success" id="student-section">Student <small class="text-muted text-success">Section</small> </h2>
+          <p class="text-success mb-2" id="student-section" style="font-size: 32px;">Student <small class="text-muted text-success">Section</small> </p>
         </div>
         <div class="col-md-2"></div>
       </div>
 
-      <section class="add-member center" id="first-sec">
+      <section class="add-member center pt-3" id="first-sec">
       <!-- form section -->
         <form id="add-candidate-form">  
           <!-- FirstName and LastName -->
@@ -210,8 +216,74 @@ document.body.appendChild(el);
        </div>
        <div class="col-md-2"></div>
       </div>
-      
+
       <div class="spacer"></div>
+      <div class="spacer"></div>
+      <div class="spacer"></div>
+
+      
+         
+      <footer class="text-center text-white fixed" style="background-color: #222222;  color :aliceblue !important;">
+        <!-- Grid container -->
+        <div class="container ">
+          <!-- Section: Social media -->
+          <section class="">
+            <!-- Facebook -->
+            <a
+              class="btn btn-link btn-floating btn-lg text-light m-1"
+              href="https://www.facebook.com/debashis.developer/"
+              role="button"
+              data-mdb-ripple-color="dark"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+      
+            <!-- Twitter -->
+            <a
+              class="btn btn-link btn-floating btn-lg text-light m-1"
+              href="https://twitter.com/debashisde90"
+              role="button"
+              data-mdb-ripple-color="dark"
+              ><i class="fab fa-twitter"></i
+            ></a>
+      
+                  
+            <!-- Instagram -->
+            <a
+              class="btn btn-link btn-floating btn-lg text-light m-1"
+              href="https://www.instagram.com/debashis9051/"
+              role="button"
+              data-mdb-ripple-color="dark"
+              ><i class="fab fa-instagram"></i
+            ></a>
+      
+            <!-- Linkedin -->
+            <a
+              class="btn btn-link btn-floating btn-lg text-light m-1"
+              href="https://www.linkedin.com/in/debasish-debnath-ba11a29b/"
+              role="button"
+              data-mdb-ripple-color="dark"
+              ><i class="fab fa-linkedin"></i
+            ></a>
+            <!-- Github -->
+            <a
+              class="btn btn-link btn-floating btn-lg text-light m-1"
+              href="https://github.com/debasis9051"
+              role="button"
+              data-mdb-ripple-color="dark"
+              ><i class="fab fa-github"></i
+            ></a>
+          </section>
+          <!-- Section: Social media -->
+        </div>
+        <!-- Grid container -->
+      
+        <!-- Copyright -->
+        <div class="text-center text-light p-2" style="background-color: rgba(0, 0, 0, 0.2); ">
+          © 2020 Copyright:
+          <a class="text-light" href="https://achivement-page.netlify.app/">Achivement Page</a>
+        </div>
+        <!-- Copyright -->
+      </footer>
       <!-- Popups or alerts -->
       <div class="modal fade" id="max">
         <div class="modal-dialog" role="document">

@@ -1,11 +1,16 @@
+import {authErrors} from './authError.js'
+
 setInterval(()=>{
   let userState = localStorage.getItem("UserSignedIn");
+  console.log(userState)
   if(userState=="true")
 {
-  console.log(userState)
-window.location="/index.html"
+  setTimeout(()=>{
+    window.location="/index.html"
+  },1300)
 }
-},500)
+},300)
+
 var firebaseConfig = {
     apiKey: "AIzaSyCioJHhlLepp9vwUzatt4p4t8yitJ1oMMM",
     authDomain: "achievement-page.firebaseapp.com",
@@ -25,9 +30,12 @@ var firebaseConfig = {
   if (themeChoice)
   theme.href=themeChoice;
 
+  document.querySelector(".signIn").addEventListener("click",signIn)
+  document.querySelector(".signUp").addEventListener("click",newUser)
+  document.querySelector(".resetPassword").addEventListener('click',returningReset)
+
 // Authorization flow
 let userState = localStorage.getItem("UserSignedIn");
-let userUid = localStorage.getItem("UserUid");
 if(userState=="true")
 {
   console.log("true",userState)
@@ -62,39 +70,40 @@ firebase.auth().onAuthStateChanged(function(user) {
     }
   });
 // Account ui
-function signUp(){
+ async function  signUp()
+{
   let email=document.querySelector('#email').value
   let password =document.querySelector('#password').value 
   let firstName =document.querySelector('#fname').value
   let lastName =document.querySelector('#lname').value 
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-  .then((user)=>{
-    console.log(user)
-    let Curuser =  firebase.auth().currentUser;
-    console.log(`${firstName} ${lastName}`)
-    Curuser.updateProfile({displayName: `${firstName} ${lastName}` })
-    .then(()=>{
-      window.location.href="/index.html"
-      console.log(`User updated with name ${Curuser.displayName}`)
-    })
-    console.log(user.uid)
-  })
-  .catch((error)=>{ 
+  if(!firstName && !lastName)
+  {
+    console.log("non")
     let alertBox=document.querySelector(".errorMessage")
-    if(error.message=="The email address is badly formatted.")
-    {
-    alertBox.style.display="none"
-    }
-    let errorMSg = error.message
     let errorTxt = document.querySelector(".error-message")
-    errorTxt.innerHTML=errorMSg;
+    errorTxt.innerHTML+=`<p>Please Enter your name</p>`;
       alertBox.style.display="block"
-    console.log(errorMSg)
-    if(error.message=="The email address is badly formatted.")
-    {
-    alertBox.style.display="none"
+      setTimeout(()=>{
+        console.log("time")
+        errorTxt.innerHTML=``
+        alertBox.style.display="none"
+      },2500)
+      throw {}
+  }
+  try{
+    let pt = await firebase.auth().createUserWithEmailAndPassword(email, password)
+    console.log(`Name : ${firstName} ${lastName}`)
+    pt.user.updateProfile({displayName: `${firstName} ${lastName}` })
+    let alertBox=document.querySelector(".errorMessage")
+    let errorTxt = document.querySelector(".error-message")
+    errorTxt.innerHTML+=`<p><i class="fas fa-spinner mr-2"></i>    Creating User Account</p>`;
+      alertBox.style.display="block"
+
+  }
+  catch(error)
+  {
+    errHandler(error)
     }
-  })
 }
 async function signIn()
 {
@@ -108,43 +117,36 @@ async function signIn()
   }
   catch(error)
   {
-    if(error.message=="The email address is badly formatted.")
-    {
-      document.querySelector(".errorMessage").style.display="none"
+    errHandler(error)
     }
-    let errorMSg = error.message
-    let errorTxt = document.querySelector(".error-message")
-    errorTxt.innerHTML=errorMSg;
-    let alertBox=document.querySelector(".errorMessage")
-    alertBox.style.display="block"
-    setTimeout(()=>{
-      console.log("time")
-      alertBox.style.display="none"
-    },2500)
-    console.log(errorMSg)
-    if(error.message=="The email address is badly formatted.")
-    {
-    alertBox.style.display="none"
-    }
-      
-  }
 }
-// sign in/sign out button
-
-    // firebase.auth().signOut().then((a)=>{
-    //     console.log(a)
-    //     // document.querySelector('.userStat').classList.add('signIN')
-    //     window.location.href="/index.html"
-    //     }
-    // )
     let forms=document.querySelector(".formFeilds")
-    function newUser()
+    function returningReset()
     {
-     
+      console.log("return reset")
       forms.innerHTML=``
       document.querySelectorAll(".spacer")[1].style.display="none"
       document.querySelectorAll(".spacer")[2].style.display="none"
-      forms.innerHTML+=`<div class="content mt-5 ">
+      forms.innerHTML+=`
+      <div class="content mt-5 ">
+      <input class="input" id="email" type="text" placeholder="Account Email ID">
+          <span class="border"></span>
+     </div>
+       <a class="btn btn-danger reset-password mt-3" >Send Reset Password link</a>
+       <div class="errorMessage mt-3 bg-danger theme">
+            <h5 class="error-message p-2"></h5>
+          </div> 
+     `
+      document.querySelector(".reset-password").addEventListener("click",resetPassword)
+    }
+    function newUser()
+    {
+      console.log("new user")
+      forms.innerHTML=``
+      document.querySelectorAll(".spacer")[1].style.display="none"
+      document.querySelectorAll(".spacer")[2].style.display="none"
+      forms.innerHTML+=`
+      <div class="content mt-5 ">
       <input class="input" id="fname" type="text" placeholder="First Name">
           <span class="border"></span>
      </div>
@@ -160,22 +162,29 @@ async function signIn()
        <input class="input" id="password" type="password" placeholder="Password">
          <span class="border"></span>
       </div>
-      <a class="btn btn-info mt-3" onclick="signUp()">Sign Up</a>
+      <a class="btn btn-info mt-3 signUp">Sign Up</a>
      <div class="newUser pt-3">
           <h5>Returning User? Log In</h3>
-              <a class="btn btn-success resetform">LogIn</a>
+              <a class="btn btn-success returnUser">LogIn</a>
           </div> 
           <div class="errorMessage mt-3 bg-danger theme">
             <h5 class="error-message p-2"></h5>
-          </div> `
-
+          </div> 
+          `
             console.log(forms)
+            document.querySelector(".returnUser").addEventListener('click',returningUser)
+            document.querySelector(".signUp").addEventListener("click",signUp)
 
-          document.querySelector(".resetform").addEventListener('click',()=>{
-            forms.innerHTML=``
+    }
+
+    function returningUser()
+    {
+      console.log("return")
+      forms.innerHTML=``
       document.querySelectorAll(".spacer")[1].style.display="block"
       document.querySelectorAll(".spacer")[2].style.display="block"
-      forms.innerHTML+=`<div class="content mt-5 ">
+      forms.innerHTML+=`
+      <div class="content mt-5 ">
       <input class="input" id="email" type="text" placeholder="Email ID / Username">
           <span class="border"></span>
      </div>
@@ -183,68 +192,71 @@ async function signIn()
        <input class="input" id="password" type="password" placeholder="Password">
          <span class="border"></span>
       </div>
-      <a class="btn btn-info mt-3" onclick="signIn()">Log In</a>
+      <div class="errorMessage mt-3 bg-danger theme">
+       <h5 class="error-message p-2"></h5>
+     </div> 
+      <a class="btn btn-info mt-3 signIn">Log In</a>
       <div class="forgotUser pt-3">
        <p class="">Forget Password? Reset your password</p>
-           <a class="btn btn-danger" onclick="newUser()">Reset</a>
+           <a class="btn btn-danger resetPassword" >Reset</a>
        </div>
      <div class="newUser pt-3">
           <p class="">New User? Sign Up</p>
-              <a class="btn btn-success" onclick="newUser()">SignUp</a>
-          </div> 
-          <div class="errorMessage mt-3 bg-danger theme">
-            <h5 class="error-message p-2"></h5>
-          </div>  `
-          })
-            
+              <a class="btn btn-success signUp" >SignUp</a>
+          </div>  
+          `
+          document.querySelector(".signIn").addEventListener("click",signIn)
+          document.querySelector(".signUp").addEventListener("click",newUser)
+          document.querySelector(".resetPassword").addEventListener("click",returningReset)
+      }
 
 
-
-    }
-
-   document.querySelector(".resetPassword").addEventListener('click',()=>{
-     console.log("reset")
-     forms.innerHTML=``
-      document.querySelectorAll(".spacer")[1].style.display="none"
-      document.querySelectorAll(".spacer")[2].style.display="none"
-      forms.innerHTML+=`<div class="content mt-5 ">
-      <input class="input" id="email" type="text" placeholder="Account Email ID">
-          <span class="border"></span>
-     </div>
-       <a class="btn btn-danger reset-password mt-3" >Send Reset Password link</a>
-       <div class="errorMessage mt-3 bg-danger theme">
-            <h5 class="error-message p-2"></h5>
-          </div> 
-     `
-
-      document.querySelector(".reset-password").addEventListener("click",()=>{
-        let email=document.querySelector('#email').value.trim()
-        console.log("reset",email)
-        let pt=firebase.auth().sendPasswordResetEmail(email)
-        pt.then(()=>{
-          let errorTxt = document.querySelector(".error-message")
-          errorTxt.innerHTML=`<p>Password Reset link had been sent to your Registered Email ID successfully</p>`;
-          let alertBox=document.querySelector(".errorMessage")
-          alertBox.style.display="block"
-          alertBox.classList.remove("bg-danger")
-          alertBox.classList.add("bg-success")
-          setTimeout(()=>{
-            console.log("time")
-            alertBox.style.display="none"
-          },2500)
-        })
-        pt.catch((error)=>{
-          let errorTxt = document.querySelector(".error-message")
-          errorTxt.innerHTML=`<p>${error.message}</p>`;
-          let alertBox=document.querySelector(".errorMessage")
-          alertBox.style.display="block"
-          setTimeout(()=>{
-            console.log("time")
-            alertBox.style.display="none"
-          },2500)
-        })
-
+    function resetPassword()
+    {
+      
+      let email=document.querySelector('#email').value.trim()
+      console.log("reset",email)
+      let pt=firebase.auth().sendPasswordResetEmail(email,
+        {url:'https://achivement-page.netlify.app/index.html',canHandleCodeInAp:false})
+      pt.then(()=>{
+        let errorTxt = document.querySelector(".error-message")
+        errorTxt.innerHTML=`<p>Password Reset link had been sent to your Registered Email ID successfully</p>`;
+        let alertBox=document.querySelector(".errorMessage")
+        alertBox.style.display="block"
+        alertBox.classList.remove("bg-danger")
+        alertBox.classList.add("bg-success")
+        setTimeout(()=>{
+          console.log("time")
+          alertBox.style.display="none"
+        },2500)
       })
+      pt.catch((error)=>{
+        let errorTxt = document.querySelector(".error-message")
+        console.log(error.code)
+        errorTxt.innerHTML=`<p>${authErrors[error.code]}</p>`;
+        let alertBox=document.querySelector(".errorMessage")
+        alertBox.classList.add("bg-danger")
+        alertBox.style.display="block"
+        setTimeout(()=>{
+          console.log("time")
+          alertBox.style.display="none"
+        },2500)
+      })
+    }
+       
+   function errHandler(error)
+   {
+    let errorMSg = error.message
+    let errorTxt = document.querySelector(".error-message")
+    errorTxt.innerHTML=`<p>${authErrors[error.code]}</p>`;
+    let alertBox=document.querySelector(".errorMessage")
+    alertBox.style.display="block"
+    setTimeout(()=>{
+      console.log("time")
+      alertBox.style.display="none"
+    },2500)
+    console.log(errorMSg)
+   }
 
-    //  
-   })
+
+   

@@ -30,9 +30,13 @@
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js" defer></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js" defer></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js" defer></script>
+<script src="./scripts/theme.js" defer></script>
+<script  src="./scripts/authError.js" defer type="module"></script>
+<script  src="./scripts/login.js" defer type="module"></script>
+<script  src="./scripts/font.js" defer></script>
 
-    <script  src="./scripts/login.js" defer></script>
-    <script src="./scripts/theme.js" defer></script>
+
+   
 
     <script type="module">
       import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
@@ -66,8 +70,10 @@
       </ul>
     </div>   
     <div class="user">
-    <a class="btn login text-secondary font-weight-bold mt-2" href="./login.html">Log in</a>
-  </div>
+      <a class="btn font-increase font text-secondary font-weight-bold mt-2 " >+</a>
+      <a class="btn font-normal  font text-secondary font-weight-bold mt-2">A</a>
+      <a class="btn font-decrease  font text-secondary font-weight-bold mt-2 mr-5">-</a>
+      <a class="btn login text-secondary font-weight-bold mt-2" href="./login.html">Log in</a>  </div>
   </nav>
     <div class="spacer"></div>
     <div class="spacer"></div>
@@ -83,19 +89,83 @@
           <input class="input" id="password" type="password" placeholder="Password">
             <span class="border"></span>
          </div>
-         <a class="btn btn-info mt-3" onclick="signIn()">Log In</a>
+         <div class="errorMessage mt-3 bg-danger theme">
+          <h5 class="error-message p-2"></h5>
+        </div> 
+         <a class="btn btn-info mt-3 signIn">Log In</a>
          <div class="forgotUser pt-3">
           <p class="">Forget Password? Reset your password</p>
               <a class="btn btn-danger resetPassword" >Reset</a>
           </div>
         <div class="newUser pt-3">
              <p class="">New User? Sign Up</p>
-                 <a class="btn btn-success" onclick="newUser()">SignUp</a>
+                 <a class="btn btn-success signUp" >SignUp</a>
              </div> 
-             <div class="errorMessage mt-3 bg-danger theme">
-               <h5 class="error-message p-2"></h5>
-             </div>    
+                
     </div>
+<div class="spacer"></div>
+<footer class="text-center text-white fixed" style="background-color: #222222;  color :aliceblue !important;">
+  <!-- Grid container -->
+  <div class="container ">
+    <!-- Section: Social media -->
+    <section class="">
+      <!-- Facebook -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-light m-1"
+        href="https://www.facebook.com/debashis.developer/"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-facebook-f"></i
+      ></a>
+
+      <!-- Twitter -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-light m-1"
+        href="https://twitter.com/debashisde90"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-twitter"></i
+      ></a>
+
+            
+      <!-- Instagram -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-light m-1"
+        href="https://www.instagram.com/debashis9051/"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-instagram"></i
+      ></a>
+
+      <!-- Linkedin -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-light m-1"
+        href="https://www.linkedin.com/in/debasish-debnath-ba11a29b/"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-linkedin"></i
+      ></a>
+      <!-- Github -->
+      <a
+        class="btn btn-link btn-floating btn-lg text-light m-1"
+        href="https://github.com/debasis9051"
+        role="button"
+        data-mdb-ripple-color="dark"
+        ><i class="fab fa-github"></i
+      ></a>
+    </section>
+    <!-- Section: Social media -->
+  </div>
+  <!-- Grid container -->
+
+  <!-- Copyright -->
+  <div class="text-center text-light p-2" style="background-color: rgba(0, 0, 0, 0.2); ">
+    © 2020 Copyright:
+    <a class="text-light" href="https://achivement-page.netlify.app/">Achivement Page</a>
+  </div>
+  <!-- Copyright -->
+</footer>
+    </body>
 
 
      
