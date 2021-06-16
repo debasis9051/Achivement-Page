@@ -19,6 +19,7 @@ var firebaseConfig = {
     storageBucket: "achievement-page.appspot.com",
     messagingSenderId: "776120110700",
     appId: "1:776120110700:web:751039064e94ba9bac5249",
+    clientId :"776120110700-7r7fpn892e6cnspibpigeuigbsrr2qf3.apps.googleusercontent.com",
     measurementId: "G-MCLZLBCH1Y"
   };
   // Initialize Firebase
@@ -33,6 +34,8 @@ var firebaseConfig = {
   document.querySelector(".signIn").addEventListener("click",signIn)
   document.querySelector(".signUp").addEventListener("click",newUser)
   document.querySelector(".resetPassword").addEventListener('click',returningReset)
+  document.querySelector(".googleAuth").addEventListener("click",googleAuth)
+
 
 // Authorization flow
 let userState = localStorage.getItem("UserSignedIn");
@@ -196,6 +199,14 @@ async function signIn()
        <h5 class="error-message p-2"></h5>
      </div> 
       <a class="btn btn-info mt-3 signIn">Log In</a>
+      <div class="additionalLogin">
+      <div class="google-btn theme mt-3 googleAuth">
+       <div class="google-icon-wrapper">
+         <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+       </div>
+       <p class="btn-text"><b>Sign in with Google</b></p>
+     </div>
+    </div>
       <div class="forgotUser pt-3">
        <p class="">Forget Password? Reset your password</p>
            <a class="btn btn-danger resetPassword" >Reset</a>
@@ -208,8 +219,24 @@ async function signIn()
           document.querySelector(".signIn").addEventListener("click",signIn)
           document.querySelector(".signUp").addEventListener("click",newUser)
           document.querySelector(".resetPassword").addEventListener("click",returningReset)
+          document.querySelector(".googleAuth").addEventListener("click",googleAuth)
+
       }
 
+      function googleAuth()
+      {
+        var googleProvider = new firebase.auth.GoogleAuthProvider();
+        googleProvider.addScope('profile');
+        googleProvider.addScope('email');
+        firebase.auth().useDeviceLanguage();
+        firebase.auth().signInWithPopup(googleProvider)
+        .then((result) => {
+          var user = result.user;
+          console.log(user);
+        }).catch((error) => {
+          errHandler(error)
+        });
+      }
 
     function resetPassword()
     {
@@ -254,9 +281,12 @@ async function signIn()
     setTimeout(()=>{
       console.log("time")
       alertBox.style.display="none"
-    },2500)
+    },4500)
     console.log(errorMSg)
    }
 
-
    
+
+
+
+

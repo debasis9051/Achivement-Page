@@ -1,6 +1,6 @@
 Auth()
-    from logout login form, done
-    add google , phn number Auth
+    from logout login form, -- done
+    add google  Auth -- done
     add safetycheck to database
     forget password-> for email done
 
@@ -19,7 +19,11 @@ optimize sigin / signup error messages ------done
 optimize fallthroughs in log in / sign up funnels  -- done
 
 
-add accessibility and footer
+add accessibility and footer  -- done
 
 
 firebase api -> envirmoent variable and minify
+
+update student  --> prefill form  -- done
+
+try redisigning student profiles

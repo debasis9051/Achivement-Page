@@ -17,7 +17,7 @@ self.addEventListener("message", (event) => {
 workbox.routing.registerRoute(
   ({url}) => url.pathname.startsWith('/student-db/'),
   new workbox.strategies.NetworkFirst({
-    cacheName: HTML_CACHE,
+    cacheName: "STUDENT_CACHE",
     plugins: [
       new workbox.expiration.ExpirationPlugin({
         maxEntries: 10,

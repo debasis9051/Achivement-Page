@@ -34,6 +34,8 @@
 <script  src="./scripts/authError.js" defer type="module"></script>
 <script  src="./scripts/login.js" defer type="module"></script>
 <script  src="./scripts/font.js" defer></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 
 
    
@@ -93,6 +95,14 @@
           <h5 class="error-message p-2"></h5>
         </div> 
          <a class="btn btn-info mt-3 signIn">Log In</a>
+         <div class="additionalLogin">
+           <div class="google-btn theme mt-3 googleAuth">
+            <div class="google-icon-wrapper">
+              <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+            </div>
+            <p class="btn-text"><b>Sign in with Google</b></p>
+          </div>
+         </div>
          <div class="forgotUser pt-3">
           <p class="">Forget Password? Reset your password</p>
               <a class="btn btn-danger resetPassword" >Reset</a>
@@ -103,6 +113,9 @@
              </div> 
                 
     </div>
+
+ 
+
 <div class="spacer"></div>
 <footer class="text-center text-white fixed" style="background-color: #222222;  color :aliceblue !important;">
   <!-- Grid container -->

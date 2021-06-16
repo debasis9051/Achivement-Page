@@ -448,7 +448,12 @@ function modify(students,uid)
   {
     console.log(i)
     document.querySelectorAll(".edit")[i].addEventListener("click",(clicked)=>{
-      console.log("clicked")
+      let stu=clicked.target.id.trim()
+      let stuEdit = studentDatabase[stu]
+      window.localStorage.setItem('currentStudentEdit', JSON.stringify(stuEdit));
+      let studenttoEdit = JSON.parse(window.localStorage.getItem('currentStudentEdit'))
+
+      console.log("clicked",studenttoEdit)
       modalDraw
       (
         `   <h4 class="text-success">
@@ -459,31 +464,31 @@ function modify(students,uid)
                <span aria-hidden="true">&times;</span>
             </button>`,
 
-      `   <div class="form-row mt-3 ">
-            <div class="form-group col-md-6 upload ">
-                    <button class="btn btn-outline-warning btn-block  file  " id="photoButton"><i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidte Photo </button>
-                    <input type="file" class="form-control-file file-upload  " id="photo" accept=".png,.jpg">
-            </div>
-            <div class="form-group col">
-              <input type="text" class="form-control" data-update="last-name" placeholder="Last Name">
-            </div>
-          </div>   
-          <div class="form-row mt-3 ">
-            <div class="form-group col">
-              <input type="text" class="form-control" data-update="company" placeholder="Company">
-            </div>
-            <div class="form-group col">
-              <input type="text" class="form-control" data-update="package" placeholder="Annual Package">
-            </div>
-          </div>   
-          <div class="form-row mt-3 ">
-            <div class="form-group col">
-              <input type="text" class="form-control" data-update="stream" placeholder="Stream">
-            </div>
-            <div class="form-group col">
-              <input type="text" class="form-control" data-update="year" placeholder="Year">
-            </div>
-          </div>`,
+      `      <div class="form-row mt-3 ">
+      <div class="form-group col-md-6 upload ">
+              <button class="btn btn-outline-warning btn-block  file  " id="photoButton"><i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidte Photo </button>
+              <input type="file" class="form-control-file file-upload  " id="photo" accept=".png,.jpg">
+      </div>
+      <div class="form-group col">
+        <input type="text" class="form-control" data-update="last-name" placeholder="Last Name" value="${studenttoEdit["Lastname"]}">
+      </div>
+    </div>   
+    <div class="form-row mt-3 ">
+      <div class="form-group col">
+        <input type="text" class="form-control" data-update="company" placeholder="Company" value="${studenttoEdit["Company"]}">
+      </div>
+      <div class="form-group col">
+        <input type="text" class="form-control" data-update="package" placeholder="Annual Package" value="${studenttoEdit["AnnualPackage"]}">
+      </div>
+    </div>   
+    <div class="form-row mt-3 ">
+      <div class="form-group col">
+        <input type="text" class="form-control" data-update="stream" placeholder="Stream" value="${studenttoEdit["Stream"]}">
+      </div>
+      <div class="form-group col">
+        <input type="text" class="form-control" data-update="year" placeholder="Year" value="${studenttoEdit["Year"]}">
+      </div>
+    </div>`,
 
         ` <button class="btn btn-success updateDb" >Update</button>
           <button class="btn btn-danger"  data-dismiss="modal">Cancel</button> 
@@ -505,10 +510,11 @@ function modify(students,uid)
       )
   
       document.querySelector(".updateDb").addEventListener("click",pushUpdates)
-
+        console.log(studentDatabase["sanjukta"])
             function pushUpdates()
             {      
-              let stu=clicked.target.id.trim()
+            
+           
               let studentsRef = firebase.database().ref(`Users/${userUid}/Students/${stu}`)
 
               // let firstName=document.querySelectorAll('[data-update="first-name"]')[0].value
@@ -525,6 +531,8 @@ function modify(students,uid)
               if(year) { updateStudent.Year =year.trim()}
               if(package){ updateStudent.AnnualPackage = package.trim()}
               if(company) { updateStudent.Company =company.trim()}
+
+              console.log(JSON.parse(window.localStorage.getItem('currentStudentEdit')));
 
 
               if(Object.keys(updateStudent).length!=0)
