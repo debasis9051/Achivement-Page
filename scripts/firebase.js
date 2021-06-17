@@ -35,7 +35,7 @@ var firebaseConfig = {
   {
     console.log("true",userState)
     let login=document.querySelector('.login')
-      login.innerHTML="Log Out"
+      login.innerHTML=`<i class="fas fa-sign-out-alt mr-2"></i> Log Out`
       login.href="/student-db.html"
   }
   else
@@ -55,7 +55,7 @@ var firebaseConfig = {
       window.localStorage.setItem('UserUid', user.uid);
       let login=document.querySelector('.login')
       login.href="#"
-      login.innerHTML="Log Out"
+      login.innerHTML=`<i class="fas fa-sign-out-alt mr-2"></i> Log Out`
       login.onclick = ()=>
       {
         console.log("hi")
@@ -98,8 +98,9 @@ function displayData()
   let acEmail=document.querySelector('.accountEmail'); 
   firebase.auth().onAuthStateChanged(function(user) {
     console.log("before DB")
-    acEmail.innerHTML=`Account Email ID : ${user.email}`;
-    acName.innerHTML=`Account Name : ${user.displayName}`;
+    acEmail.innerHTML=`<i class="fas fa-envelope mr-1"></i> Account Email ID : ${user.email}`;
+    acName.innerHTML=`<i class="fas fa-user-circle mr-1"></i>
+    Account Name : ${user.displayName}`;
     acData.style.display="block"
     let pt = firebase.database().ref(`Users/${user.uid}`).get(`Students`)
     pt.then((value)=>{value.forEach((values)=>{

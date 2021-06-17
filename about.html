@@ -40,11 +40,12 @@
   {
     console.log("true",userState)
     let login=document.querySelector('.login')
-      login.innerHTML="Student Database"
+      login.innerHTML=`<i class="fas fa-database mr-1"></i>Student Database`
       login.href="/student-db.html"
       document.querySelector(".user").innerHTML+=
-      `<a class="btn logout text-secondary font-weight-bold mt-2 ml-3">Log Out</a>`
+      `<a class="btn logout text-secondary font-weight-bold mt-2 ml-3"><i class="fas fa-sign-out-alt mr-2"></i>Log Out</a>`
   }
+
   else
   {
     console.log("false",userState)

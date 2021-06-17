@@ -522,3 +522,14 @@
 .google-btn:active {
   background: #1669f2;
 }
+
+.navbar-brand
+{
+  margin-bottom: 7px;
+}
+
+.navbar>.custom-switch
+{
+  margin-bottom: 7px;
+
+}

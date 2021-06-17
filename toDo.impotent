@@ -4,9 +4,9 @@ Auth()
     add safetycheck to database
     forget password-> for email done
 
-form color changes and font colour 
+form color changes and font colour -- done
 
-add icons
+add icons -- done 
 
 try to ship with webpack
 

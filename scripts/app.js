@@ -35,10 +35,10 @@
   {
     console.log("true",userState)
     let login=document.querySelector('.login')
-      login.innerHTML="Student Database"
+      login.innerHTML=`<i class="fas fa-database mr-1"></i>Student Database`
       login.href="/student-db.html"
       document.querySelector(".user").innerHTML+=
-      `<a class="btn logout text-secondary font-weight-bold mt-2 ml-3" onclick="logOut()">Log Out</a>`
+      `<a class="btn logout text-secondary font-weight-bold mt-2 ml-3" onclick="logOut()"> <i class="fas fa-sign-out-alt mr-2"></i>Log Out</a>`
   }
   else
   {
@@ -53,7 +53,8 @@
       window.localStorage.setItem('UserSignedIn', true);
       window.localStorage.setItem('UserUid', user.uid);
       let login=document.querySelector('.login')
-      login.innerHTML="Student Database"
+      login.innerHTML=`<i class="fas fa-database mr-1"></i>
+      Student Database`
       login.href="/student-db.html"
       console.log(user.email)
        

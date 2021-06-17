@@ -43,7 +43,7 @@ if(userState=="true")
 {
   console.log("true",userState)
   let login=document.querySelector('.login')
-    login.innerHTML="Log Out"
+    login.innerHTML=`<i class="fas fa-sign-out-alt mr-2"></i>Log Out`
     login.href="/student-db.html"
 }
 else
@@ -135,7 +135,7 @@ async function signIn()
       <input class="input" id="email" type="text" placeholder="Account Email ID">
           <span class="border"></span>
      </div>
-       <a class="btn btn-danger reset-password mt-3" >Send Reset Password link</a>
+       <a class="btn btn-danger reset-password mt-3" style="color :#222222; font-weight:bold;" ><i class="fas fa-link mr-2"></i>Send Reset Password link</a>
        <div class="errorMessage mt-3 bg-danger theme">
             <h5 class="error-message p-2"></h5>
           </div> 
@@ -165,10 +165,10 @@ async function signIn()
        <input class="input" id="password" type="password" placeholder="Password">
          <span class="border"></span>
       </div>
-      <a class="btn btn-info mt-3 signUp">Sign Up</a>
+      <a class="btn btn-info mt-3 signUp" style="color :#222222; font-weight:bold;"> <i class="fas fa-user-plus mr-2"></i>      Sign Up</a>
      <div class="newUser pt-3">
           <h5>Returning User? Log In</h3>
-              <a class="btn btn-success returnUser">LogIn</a>
+              <a class="btn btn-success returnUser" style="color :#222222; font-weight:bold;"> <i class="fas fa-sign-in-alt mr-2"></i>  LogIn</a>
           </div> 
           <div class="errorMessage mt-3 bg-danger theme">
             <h5 class="error-message p-2"></h5>
@@ -198,23 +198,25 @@ async function signIn()
       <div class="errorMessage mt-3 bg-danger theme">
        <h5 class="error-message p-2"></h5>
      </div> 
-      <a class="btn btn-info mt-3 signIn">Log In</a>
+      <a class="btn btn-info mt-3 signIn" style="color :#222222; font-weight:bold;"> <i class="fas fa-sign-in-alt mr-2"></i>
+      Log In</a>
       <div class="additionalLogin">
-      <div class="google-btn theme mt-3 googleAuth">
-       <div class="google-icon-wrapper">
-         <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+        <div class="google-btn theme mt-3 googleAuth">
+         <div class="google-icon-wrapper">
+           <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+         </div>
+         <p class="btn-text"><b>Sign in with Google</b></p>
        </div>
-       <p class="btn-text"><b>Sign in with Google</b></p>
-     </div>
-    </div>
+      </div>
       <div class="forgotUser pt-3">
        <p class="">Forget Password? Reset your password</p>
-           <a class="btn btn-danger resetPassword" >Reset</a>
+           <a class="btn btn-danger resetPassword" style="color :#222222; font-weight:bold;" > <i class="fas fa-trash-restore mr-2"></i>
+             Reset</a>
        </div>
      <div class="newUser pt-3">
           <p class="">New User? Sign Up</p>
-              <a class="btn btn-success signUp" >SignUp</a>
-          </div>  
+              <a class="btn btn-success signUp" style="color :#222222; font-weight:bold;" > <i class="fas fa-user-plus mr-2"></i>                  SignUp</a>
+          </div> 
           `
           document.querySelector(".signIn").addEventListener("click",signIn)
           document.querySelector(".signUp").addEventListener("click",newUser)
