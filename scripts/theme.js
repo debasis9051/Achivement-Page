@@ -1,34 +1,3 @@
-//Theme
- let themeTogg=document.getElementById('theme')
- let themeCheck=document.querySelector('.theme-text')
- let currtheme = localStorage.getItem("ThemeChoice");
- if(!currtheme)
- {
-  window.localStorage.setItem('ThemeChoice',  "dark");
- }
-document.querySelector('#themeToggele').addEventListener('click',()=>{
-  if(themeTogg.href==="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css")
-  {
-   themeTogg.href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css"
-  //  themeCheck.innerText="Switch to Dark mode"
-   window.localStorage.setItem('UserTheme',  themeTogg.href);
-   window.localStorage.setItem('ThemeChoice',  "light");
-
-
-  }
-  else{
-    themeTogg.href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"
-    // themeCheck.innerText="Switch to Light mode"
-    window.localStorage.setItem('UserTheme',  themeTogg.href);
-    window.localStorage.setItem('ThemeChoice',  "dark");
-
-
-  }
-})
-    
-console.log("theme",currtheme)
-
-if(currtheme=="dark")
-     themeCheck.innerText="Switch to Light mode"
-else
-    themeCheck.innerText="Switch to Dark mode"
+var themeTogg=document.getElementById("theme"),themeCheck=document.querySelector(".theme-text"),currtheme=localStorage.getItem("ThemeChoice");currtheme||window.localStorage.setItem("ThemeChoice","dark");
+document.querySelector("#themeToggele").addEventListener("click",function(){"https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css"===themeTogg.href?(themeTogg.href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/sketchy/bootstrap.min.css",window.localStorage.setItem("UserTheme",themeTogg.href),window.localStorage.setItem("ThemeChoice","light")):(themeTogg.href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/darkly/bootstrap.min.css",window.localStorage.setItem("UserTheme",
+themeTogg.href),window.localStorage.setItem("ThemeChoice","dark"))});console.log("theme",currtheme);themeCheck.innerText="dark"==currtheme?"Switch to Light mode":"Switch to Dark mode";

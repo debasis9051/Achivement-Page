@@ -1,294 +1,78 @@
-import {authErrors} from './errorCodes.js'
-
-setInterval(()=>{
-  let userState = localStorage.getItem("UserSignedIn");
-  console.log(userState)
-  if(userState=="true")
-{
-  setTimeout(()=>{
-    window.location="/index.html"
-  },1300)
-}
-},300)
-
-var firebaseConfig = {
-    apiKey: "AIzaSyCioJHhlLepp9vwUzatt4p4t8yitJ1oMMM",
-    authDomain: "achievement-page.firebaseapp.com",
-    databaseURL : "https://achievement-page-default-rtdb.firebaseio.com",
-    projectId: "achievement-page",
-    storageBucket: "achievement-page.appspot.com",
-    messagingSenderId: "776120110700",
-    appId: "1:776120110700:web:751039064e94ba9bac5249",
-    clientId :"776120110700-7r7fpn892e6cnspibpigeuigbsrr2qf3.apps.googleusercontent.com",
-    measurementId: "G-MCLZLBCH1Y"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-      //theme
-  let themeChoice = localStorage.getItem("UserTheme");
-  let theme=document.getElementById('theme')
-  if (themeChoice)
-  theme.href=themeChoice;
-
-  document.querySelector(".signIn").addEventListener("click",signIn)
-  document.querySelector(".signUp").addEventListener("click",newUser)
-  document.querySelector(".resetPassword").addEventListener('click',returningReset)
-  document.querySelector(".googleAuth").addEventListener("click",googleAuth)
-
-
-// Authorization flow
-let userState = localStorage.getItem("UserSignedIn");
-if(userState=="true")
-{
-  console.log("true",userState)
-  let login=document.querySelector('.login')
-    login.innerHTML=`<i class="fas fa-sign-out-alt mr-2"></i>Log Out`
-    login.href="/student-db.html"
-}
-else
-{
-  console.log("false",userState)
-  let login=document.querySelector('.login')
-  login.innerHTML="Log In"
-  login.href="/login.html"
-}
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) 
-    {
-        window.localStorage.setItem('UserSignedIn', true);
-        window.localStorage.setItem('UserUid', user.uid);
-      let login=document.querySelector('.login')
-      login.innerHTML="Student Database"
-      login.href="/student-db.html"
-      console.log(user.email)
-       
-    } else
-    {
-        window.localStorage.setItem('UserSignedIn', false);
-      let login=document.querySelector('.login')
-      login.innerHTML="Log In"
-      login.href="/login.html"
-      console.log("not")
-    }
-  });
-// Account ui
- async function  signUp()
-{
-  let email=document.querySelector('#email').value
-  let password =document.querySelector('#password').value 
-  let firstName =document.querySelector('#fname').value
-  let lastName =document.querySelector('#lname').value 
-  if(!firstName && !lastName)
-  {
-    console.log("non")
-    let alertBox=document.querySelector(".errorMessage")
-    let errorTxt = document.querySelector(".error-message")
-    errorTxt.innerHTML+=`<p>Please Enter your name</p>`;
-      alertBox.style.display="block"
-      setTimeout(()=>{
-        console.log("time")
-        errorTxt.innerHTML=``
-        alertBox.style.display="none"
-      },2500)
-      throw {}
-  }
-  try{
-    let pt = await firebase.auth().createUserWithEmailAndPassword(email, password)
-    console.log(`Name : ${firstName} ${lastName}`)
-    pt.user.updateProfile({displayName: `${firstName} ${lastName}` })
-    let alertBox=document.querySelector(".errorMessage")
-    let errorTxt = document.querySelector(".error-message")
-    errorTxt.innerHTML+=`<p><i class="fas fa-spinner mr-2"></i>    Creating User Account</p>`;
-      alertBox.style.display="block"
-
-  }
-  catch(error)
-  {
-    errHandler(error)
-    }
-}
-async function signIn()
-{
-    console.log("fdd")
-  try{
-    let email=document.querySelector('#email').value.trim()
-    let password =document.querySelector('#password').value.trim()
-    let user= await firebase.auth().signInWithEmailAndPassword(email, password)
-    window.location.href="/index.html"
-     console.log(user.user.uid)
-  }
-  catch(error)
-  {
-    errHandler(error)
-    }
-}
-    let forms=document.querySelector(".formFeilds")
-    function returningReset()
-    {
-      console.log("return reset")
-      forms.innerHTML=``
-      document.querySelectorAll(".spacer")[1].style.display="none"
-      document.querySelectorAll(".spacer")[2].style.display="none"
-      forms.innerHTML+=`
-      <div class="content mt-5 ">
-      <input class="input" id="email" type="text" placeholder="Account Email ID">
-          <span class="border"></span>
-     </div>
-       <a class="btn btn-danger reset-password mt-3" style="color :#222222; font-weight:bold;" ><i class="fas fa-link mr-2"></i>Send Reset Password link</a>
-       <div class="errorMessage mt-3 bg-danger theme">
-            <h5 class="error-message p-2"></h5>
-          </div> 
-     `
-      document.querySelector(".reset-password").addEventListener("click",resetPassword)
-    }
-    function newUser()
-    {
-      console.log("new user")
-      forms.innerHTML=``
-      document.querySelectorAll(".spacer")[1].style.display="none"
-      document.querySelectorAll(".spacer")[2].style.display="none"
-      forms.innerHTML+=`
-      <div class="content mt-5 ">
-      <input class="input" id="fname" type="text" placeholder="First Name">
-          <span class="border"></span>
-     </div>
-     <div class="content mt-5 ">
-      <input class="input" id="lname" type="text" placeholder="Last Name">
-          <span class="border"></span>
-     </div>
-     <div class="content mt-5 ">
-      <input class="input" id="email" type="text" placeholder="Email ID">
-          <span class="border"></span>
-     </div>
-      <div class="content mt-5">
-       <input class="input" id="password" type="password" placeholder="Password">
-         <span class="border"></span>
-      </div>
-      <a class="btn btn-info mt-3 signUp" style="color :#222222; font-weight:bold;"> <i class="fas fa-user-plus mr-2"></i>      Sign Up</a>
-     <div class="newUser pt-3">
-          <h5>Returning User? Log In</h3>
-              <a class="btn btn-success returnUser" style="color :#222222; font-weight:bold;"> <i class="fas fa-sign-in-alt mr-2"></i>  LogIn</a>
-          </div> 
-          <div class="errorMessage mt-3 bg-danger theme">
-            <h5 class="error-message p-2"></h5>
-          </div> 
-          `
-            console.log(forms)
-            document.querySelector(".returnUser").addEventListener('click',returningUser)
-            document.querySelector(".signUp").addEventListener("click",signUp)
-
-    }
-
-    function returningUser()
-    {
-      console.log("return")
-      forms.innerHTML=``
-      document.querySelectorAll(".spacer")[1].style.display="block"
-      document.querySelectorAll(".spacer")[2].style.display="block"
-      forms.innerHTML+=`
-      <div class="content mt-5 ">
-      <input class="input" id="email" type="text" placeholder="Email ID / Username">
-          <span class="border"></span>
-     </div>
-      <div class="content mt-5">
-       <input class="input" id="password" type="password" placeholder="Password">
-         <span class="border"></span>
-      </div>
-      <div class="errorMessage mt-3 bg-danger theme">
-       <h5 class="error-message p-2"></h5>
-     </div> 
-      <a class="btn btn-info mt-3 signIn" style="color :#222222; font-weight:bold;"> <i class="fas fa-sign-in-alt mr-2"></i>
-      Log In</a>
-      <div class="additionalLogin">
-        <div class="google-btn theme mt-3 googleAuth">
-         <div class="google-icon-wrapper">
-           <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
-         </div>
-         <p class="btn-text"><b>Sign in with Google</b></p>
-       </div>
-      </div>
-      <div class="forgotUser pt-3">
-       <p class="">Forget Password? Reset your password</p>
-           <a class="btn btn-danger resetPassword" style="color :#222222; font-weight:bold;" > <i class="fas fa-trash-restore mr-2"></i>
-             Reset</a>
-       </div>
-     <div class="newUser pt-3">
-          <p class="">New User? Sign Up</p>
-              <a class="btn btn-success signUp" style="color :#222222; font-weight:bold;" > <i class="fas fa-user-plus mr-2"></i>                  SignUp</a>
-          </div> 
-          `
-          document.querySelector(".signIn").addEventListener("click",signIn)
-          document.querySelector(".signUp").addEventListener("click",newUser)
-          document.querySelector(".resetPassword").addEventListener("click",returningReset)
-          document.querySelector(".googleAuth").addEventListener("click",googleAuth)
-
-      }
-
-      function googleAuth()
-      {
-        var googleProvider = new firebase.auth.GoogleAuthProvider();
-        googleProvider.addScope('profile');
-        googleProvider.addScope('email');
-        firebase.auth().useDeviceLanguage();
-        firebase.auth().signInWithPopup(googleProvider)
-        .then((result) => {
-          var user = result.user;
-          console.log(user);
-        }).catch((error) => {
-          errHandler(error)
-        });
-      }
-
-    function resetPassword()
-    {
-      
-      let email=document.querySelector('#email').value.trim()
-      console.log("reset",email)
-      let pt=firebase.auth().sendPasswordResetEmail(email,
-        {url:'https://achivement-page.netlify.app/index.html',canHandleCodeInAp:false})
-      pt.then(()=>{
-        let errorTxt = document.querySelector(".error-message")
-        errorTxt.innerHTML=`<p>Password Reset link had been sent to your Registered Email ID successfully</p>`;
-        let alertBox=document.querySelector(".errorMessage")
-        alertBox.style.display="block"
-        alertBox.classList.remove("bg-danger")
-        alertBox.classList.add("bg-success")
-        setTimeout(()=>{
-          console.log("time")
-          alertBox.style.display="none"
-        },2500)
-      })
-      pt.catch((error)=>{
-        let errorTxt = document.querySelector(".error-message")
-        console.log(error.code)
-        errorTxt.innerHTML=`<p>${authErrors[error.code]}</p>`;
-        let alertBox=document.querySelector(".errorMessage")
-        alertBox.classList.add("bg-danger")
-        alertBox.style.display="block"
-        setTimeout(()=>{
-          console.log("time")
-          alertBox.style.display="none"
-        },2500)
-      })
-    }
-       
-   function errHandler(error)
-   {
-    let errorMSg = error.message
-    let errorTxt = document.querySelector(".error-message")
-    errorTxt.innerHTML=`<p>${authErrors[error.code]}</p>`;
-    let alertBox=document.querySelector(".errorMessage")
-    alertBox.style.display="block"
-    setTimeout(()=>{
-      console.log("time")
-      alertBox.style.display="none"
-    },5500)
-    console.log(errorMSg)
-   }
-
-   
-
-
-
-
+var $jscomp=$jscomp||{};$jscomp.scope={};$jscomp.createTemplateTagFirstArg=function(a){return a.raw=a};$jscomp.createTemplateTagFirstArgWithRaw=function(a,b){a.raw=b;return a};$jscomp.ASSUME_ES5=!1;$jscomp.ASSUME_NO_NATIVE_MAP=!1;$jscomp.ASSUME_NO_NATIVE_SET=!1;$jscomp.SIMPLE_FROUND_POLYFILL=!1;$jscomp.ISOLATE_POLYFILLS=!1;$jscomp.FORCE_POLYFILL_PROMISE=!1;$jscomp.FORCE_POLYFILL_PROMISE_WHEN_NO_UNHANDLED_REJECTION=!1;
+$jscomp.defineProperty=$jscomp.ASSUME_ES5||"function"==typeof Object.defineProperties?Object.defineProperty:function(a,b,d){if(a==Array.prototype||a==Object.prototype)return a;a[b]=d.value;return a};$jscomp.getGlobal=function(a){a=["object"==typeof globalThis&&globalThis,a,"object"==typeof window&&window,"object"==typeof self&&self,"object"==typeof global&&global];for(var b=0;b<a.length;++b){var d=a[b];if(d&&d.Math==Math)return d}throw Error("Cannot find global object");};$jscomp.global=$jscomp.getGlobal(this);
+$jscomp.IS_SYMBOL_NATIVE="function"===typeof Symbol&&"symbol"===typeof Symbol("x");$jscomp.TRUST_ES6_POLYFILLS=!$jscomp.ISOLATE_POLYFILLS||$jscomp.IS_SYMBOL_NATIVE;$jscomp.polyfills={};$jscomp.propertyToPolyfillSymbol={};$jscomp.POLYFILL_PREFIX="$jscp$";var $jscomp$lookupPolyfilledValue=function(a,b){var d=$jscomp.propertyToPolyfillSymbol[b];if(null==d)return a[b];d=a[d];return void 0!==d?d:a[b]};
+$jscomp.polyfill=function(a,b,d,f){b&&($jscomp.ISOLATE_POLYFILLS?$jscomp.polyfillIsolated(a,b,d,f):$jscomp.polyfillUnisolated(a,b,d,f))};$jscomp.polyfillUnisolated=function(a,b,d,f){d=$jscomp.global;a=a.split(".");for(f=0;f<a.length-1;f++){var e=a[f];if(!(e in d))return;d=d[e]}a=a[a.length-1];f=d[a];b=b(f);b!=f&&null!=b&&$jscomp.defineProperty(d,a,{configurable:!0,writable:!0,value:b})};
+$jscomp.polyfillIsolated=function(a,b,d,f){var e=a.split(".");a=1===e.length;f=e[0];f=!a&&f in $jscomp.polyfills?$jscomp.polyfills:$jscomp.global;for(var l=0;l<e.length-1;l++){var c=e[l];if(!(c in f))return;f=f[c]}e=e[e.length-1];d=$jscomp.IS_SYMBOL_NATIVE&&"es6"===d?f[e]:null;b=b(d);null!=b&&(a?$jscomp.defineProperty($jscomp.polyfills,e,{configurable:!0,writable:!0,value:b}):b!==d&&(void 0===$jscomp.propertyToPolyfillSymbol[e]&&(d=1E9*Math.random()>>>0,$jscomp.propertyToPolyfillSymbol[e]=$jscomp.IS_SYMBOL_NATIVE?
+$jscomp.global.Symbol(e):$jscomp.POLYFILL_PREFIX+d+"$"+e),$jscomp.defineProperty(f,$jscomp.propertyToPolyfillSymbol[e],{configurable:!0,writable:!0,value:b})))};$jscomp.underscoreProtoCanBeSet=function(){var a={a:!0},b={};try{return b.__proto__=a,b.a}catch(d){}return!1};
+$jscomp.setPrototypeOf=$jscomp.TRUST_ES6_POLYFILLS&&"function"==typeof Object.setPrototypeOf?Object.setPrototypeOf:$jscomp.underscoreProtoCanBeSet()?function(a,b){a.__proto__=b;if(a.__proto__!==b)throw new TypeError(a+" is not extensible");return a}:null;$jscomp.arrayIteratorImpl=function(a){var b=0;return function(){return b<a.length?{done:!1,value:a[b++]}:{done:!0}}};$jscomp.arrayIterator=function(a){return{next:$jscomp.arrayIteratorImpl(a)}};
+$jscomp.makeIterator=function(a){var b="undefined"!=typeof Symbol&&Symbol.iterator&&a[Symbol.iterator];return b?b.call(a):$jscomp.arrayIterator(a)};$jscomp.generator={};$jscomp.generator.ensureIteratorResultIsObject_=function(a){if(!(a instanceof Object))throw new TypeError("Iterator result "+a+" is not an object");};
+$jscomp.generator.Context=function(){this.isRunning_=!1;this.yieldAllIterator_=null;this.yieldResult=void 0;this.nextAddress=1;this.finallyAddress_=this.catchAddress_=0;this.finallyContexts_=this.abruptCompletion_=null};$jscomp.generator.Context.prototype.start_=function(){if(this.isRunning_)throw new TypeError("Generator is already running");this.isRunning_=!0};$jscomp.generator.Context.prototype.stop_=function(){this.isRunning_=!1};
+$jscomp.generator.Context.prototype.jumpToErrorHandler_=function(){this.nextAddress=this.catchAddress_||this.finallyAddress_};$jscomp.generator.Context.prototype.next_=function(a){this.yieldResult=a};$jscomp.generator.Context.prototype.throw_=function(a){this.abruptCompletion_={exception:a,isException:!0};this.jumpToErrorHandler_()};$jscomp.generator.Context.prototype.return=function(a){this.abruptCompletion_={return:a};this.nextAddress=this.finallyAddress_};
+$jscomp.generator.Context.prototype.jumpThroughFinallyBlocks=function(a){this.abruptCompletion_={jumpTo:a};this.nextAddress=this.finallyAddress_};$jscomp.generator.Context.prototype.yield=function(a,b){this.nextAddress=b;return{value:a}};$jscomp.generator.Context.prototype.yieldAll=function(a,b){a=$jscomp.makeIterator(a);var d=a.next();$jscomp.generator.ensureIteratorResultIsObject_(d);if(d.done)this.yieldResult=d.value,this.nextAddress=b;else return this.yieldAllIterator_=a,this.yield(d.value,b)};
+$jscomp.generator.Context.prototype.jumpTo=function(a){this.nextAddress=a};$jscomp.generator.Context.prototype.jumpToEnd=function(){this.nextAddress=0};$jscomp.generator.Context.prototype.setCatchFinallyBlocks=function(a,b){this.catchAddress_=a;void 0!=b&&(this.finallyAddress_=b)};$jscomp.generator.Context.prototype.setFinallyBlock=function(a){this.catchAddress_=0;this.finallyAddress_=a||0};$jscomp.generator.Context.prototype.leaveTryBlock=function(a,b){this.nextAddress=a;this.catchAddress_=b||0};
+$jscomp.generator.Context.prototype.enterCatchBlock=function(a){this.catchAddress_=a||0;a=this.abruptCompletion_.exception;this.abruptCompletion_=null;return a};$jscomp.generator.Context.prototype.enterFinallyBlock=function(a,b,d){d?this.finallyContexts_[d]=this.abruptCompletion_:this.finallyContexts_=[this.abruptCompletion_];this.catchAddress_=a||0;this.finallyAddress_=b||0};
+$jscomp.generator.Context.prototype.leaveFinallyBlock=function(a,b){b=this.finallyContexts_.splice(b||0)[0];if(b=this.abruptCompletion_=this.abruptCompletion_||b){if(b.isException)return this.jumpToErrorHandler_();void 0!=b.jumpTo&&this.finallyAddress_<b.jumpTo?(this.nextAddress=b.jumpTo,this.abruptCompletion_=null):this.nextAddress=this.finallyAddress_}else this.nextAddress=a};$jscomp.generator.Context.prototype.forIn=function(a){return new $jscomp.generator.Context.PropertyIterator(a)};
+$jscomp.generator.Context.PropertyIterator=function(a){this.object_=a;this.properties_=[];for(var b in a)this.properties_.push(b);this.properties_.reverse()};$jscomp.generator.Context.PropertyIterator.prototype.getNext=function(){for(;0<this.properties_.length;){var a=this.properties_.pop();if(a in this.object_)return a}return null};$jscomp.generator.Engine_=function(a){this.context_=new $jscomp.generator.Context;this.program_=a};
+$jscomp.generator.Engine_.prototype.next_=function(a){this.context_.start_();if(this.context_.yieldAllIterator_)return this.yieldAllStep_(this.context_.yieldAllIterator_.next,a,this.context_.next_);this.context_.next_(a);return this.nextStep_()};
+$jscomp.generator.Engine_.prototype.return_=function(a){this.context_.start_();var b=this.context_.yieldAllIterator_;if(b)return this.yieldAllStep_("return"in b?b["return"]:function(d){return{value:d,done:!0}},a,this.context_.return);this.context_.return(a);return this.nextStep_()};
+$jscomp.generator.Engine_.prototype.throw_=function(a){this.context_.start_();if(this.context_.yieldAllIterator_)return this.yieldAllStep_(this.context_.yieldAllIterator_["throw"],a,this.context_.next_);this.context_.throw_(a);return this.nextStep_()};
+$jscomp.generator.Engine_.prototype.yieldAllStep_=function(a,b,d){try{var f=a.call(this.context_.yieldAllIterator_,b);$jscomp.generator.ensureIteratorResultIsObject_(f);if(!f.done)return this.context_.stop_(),f;var e=f.value}catch(l){return this.context_.yieldAllIterator_=null,this.context_.throw_(l),this.nextStep_()}this.context_.yieldAllIterator_=null;d.call(this.context_,e);return this.nextStep_()};
+$jscomp.generator.Engine_.prototype.nextStep_=function(){for(;this.context_.nextAddress;)try{var a=this.program_(this.context_);if(a)return this.context_.stop_(),{value:a.value,done:!1}}catch(b){this.context_.yieldResult=void 0,this.context_.throw_(b)}this.context_.stop_();if(this.context_.abruptCompletion_){a=this.context_.abruptCompletion_;this.context_.abruptCompletion_=null;if(a.isException)throw a.exception;return{value:a.return,done:!0}}return{value:void 0,done:!0}};
+$jscomp.generator.Generator_=function(a){this.next=function(b){return a.next_(b)};this.throw=function(b){return a.throw_(b)};this.return=function(b){return a.return_(b)};this[Symbol.iterator]=function(){return this}};$jscomp.generator.createGenerator=function(a,b){b=new $jscomp.generator.Generator_(new $jscomp.generator.Engine_(b));$jscomp.setPrototypeOf&&a.prototype&&$jscomp.setPrototypeOf(b,a.prototype);return b};
+$jscomp.asyncExecutePromiseGenerator=function(a){function b(f){return a.next(f)}function d(f){return a.throw(f)}return new Promise(function(f,e){function l(c){c.done?f(c.value):Promise.resolve(c.value).then(b,d).then(l,e)}l(a.next())})};$jscomp.asyncExecutePromiseGeneratorFunction=function(a){return $jscomp.asyncExecutePromiseGenerator(a())};$jscomp.asyncExecutePromiseGeneratorProgram=function(a){return $jscomp.asyncExecutePromiseGenerator(new $jscomp.generator.Generator_(new $jscomp.generator.Engine_(a)))};
+$jscomp.initSymbol=function(){};$jscomp.polyfill("Symbol",function(a){if(a)return a;var b=function(l,c){this.$jscomp$symbol$id_=l;$jscomp.defineProperty(this,"description",{configurable:!0,writable:!0,value:c})};b.prototype.toString=function(){return this.$jscomp$symbol$id_};var d="jscomp_symbol_"+(1E9*Math.random()>>>0)+"_",f=0,e=function(l){if(this instanceof e)throw new TypeError("Symbol is not a constructor");return new b(d+(l||"")+"_"+f++,l)};return e},"es6","es3");
+$jscomp.polyfill("Symbol.iterator",function(a){if(a)return a;a=Symbol("Symbol.iterator");for(var b="Array Int8Array Uint8Array Uint8ClampedArray Int16Array Uint16Array Int32Array Uint32Array Float32Array Float64Array".split(" "),d=0;d<b.length;d++){var f=$jscomp.global[b[d]];"function"===typeof f&&"function"!=typeof f.prototype[a]&&$jscomp.defineProperty(f.prototype,a,{configurable:!0,writable:!0,value:function(){return $jscomp.iteratorPrototype($jscomp.arrayIteratorImpl(this))}})}return a},"es6",
+"es3");$jscomp.iteratorPrototype=function(a){a={next:a};a[Symbol.iterator]=function(){return this};return a};
+$jscomp.polyfill("Promise",function(a){function b(){this.batch_=null}function d(c){return c instanceof e?c:new e(function(g,h){g(c)})}if(a&&(!($jscomp.FORCE_POLYFILL_PROMISE||$jscomp.FORCE_POLYFILL_PROMISE_WHEN_NO_UNHANDLED_REJECTION&&"undefined"===typeof $jscomp.global.PromiseRejectionEvent)||!$jscomp.global.Promise||-1===$jscomp.global.Promise.toString().indexOf("[native code]")))return a;b.prototype.asyncExecute=function(c){if(null==this.batch_){this.batch_=[];var g=this;this.asyncExecuteFunction(function(){g.executeBatch_()})}this.batch_.push(c)};
+var f=$jscomp.global.setTimeout;b.prototype.asyncExecuteFunction=function(c){f(c,0)};b.prototype.executeBatch_=function(){for(;this.batch_&&this.batch_.length;){var c=this.batch_;this.batch_=[];for(var g=0;g<c.length;++g){var h=c[g];c[g]=null;try{h()}catch(k){this.asyncThrow_(k)}}}this.batch_=null};b.prototype.asyncThrow_=function(c){this.asyncExecuteFunction(function(){throw c;})};var e=function(c){this.state_=0;this.result_=void 0;this.onSettledCallbacks_=[];this.isRejectionHandled_=!1;var g=this.createResolveAndReject_();
+try{c(g.resolve,g.reject)}catch(h){g.reject(h)}};e.prototype.createResolveAndReject_=function(){function c(k){return function(m){h||(h=!0,k.call(g,m))}}var g=this,h=!1;return{resolve:c(this.resolveTo_),reject:c(this.reject_)}};e.prototype.resolveTo_=function(c){if(c===this)this.reject_(new TypeError("A Promise cannot resolve to itself"));else if(c instanceof e)this.settleSameAsPromise_(c);else{a:switch(typeof c){case "object":var g=null!=c;break a;case "function":g=!0;break a;default:g=!1}g?this.resolveToNonPromiseObj_(c):
+this.fulfill_(c)}};e.prototype.resolveToNonPromiseObj_=function(c){var g=void 0;try{g=c.then}catch(h){this.reject_(h);return}"function"==typeof g?this.settleSameAsThenable_(g,c):this.fulfill_(c)};e.prototype.reject_=function(c){this.settle_(2,c)};e.prototype.fulfill_=function(c){this.settle_(1,c)};e.prototype.settle_=function(c,g){if(0!=this.state_)throw Error("Cannot settle("+c+", "+g+"): Promise already settled in state"+this.state_);this.state_=c;this.result_=g;2===this.state_&&this.scheduleUnhandledRejectionCheck_();
+this.executeOnSettledCallbacks_()};e.prototype.scheduleUnhandledRejectionCheck_=function(){var c=this;f(function(){if(c.notifyUnhandledRejection_()){var g=$jscomp.global.console;"undefined"!==typeof g&&g.error(c.result_)}},1)};e.prototype.notifyUnhandledRejection_=function(){if(this.isRejectionHandled_)return!1;var c=$jscomp.global.CustomEvent,g=$jscomp.global.Event,h=$jscomp.global.dispatchEvent;if("undefined"===typeof h)return!0;"function"===typeof c?c=new c("unhandledrejection",{cancelable:!0}):
+"function"===typeof g?c=new g("unhandledrejection",{cancelable:!0}):(c=$jscomp.global.document.createEvent("CustomEvent"),c.initCustomEvent("unhandledrejection",!1,!0,c));c.promise=this;c.reason=this.result_;return h(c)};e.prototype.executeOnSettledCallbacks_=function(){if(null!=this.onSettledCallbacks_){for(var c=0;c<this.onSettledCallbacks_.length;++c)l.asyncExecute(this.onSettledCallbacks_[c]);this.onSettledCallbacks_=null}};var l=new b;e.prototype.settleSameAsPromise_=function(c){var g=this.createResolveAndReject_();
+c.callWhenSettled_(g.resolve,g.reject)};e.prototype.settleSameAsThenable_=function(c,g){var h=this.createResolveAndReject_();try{c.call(g,h.resolve,h.reject)}catch(k){h.reject(k)}};e.prototype.then=function(c,g){function h(n,p){return"function"==typeof n?function(q){try{k(n(q))}catch(r){m(r)}}:p}var k,m,t=new e(function(n,p){k=n;m=p});this.callWhenSettled_(h(c,k),h(g,m));return t};e.prototype.catch=function(c){return this.then(void 0,c)};e.prototype.callWhenSettled_=function(c,g){function h(){switch(k.state_){case 1:c(k.result_);
+break;case 2:g(k.result_);break;default:throw Error("Unexpected state: "+k.state_);}}var k=this;null==this.onSettledCallbacks_?l.asyncExecute(h):this.onSettledCallbacks_.push(h);this.isRejectionHandled_=!0};e.resolve=d;e.reject=function(c){return new e(function(g,h){h(c)})};e.race=function(c){return new e(function(g,h){for(var k=$jscomp.makeIterator(c),m=k.next();!m.done;m=k.next())d(m.value).callWhenSettled_(g,h)})};e.all=function(c){var g=$jscomp.makeIterator(c),h=g.next();return h.done?d([]):new e(function(k,
+m){function t(q){return function(r){n[q]=r;p--;0==p&&k(n)}}var n=[],p=0;do n.push(void 0),p++,d(h.value).callWhenSettled_(t(n.length-1),m),h=g.next();while(!h.done)})};return e},"es6","es3");
+var authErrors$$module$errorCodes={"auth/admin-restricted-operation":"This operation is restricted to administrators only.","auth/argument-error":"","auth/app-not-authorized":"This app, identified by the domain where it's hosted, is not authorized to use Firebase Authentication with the provided API key. Review your key configuration in the Google API console.","auth/app-not-installed":"The requested mobile application corresponding to the identifier (Android package name or iOS bundle ID) provided is not installed on this device.",
+"auth/captcha-check-failed":"The reCAPTCHA response token provided is either invalid, expired, already used or the domain associated with it does not match the list of whitelisted domains.","auth/code-expired":"The SMS code has expired. Please re-send the verification code to try again.","auth/cordova-not-ready":"Cordova framework is not ready.","auth/cors-unsupported":"This browser is not supported.","auth/credential-already-in-use":"This credential is already associated with a different user account.",
+"auth/custom-token-mismatch":"The custom token corresponds to a different audience.","auth/requires-recent-login":"This operation is sensitive and requires recent authentication. Log in again before retrying this request.","auth/dynamic-link-not-activated":"Please activate Dynamic Links in the Firebase Console and agree to the terms and conditions.","auth/email-change-needs-verification":"Multi-factor users must always have a verified email. If issue persists, you can Sign in with Google","auth/email-already-in-use":"The email address is already in use by another account. If issue persists, you can Sign in with Google",
+"auth/expired-action-code":"The action code has expired. ","auth/cancelled-popup-request":"This operation has been cancelled due to another conflicting popup being opened.","auth/internal-error":"An internal error has occurred.","auth/invalid-app-credential":"The phone verification request contains an invalid application verifier. The reCAPTCHA token response is either invalid or expired.","auth/invalid-app-id":"The mobile app identifier is not registed for the current project.","auth/invalid-user-token":"This user's credential isn't valid for this project. This can happen if the user's token has been tampered with, or if the user isn't for the project associated with this API key.",
+"auth/invalid-auth-event":"An internal error has occurred.","auth/invalid-verification-code":"The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.","auth/invalid-continue-uri":"The continue URL provided in the request is invalid.","auth/invalid-cordova-configuration":"The following Cordova plugins must be installed to enable OAuth sign-in: cordova-plugin-buildinfo, cordova-universal-links-plugin, cordova-plugin-browsertab, cordova-plugin-inappbrowser and cordova-plugin-customurlscheme.",
+"auth/invalid-custom-token":"The custom token format is incorrect. Please check the documentation.","auth/invalid-dynamic-link-domain":"The provided dynamic link domain is not configured or authorized for the current project.","auth/invalid-email":"The email address is badly formatted or the user does not have a correct email. If issue persists, you can Sign in with Google","auth/invalid-api-key":"Your API key is invalid, please check you have copied it correctly.","auth/invalid-cert-hash":"The SHA-1 certificate hash provided is invalid.",
+"auth/invalid-credential":"The supplied auth credential is malformed or has expired.","auth/invalid-message-payload":"The email template corresponding to this action contains invalid characters in its message. Please fix by going to the Auth email templates section in the Firebase Console.","auth/invalid-multi-factor-session":"The request does not contain a valid proof of first factor successful sign-in.","auth/invalid-oauth-provider":"EmailAuthProvider is not supported for this operation. This operation only supports OAuth providers.",
+"auth/invalid-oauth-client-id":"The OAuth client ID provided is either invalid or does not match the specified API key.","auth/unauthorized-domain":"This domain is not authorized for OAuth operations for your Firebase project. Edit the list of authorized domains from the Firebase console.","auth/invalid-action-code":"The action code is invalid. This can happen if the code is malformed, expired, or has already been used.","auth/wrong-password":"The password is incorrect or the user does not have a password.",
+"auth/invalid-persistence-type":"The specified persistence type is invalid. It can only be local, session or none.","auth/invalid-phone-number":"The format of the phone number provided is incorrect. Please enter the phone number in a format that can be parsed into E.164 format. E.164 phone numbers are written in the format [+][country code][subscriber number including area code].","auth/invalid-provider-id":"The specified provider ID is invalid.","auth/invalid-recipient-email":"The email corresponding to this action failed to send as the provided recipient email address is invalid.",
+"auth/invalid-sender":"The email template corresponding to this action contains an invalid sender email or name. Please fix by going to the Auth email templates section in the Firebase Console.","auth/invalid-verification-id":"The verification ID used to create the phone auth credential is invalid.","auth/invalid-tenant-id":"The Auth instance's tenant ID is invalid.","auth/multi-factor-info-not-found":"The user does not have a second factor matching the identifier provided.","auth/multi-factor-auth-required":"Proof of ownership of a second factor is required to complete sign-in.",
+"auth/missing-android-pkg-name":"An Android Package Name must be provided if the Android App is required to be installed.","auth/auth-domain-config-required":"Be sure to include authDomain when calling firebase.initializeApp(), by following the instructions in the Firebase console.","auth/missing-app-credential":"The phone verification request is missing an application verifier assertion. A reCAPTCHA response token needs to be provided.","auth/missing-verification-code":"The phone auth credential was created with an empty SMS verification code.",
+"auth/missing-continue-uri":"A continue URL must be provided in the request.","auth/missing-iframe-start":"An internal error has occurred.","auth/missing-ios-bundle-id":"An iOS Bundle ID must be provided if an App Store ID is provided.","auth/missing-multi-factor-info":"No second factor identifier is provided.","auth/missing-multi-factor-session":"The request is missing proof of first factor successful sign-in.","auth/missing-or-invalid-nonce":"The request does not contain a valid nonce. This can occur if the SHA-256 hash of the provided raw nonce does not match the hashed nonce in the ID token payload.",
+"auth/missing-phone-number":"To send verification codes, provide a phone number for the recipient.","auth/missing-verification-id":"The phone auth credential was created with an empty verification ID.","auth/app-deleted":"This instance of FirebaseApp has been deleted.","auth/account-exists-with-different-credential":"An account already exists with the same email address but different sign-in credentials. Sign in using Google associated with this email address.","auth/network-request-failed":"A network error (such as timeout, interrupted connection or unreachable host) has occurred.",
+"auth/no-auth-event":"An internal error has occurred.","auth/no-such-provider":"User was not linked to an account with the given provider.","auth/null-user":"A null user object was provided as the argument for an operation which requires a non-null user object.","auth/operation-not-allowed":"The given sign-in provider is disabled for this Firebase project. Enable it in the Firebase console, under the sign-in method tab of the Auth section.","auth/operation-not-supported-in-this-environment":'This operation is not supported in the environment this application is running on. "location.protocol" must be http, https or chrome-extension and web storage must be enabled.',
+"auth/popup-blocked":"Unable to establish a connection with the popup. It may have been blocked by the browser.","auth/popup-closed-by-user":"The popup has been closed by the user before finalizing the operation.","auth/provider-already-linked":"User can only be linked to one identity for the given provider.","auth/quota-exceeded":"The project's quota for this operation has been exceeded.","auth/redirect-cancelled-by-user":"The redirect operation has been cancelled by the user before finalizing.",
+"auth/redirect-operation-pending":"A redirect sign-in operation is already pending.","auth/rejected-credential":"The request contains malformed or mismatching credentials.","auth/second-factor-already-in-use":"The second factor is already enrolled on this account.","auth/maximum-second-factor-count-exceeded":"The maximum allowed number of second factors on a user has been exceeded.","auth/tenant-id-mismatch":"The provided tenant ID does not match the Auth instance's tenant ID","auth/timeout":"The operation has timed out.",
+"auth/user-token-expired":"The user's credential is no longer valid. The user must sign in again.","auth/too-many-requests":"We have blocked all requests from this device due to unusual activity. Try again later.","auth/unauthorized-continue-uri":"The domain of the continue URL is not whitelisted.  Please whitelist the domain in the Firebase console.","auth/unsupported-first-factor":"Enrolling a second factor or signing in with a multi-factor account requires sign-in with a supported first factor.",
+"auth/unsupported-persistence-type":"The current environment does not support the specified persistence type.","auth/unsupported-tenant-operation":"This operation is not supported in a multi-tenant context.","auth/unverified-email":"The operation requires a verified email.","auth/user-cancelled":"The user did not grant your application the permissions it requested.","auth/user-not-found":"There is no user record corresponding to this Email. The user may have been deleted or not yet registered. ! Try Signing with google",
+"auth/user-disabled":"The user account has been disabled by an administrator.","auth/user-mismatch":"The supplied credentials do not correspond to the previously signed in user.","auth/user-signed-out":"User is no longer Signed in or Authorised","auth/weak-password":"The password must be 6 characters long or more.","user/no-photo":"Please upload photo of the candidate!","user/no-first-name":"Please enter First name of the candidate!","user/no-last-name":"Please enter Last name of the candidate!",
+"user/no-stream":"Please enter Stream of the candidate!","user/no-package":"Please enter Package of the candidate!","user/no-year":"Please enter  Year for the candidate!","user/no-company":"Please enter Company of the candidate!","auth/web-storage-unsupported":"This browser is not supported or 3rd party cookies and data may be disabled.","storage/object-not-found":"No object exists at the desired reference.","storage/bucket-not-found":"No bucket is configured for Cloud Storage","storage/project-not-found":"No project is configured for Cloud Storage",
+"storage/quota-exceeded":"Quota on your Cloud Storage bucket has been exceeded. If you're on the free tier, upgrade to a paid plan. If you're on a paid plan, reach out to Firebase support.","storage/unauthenticated":"User is unauthenticated, please authenticate and try again.","storage/unauthorized":"User is not authorized to perform the desired action, check your security rules to ensure they are correct.","storage/retry-limit-exceeded":"The maximum time limit on an operation (upload, download, delete, etc.) has been excceded. Try uploading again.",
+"storage/invalid-checksum":"File on the client does not match the checksum of the file received by the server. Try uploading again.","storage/canceled":"User canceled the operation.","storage/invalid-event-name":"Invalid event name provided. Must be one of [`running`, `progress`, `pause`]","storage/invalid-url":"Invalid URL provided to refFromURL(). Must be of the form: gs://bucket/object or https://firebasestorage.googleapis.com/v0/b/bucket/o/object?token=<TOKEN>","storage/invalid-argument":"\tThe argument passed to put() must be `File`, `Blob`, or `UInt8` Array. The argument passed to putString() must be a raw, `Base64`, or `Base64URL` string.",
+"storage/no-default-bucket":"No bucket has been set in your config's storageBucket property.","storage/cannot-slice-blob":"Commonly occurs when the local file has changed (deleted, saved again, etc.). Try uploading again after verifying that the file hasn't changed.","storage/server-file-wrong-size":"\tFile on the client does not match the size of the file recieved by the server. Try uploading again.","storage/unknown":"\tAn unknown error occurred."},module$errorCodes={};
+module$errorCodes.authErrors=authErrors$$module$errorCodes;setInterval(function(){var a=localStorage.getItem("UserSignedIn");console.log(a);"true"==a&&setTimeout(function(){window.location="/index.html"},1300)},300);
+var firebaseConfig$$module$login={apiKey:"AIzaSyCioJHhlLepp9vwUzatt4p4t8yitJ1oMMM",authDomain:"achievement-page.firebaseapp.com",databaseURL:"https://achievement-page-default-rtdb.firebaseio.com",projectId:"achievement-page",storageBucket:"achievement-page.appspot.com",messagingSenderId:"776120110700",appId:"1:776120110700:web:751039064e94ba9bac5249",clientId:"776120110700-7r7fpn892e6cnspibpigeuigbsrr2qf3.apps.googleusercontent.com",measurementId:"G-MCLZLBCH1Y"};firebase.initializeApp(firebaseConfig$$module$login);
+firebase.analytics();var themeChoice$$module$login=localStorage.getItem("UserTheme"),theme$$module$login=document.getElementById("theme");themeChoice$$module$login&&(theme$$module$login.href=themeChoice$$module$login);document.querySelector(".signIn").addEventListener("click",signIn$$module$login);document.querySelector(".signUp").addEventListener("click",newUser$$module$login);document.querySelector(".resetPassword").addEventListener("click",returningReset$$module$login);
+document.querySelector(".googleAuth").addEventListener("click",googleAuth$$module$login);var userState$$module$login=localStorage.getItem("UserSignedIn");
+if("true"==userState$$module$login){console.log("true",userState$$module$login);var login=document.querySelector(".login");login.innerHTML='<i class="fas fa-sign-out-alt mr-2"></i>Log Out';login.href="/student-db.html"}else{console.log("false",userState$$module$login);var login$0=document.querySelector(".login");login$0.innerHTML="Log In";login$0.href="/login.html"}
+firebase.auth().onAuthStateChanged(function(a){if(a){window.localStorage.setItem("UserSignedIn",!0);window.localStorage.setItem("UserUid",a.uid);var b=document.querySelector(".login");b.innerHTML="Student Database";b.href="/student-db.html";console.log(a.email)}else window.localStorage.setItem("UserSignedIn",!1),a=document.querySelector(".login"),a.innerHTML="Log In",a.href="/login.html",console.log("not")});
+function signUp$$module$login(){var a,b,d,f,e,l,c,g,h,k;return $jscomp.asyncExecutePromiseGeneratorProgram(function(m){if(1==m.nextAddress){a=document.querySelector("#email").value;b=document.querySelector("#password").value;d=document.querySelector("#fname").value;f=document.querySelector("#lname").value;if(!d&&!f)throw console.log("non"),e=document.querySelector(".errorMessage"),l=document.querySelector(".error-message"),l.innerHTML+="<p>Please Enter your name</p>",e.style.display="block",setTimeout(function(){console.log("time");
+l.innerHTML="";e.style.display="none"},2500),{};m.setCatchFinallyBlocks(2);return m.yield(firebase.auth().createUserWithEmailAndPassword(a,b),4)}if(2!=m.nextAddress)return c=m.yieldResult,console.log("Name : "+d+" "+f),c.user.updateProfile({displayName:d+" "+f}),g=document.querySelector(".errorMessage"),h=document.querySelector(".error-message"),h.innerHTML+='<p><i class="fas fa-spinner mr-2"></i>    Creating User Account</p>',g.style.display="block",m.leaveTryBlock(0);k=m.enterCatchBlock();errHandler$$module$login(k);
+m.jumpToEnd()})}
+function signIn$$module$login(){var a,b,d,f;return $jscomp.asyncExecutePromiseGeneratorProgram(function(e){if(1==e.nextAddress)return console.log("fdd"),e.setCatchFinallyBlocks(2),a=document.querySelector("#email").value.trim(),b=document.querySelector("#password").value.trim(),e.yield(firebase.auth().signInWithEmailAndPassword(a,b),4);if(2!=e.nextAddress)return d=e.yieldResult,window.location.href="/index.html",console.log(d.user.uid),e.leaveTryBlock(0);f=e.enterCatchBlock();errHandler$$module$login(f);e.jumpToEnd()})}
+var forms$$module$login=document.querySelector(".formFeilds");
+function returningReset$$module$login(){console.log("return reset");forms$$module$login.innerHTML="";document.querySelectorAll(".spacer")[1].style.display="none";document.querySelectorAll(".spacer")[2].style.display="none";forms$$module$login.innerHTML+='\n      <div class="content mt-5 ">\n      <input class="input" id="email" type="text" placeholder="Account Email ID">\n          <span class="border"></span>\n     </div>\n       <a class="btn btn-danger reset-password mt-3" style="color :#222222; font-weight:bold;" ><i class="fas fa-link mr-2"></i>Send Reset Password link</a>\n       <div class="errorMessage mt-3 bg-danger theme">\n            <h5 class="error-message p-2"></h5>\n          </div> \n     ';document.querySelector(".reset-password").addEventListener("click",
+resetPassword$$module$login)}
+function newUser$$module$login(){console.log("new user");forms$$module$login.innerHTML="";document.querySelectorAll(".spacer")[1].style.display="none";document.querySelectorAll(".spacer")[2].style.display="none";forms$$module$login.innerHTML+='\n      <div class="content mt-5 ">\n      <input class="input" id="fname" type="text" placeholder="First Name">\n          <span class="border"></span>\n     </div>\n     <div class="content mt-5 ">\n      <input class="input" id="lname" type="text" placeholder="Last Name">\n          <span class="border"></span>\n     </div>\n     <div class="content mt-5 ">\n      <input class="input" id="email" type="text" placeholder="Email ID">\n          <span class="border"></span>\n     </div>\n      <div class="content mt-5">\n       <input class="input" id="password" type="password" placeholder="Password">\n         <span class="border"></span>\n      </div>\n      <a class="btn btn-info mt-3 signUp" style="color :#222222; font-weight:bold;"> <i class="fas fa-user-plus mr-2"></i>      Sign Up</a>\n     <div class="newUser pt-3">\n          <h5>Returning User? Log In</h3>\n              <a class="btn btn-success returnUser" style="color :#222222; font-weight:bold;"> <i class="fas fa-sign-in-alt mr-2"></i>  LogIn</a>\n          </div> \n          <div class="errorMessage mt-3 bg-danger theme">\n            <h5 class="error-message p-2"></h5>\n          </div> \n          ';console.log(forms$$module$login);
+document.querySelector(".returnUser").addEventListener("click",returningUser$$module$login);document.querySelector(".signUp").addEventListener("click",signUp$$module$login)}
+function returningUser$$module$login(){console.log("return");forms$$module$login.innerHTML="";document.querySelectorAll(".spacer")[1].style.display="block";document.querySelectorAll(".spacer")[2].style.display="block";forms$$module$login.innerHTML+='\n      <div class="content mt-5 ">\n      <input class="input" id="email" type="text" placeholder="Email ID / Username">\n          <span class="border"></span>\n     </div>\n      <div class="content mt-5">\n       <input class="input" id="password" type="password" placeholder="Password">\n         <span class="border"></span>\n      </div>\n      <div class="errorMessage mt-3 bg-danger theme">\n       <h5 class="error-message p-2"></h5>\n     </div> \n      <a class="btn btn-info mt-3 signIn" style="color :#222222; font-weight:bold;"> <i class="fas fa-sign-in-alt mr-2"></i>\n      Log In</a>\n      <div class="additionalLogin">\n        <div class="google-btn theme mt-3 googleAuth">\n         <div class="google-icon-wrapper">\n           <img class="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>\n         </div>\n         <p class="btn-text"><b>Sign in with Google</b></p>\n       </div>\n      </div>\n      <div class="forgotUser pt-3">\n       <p class="">Forget Password? Reset your password</p>\n           <a class="btn btn-danger resetPassword" style="color :#222222; font-weight:bold;" > <i class="fas fa-trash-restore mr-2"></i>\n             Reset</a>\n       </div>\n     <div class="newUser pt-3">\n          <p class="">New User? Sign Up</p>\n              <a class="btn btn-success signUp" style="color :#222222; font-weight:bold;" > <i class="fas fa-user-plus mr-2"></i>                  SignUp</a>\n          </div> \n          ';document.querySelector(".signIn").addEventListener("click",
+signIn$$module$login);document.querySelector(".signUp").addEventListener("click",newUser$$module$login);document.querySelector(".resetPassword").addEventListener("click",returningReset$$module$login);document.querySelector(".googleAuth").addEventListener("click",googleAuth$$module$login)}
+function googleAuth$$module$login(){var a=new firebase.auth.GoogleAuthProvider;a.addScope("profile");a.addScope("email");firebase.auth().useDeviceLanguage();firebase.auth().signInWithPopup(a).then(function(b){console.log(b.user)}).catch(function(b){errHandler$$module$login(b)})}
+function resetPassword$$module$login(){var a=document.querySelector("#email").value.trim();console.log("reset",a);a=firebase.auth().sendPasswordResetEmail(a,{url:"https://achivement-page.netlify.app/index.html",canHandleCodeInAp:!1});a.then(function(){document.querySelector(".error-message").innerHTML="<p>Password Reset link had been sent to your Registered Email ID successfully</p>";var b=document.querySelector(".errorMessage");b.style.display="block";b.classList.remove("bg-danger");b.classList.add("bg-success");
+setTimeout(function(){console.log("time");b.style.display="none"},2500)});a.catch(function(b){var d=document.querySelector(".error-message");console.log(b.code);d.innerHTML="<p>"+authErrors$$module$errorCodes[b.code]+"</p>";var f=document.querySelector(".errorMessage");f.classList.add("bg-danger");f.style.display="block";setTimeout(function(){console.log("time");f.style.display="none"},2500)})}
+function errHandler$$module$login(a){var b=a.message;document.querySelector(".error-message").innerHTML="<p>"+authErrors$$module$errorCodes[a.code]+"</p>";var d=document.querySelector(".errorMessage");d.style.display="block";setTimeout(function(){console.log("time");d.style.display="none"},5500);console.log(b)}var module$login={};

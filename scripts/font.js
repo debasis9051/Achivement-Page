@@ -1,26 +1,2 @@
-document.querySelectorAll(".font").forEach((button)=>{
-    button.addEventListener("click",(clicked)=>{
-        console.log(clicked.target.classList)
-        let el=document.querySelector("*")
-        var size = parseFloat(window.getComputedStyle(el, null).getPropertyValue('font-size'))
-        if(clicked.target.classList.contains("font-increase"))
-        {
-              size = size + 2;
-              if (size >= 35) 
-                size = 35;
-            console.log("font",size)
-        }
-        else if(clicked.target.classList.contains("font-normal") )
-        {
-            size=15
-        }
-        else
-        {
-            size = size - 2;
-            if (size <= 6) 
-                size = 6;
-        }
-        document.querySelector("*").style.fontSize=`${size}px`
-        console.log(window.getComputedStyle(el, null).getPropertyValue('font-size'))
-        })
-})
+var $jscomp=$jscomp||{};$jscomp.scope={};$jscomp.createTemplateTagFirstArg=function(b){return b.raw=b};$jscomp.createTemplateTagFirstArgWithRaw=function(b,c){b.raw=c;return b};
+document.querySelectorAll(".font").forEach(function(b){b.addEventListener("click",function(c){console.log(c.target.classList);var d=document.querySelector("*"),a=parseFloat(window.getComputedStyle(d,null).getPropertyValue("font-size"));c.target.classList.contains("font-increase")?(a+=2,35<=a&&(a=35),console.log("font",a)):c.target.classList.contains("font-normal")?a=15:(a-=2,6>=a&&(a=6));document.querySelector("*").style.fontSize=a+"px";console.log(window.getComputedStyle(d,null).getPropertyValue("font-size"))})});
