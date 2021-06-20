@@ -83,12 +83,26 @@
 let max_section = 1
 let body = document.body;
 //Change upload button to file name
-body.addEventListener("change",function(e){
+// body.addEventListener("change",function(e){
+//   if(e.target.id == "photo")
+//   {
+//     console.log("change event for file input fired 🔫")
+//     console.log(e.target.files)
+//     e.target.previousElementSibling.innerHTML = e.target.files[0].name
+//   }
+// })
+document.body.addEventListener("change",function(e){
   if(e.target.id == "photo")
   {
     console.log("change event for file input fired 🔫")
-    console.log(e.target.files)
-    e.target.previousElementSibling.innerHTML = e.target.files[0].name
+    console.log(e.target.files,"array-->",Array.from(e.target.files))
+    if(Array.from(e.target.files).length==0)
+    {
+      e.target.previousElementSibling.innerHTML = `<h5>Candidate Photo not Selected</h5>`
+
+    }
+    if(Array.from(e.target.files).length!=0)
+    e.target.previousElementSibling.innerHTML = `<h5>${e.target.files[0].name}</h5>`
   }
 })
 body.addEventListener("click",function(e){

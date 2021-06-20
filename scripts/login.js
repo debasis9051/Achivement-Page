@@ -1,4 +1,4 @@
-import {authErrors} from './authError.js'
+import {authErrors} from './errorCodes.js'
 
 setInterval(()=>{
   let userState = localStorage.getItem("UserSignedIn");
@@ -283,7 +283,7 @@ async function signIn()
     setTimeout(()=>{
       console.log("time")
       alertBox.style.display="none"
-    },4500)
+    },5500)
     console.log(errorMSg)
    }
 

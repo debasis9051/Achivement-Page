@@ -31,7 +31,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js" defer></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js" defer></script>
 
-    <script  src="./scripts/firebase.js" defer></script>
+    <script  src="./scripts/firebase.js" type="module" defer></script>
     <script src="./scripts/theme.js" defer></script>
     <script  src="./scripts/font.js" defer></script>
 
@@ -46,7 +46,7 @@
 </head>
 <body>
     <!-- Responsive nav-bar layout -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary font-weight-bold text-white bg-dark text-uppercase flexing theme">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary font-weight-bold text-white bg-dark text-uppercase flexing ">
       <a class="navbar-brand" href="./index.html">Achivement Page</a>
       
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,53 +93,7 @@
     </div>
 
     <!-- Sign in Prompt -->
-<div class="modal fade" id="signIn">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="m-head">Students Database</h5>
-        <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close" onclick="refresh()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body userForm-signUp">
-        <div class="form-group">
-          <input type="text" class="form-control" data-user="userEmail" placeholder="Email ID">
-        </div>
-        <div class="form-row mt-3 ">
-          <div class="form-group col">
-            <input type="text" class="form-control" data-user="first-name" placeholder="First Name">
-          </div>
-          <div class="form-group col">
-            <input type="text" class="form-control" data-user="last-name" placeholder="Last Name">
-          </div>
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control" data-user="userPassword" placeholder="Password">
-        </div>
-      </div>
-      <div class="modal-body userForm-logIn">
-        <div class="form-group">
-          <input type="text" class="form-control" data-user="userEmail" placeholder="Email ID">
-        </div>
-        <div class="form-group">
-          <input type="password" class="form-control" data-user="userPassword" placeholder="Password">
-        </div>
-      </div>
-      <div class="errorMessage container pt-1">
-        <div class="alert alert-dismissible alert-danger">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Oh snap!</strong> <a href="#" class="error-message"></a> and try submitting again.
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success log-in">Log In</button>
-        <button type="button" class="btn btn-info sign-up" >Sign Up</button>
-        <a type="button" class="btn btn-warning home"  href="/index.html">Home</a>
-      </div>
-    </div>
-  </div>
-</div>
+     <!-- Does not exist -->
 
   <!-- User data -->
   <div class="userData">
@@ -149,14 +103,18 @@
     </div>
   </div>
 
+  <div class="errorMessage mt-3 bg-danger theme">
+    <h5 class="error-message p-2"></h5>
+  </div>
+
   <!-- delete toast -->
   <div class="delete-toast bg-danger container mt-3 hidden">
     <h4 class="text-center pt-2 pb-2 ">Student profile Deleted !</h4>
   </div>
 
   <div class="batchPdf container">
-    <button class="btn btn-success" onclick="generatePdfFromBatch()"><i class="fas fa-file-pdf mr-2 "></i>Generate pdf</button>
-    <button class="btn btn-info " onclick="addStudent()"> <i class="fas fa-plus-circle mr-2"></i>Add Student</button>
+    <button class="btn btn-success add-pdf" ><i class="fas fa-file-pdf mr-2 "></i>Generate pdf</button>
+    <button class="btn btn-info add-student " > <i class="fas fa-plus-circle mr-2"></i>Add Student</button>
   </div>
 
   <din class="wait container" style="padding: 5px;">
@@ -197,7 +155,7 @@
               <p class="stream"></p>
               <p class="year"></p>
               <p class="company"></p>
-              <p class="package"></p>
+              <p class="perAnum"></p>
             </div>
               <a class=" btn-danger btn  btn-lg d-flex justify-content-center  delete" href="#" role="button">Delete</a>
               <a class=" btn-warning btn  btn-lg d-flex justify-content-center  edit" href="#" role="button">Edit</a>
@@ -206,6 +164,8 @@
   </div>
   <div class="spacer"> </div>
     <div class="spacer"></div>
+    <div class="spacer"></div>
+
 
     
     <footer class="text-center text-white fixed" style="background-color: #222222;  color :aliceblue !important;">

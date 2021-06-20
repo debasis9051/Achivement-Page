@@ -1,3 +1,4 @@
+import {authErrors} from './errorCodes.js'
 setInterval(()=>{
   let userState = localStorage.getItem("UserSignedIn");
   console.log(userState)
@@ -76,7 +77,24 @@ var firebaseConfig = {
       console.log("not")
     }
   });
+
+  document.body.addEventListener("change",function(e){
+    if(e.target.id == "photo")
+    {
+      console.log("change event for file input fired 🔫")
+      console.log(e.target.files,"array-->",Array.from(e.target.files))
+      if(Array.from(e.target.files).length==0)
+      {
+        e.target.previousElementSibling.innerHTML = `<h5>Candidate Photo not Selected</h5>`
+
+      }
+      if(Array.from(e.target.files).length!=0)
+      e.target.previousElementSibling.innerHTML = `<h5>${e.target.files[0].name}</h5>`
+    }
+  })
+
 let studentDatabase;
+
 function displayData()
 {  
   console.log("start")
@@ -119,8 +137,9 @@ function displayData()
               clone.querySelector(".stream").innerHTML=`${studentDatabase[stu].Stream}`
               clone.querySelector(".year").innerHTML=`${studentDatabase[stu].Year}`
               clone.querySelector(".company").innerHTML=`${studentDatabase[stu].Company}`
-              clone.querySelector(".package").innerHTML=`${studentDatabase[stu].AnnualPackage}`
+              clone.querySelector(".perAnum").innerHTML=`${studentDatabase[stu].AnnualPackage}`
               pic(clone.querySelector(".profileImg"),stu,user,studentDatabase,clone)
+              console.log(clone)
               elem.after(clone);
               let orginal= document.querySelector("#orginal")
               orginal.style.visibility="visible"
@@ -140,7 +159,7 @@ function displayData()
     })
     pt.catch(error=>{
       document.querySelector(".delete-toast").classList.toggle("hidden",false)
-      document.querySelector(".delete-toast").innerHTML=`<h4 class="text-center pt-2 pb-2">Connection Lost</h4>`
+      document.querySelector(".delete-toast").innerHTML=`<h4 class="text-center pt-2 pb-2">Internet Connection Lost</h4>`
       setTimeout(()=>   document.querySelector(".delete-toast").classList.toggle("hidden",true),15000)
     })
   })
@@ -148,8 +167,8 @@ function displayData()
 let studentPhotos
 function pic(img,stu,user,studentDatabase,clone){
   studentPhotos=firebase.storage().ref(`Users/${user.uid}/Students`)
-  studentPhotos.listAll()
-  .then( (files)=>{ 
+  let getPhotos = studentPhotos.listAll()
+  getPhotos.then( (files)=>{ 
     files.items.forEach((file)=>
     {
       if(file.name===`${studentDatabase[stu].Firstname}`)
@@ -166,9 +185,10 @@ function pic(img,stu,user,studentDatabase,clone){
       }
     }) 
   })
-  .catch((error)=>{
-    console.log(error)
-    alert(error)
+  getPhotos.catch((error)=>{
+    errHandler(error)
+    // console.log(error)
+    // alert(error)
   })
 }
 function deleteStudent(students,uid)
@@ -201,6 +221,7 @@ function deleteToast(){
   setTimeout(()=>   document.querySelector(".delete-toast").classList.toggle("hidden",true),3000)
 }
 let selectedStudent
+document.querySelector(".add-pdf").addEventListener("click",generatePdfFromBatch)
 function generatePdfFromBatch()
 {
   document.querySelector(".wait").style.visibility="visible"
@@ -435,17 +456,17 @@ function modify(students,uid)
 {
   console.log(students,uid)
  //Change upload button to file name
-  let body=document.body
-  body.addEventListener("change",function(e){
-    if(e.target.id == "photo")
-    {
-      console.log("change event for file input fired 🔫")
-      console.log(e.target.files)
-      e.target.previousElementSibling.innerHTML = e.target.files[0].name
-    }
-  })
+  // let body=document.body
+  // body.addEventListener("change",function(e){
+  //   if(e.target.id == "photo")
+  //   {
+  //     console.log("change event for file input fired 🔫")
+  //     console.log(e.target.files)
+  //     e.target.previousElementSibling.innerHTML = e.target.files[0].name
+  //   }
+  // })
   let detectData=0,detectPhoto=0;
-  for(i=1;i<=students.length;i++)
+  for(let i=1;i<=students.length;i++)
   {
     console.log(i)
     document.querySelectorAll(".edit")[i].addEventListener("click",(clicked)=>{
@@ -467,7 +488,7 @@ function modify(students,uid)
 
       `      <div class="form-row mt-3 ">
       <div class="form-group col-md-6 upload ">
-              <button class="btn btn-outline-warning btn-block  file  " id="photoButton"><i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidte Photo </button>
+              <button class="btn btn-outline-warning btn-block  file  " id="photoButton"><i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidate Photo </button>
               <input type="file" class="form-control-file file-upload  " id="photo" accept=".png,.jpg">
       </div>
       <div class="form-group col">
@@ -479,7 +500,7 @@ function modify(students,uid)
         <input type="text" class="form-control" data-update="company" placeholder="Company" value="${studenttoEdit["Company"]}">
       </div>
       <div class="form-group col">
-        <input type="text" class="form-control" data-update="package" placeholder="Annual Package" value="${studenttoEdit["AnnualPackage"]}">
+        <input type="text" class="form-control" data-update="perAnum" placeholder="Annual Package" value="${studenttoEdit["AnnualPackage"]}">
       </div>
     </div>   
     <div class="form-row mt-3 ">
@@ -493,11 +514,8 @@ function modify(students,uid)
 
         ` <button class="btn btn-success updateDb" >Update</button>
           <button class="btn btn-danger"  data-dismiss="modal">Cancel</button> 
-          <div class="errorMessage container">
-            <div class="alert alert-dismissible alert-success">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <p href="#" class="text-secondary error-message"></p> 
-            </div>
+          <div class="errorMessage mt-3 bg-danger theme">
+            <h5 class="error-message p-2"></h5>
           </div>
           <div class="photoMessage container hidden">
             <div class="alert alert-dismissible alert-info">
@@ -522,7 +540,7 @@ function modify(students,uid)
               let lastName=document.querySelectorAll('[data-update="last-name"]')[0].value
               let stream=document.querySelectorAll('[data-update="stream"]')[0].value
               let year=document.querySelectorAll('[data-update="year"]')[0].value
-              let package=document.querySelectorAll('[data-update="package"]')[0].value
+              let perAnum=document.querySelectorAll('[data-update="perAnum"]')[0].value
               let company=document.querySelectorAll('[data-update="company"]')[0].value
 
               let updateStudent = {}
@@ -530,7 +548,7 @@ function modify(students,uid)
               if(lastName) {  updateStudent.Lastname =lastName.trim()}
               if(stream)  {updateStudent.Stream =stream.trim()}
               if(year) { updateStudent.Year =year.trim()}
-              if(package){ updateStudent.AnnualPackage = package.trim()}
+              if(perAnum){ updateStudent.AnnualPackage = perAnum.trim()}
               if(company) { updateStudent.Company =company.trim()}
 
               console.log(JSON.parse(window.localStorage.getItem('currentStudentEdit')));
@@ -595,6 +613,7 @@ function modify(students,uid)
               }
               else
               {
+                
                 detectPhoto=1
               }
               setInterval(()=>{
@@ -613,13 +632,13 @@ function modify(students,uid)
       }
   
 }
-
+document.querySelector(".add-student").addEventListener("click",addStudent)
 function addStudent(){
   modalDraw
   (
     `   <h4 class="text-success">
           Add
-          <h4 style="padding-left:5px;" class="text-warning"> Student profil</h4>
+          <h4 style="padding-left:5px;" class="text-warning"> Student profile</h4>
         </h4>
         <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
            <span aria-hidden="true">&times;</span>
@@ -638,7 +657,7 @@ function addStudent(){
           <input type="text" class="form-control" data-update="company" placeholder="Company">
         </div>
         <div class="form-group col">
-          <input type="text" class="form-control" data-update="package" placeholder="Annual Package">
+          <input type="text" class="form-control" data-update="perAnum" placeholder="Annual Package">
         </div>
       </div>   
       <div class="form-row mt-3 ">
@@ -651,7 +670,7 @@ function addStudent(){
       </div>
       <div class="form-row mt-3 ">
       <div class="form-group col-md upload ">
-      <button class="btn btn-outline-warning btn-block  file  " id="photoButton"><i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidte Photo </button>
+      <button class="btn btn-outline-warning btn-block  file  " id="photoButton"><i class="fas fa-cloud-upload-alt file-icon hvr-pulse-grow "></i> Upload Candidate Photo </button>
       <input type="file" class="form-control-file file-upload  " id="photo" accept=".png,.jpg">
       </div>
       </div>
@@ -659,11 +678,9 @@ function addStudent(){
 
     ` <button class="btn btn-success addNew" >Add</button>
       <button class="btn btn-danger"  data-dismiss="modal">Cancel</button> 
-      <div class="errorMessage container">
-        <div class="alert alert-dismissible alert-success">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <p href="#" class="text-secondary error-message"></p> 
-        </div>
+      <div class="errorMessage mt-3 bg-danger theme">
+            <h5 class="error-message p-2"></h5>
+          </div>
       </div>
       <div class="photoMessage container hidden">
         <div class="alert alert-dismissible alert-info">
@@ -685,23 +702,46 @@ function addStudent(){
   let lastName=document.querySelectorAll('[data-update="last-name"]')[0].value
   let stream=document.querySelectorAll('[data-update="stream"]')[0].value
   let year=document.querySelectorAll('[data-update="year"]')[0].value
-  let package=document.querySelectorAll('[data-update="package"]')[0].value
+  let perAnum=document.querySelectorAll('[data-update="perAnum"]')[0].value
   let company=document.querySelectorAll('[data-update="company"]')[0].value
+  let photo = document.querySelector(".file-upload").files[0] 
 
   let studentsRef = firebase.database().ref(`Users/${userUid}/Students/${firstName}`)
 
   let updateStudent = {}
+
   
-  if(firstName) {  updateStudent.Firstname =firstName.trim()}
-  if(lastName) {  updateStudent.Lastname =lastName.trim()}
-  if(stream)  {updateStudent.Stream =stream.trim()}
-  if(year) { updateStudent.Year =year.trim()}
-  if(package){ updateStudent.AnnualPackage = package.trim()}
-  if(company) { updateStudent.Company =company.trim()}
+  if(firstName) {  updateStudent.Firstname =firstName.trim()}       else { let error = {}
+                error.code=`user/no-first-name` 
+                console.log(error)
+                errHandler(error)        }
+  if(lastName) {  updateStudent.Lastname =lastName.trim()}   else {   let error = {}
+                error.code=`user/no-last-name`
+                console.log(error)
+                errHandler(error)      }
+  if(stream)  {updateStudent.Stream =stream.trim()}   else {   let error = {}
+                error.code=`user/no-stream`
+                console.log(error)
+                errHandler(error)      }
+  if(year) { updateStudent.Year =year.trim()}   else {   let error = {}
+                error.code=`user/no-year`
+                console.log(error)
+                errHandler(error)      }
+  if(perAnum){ updateStudent.AnnualPackage = perAnum.trim()}   else { let error = {}
+                error.code=`user/no-package`
+                console.log(error)
+                errHandler(error)        }
+  if(company) { updateStudent.Company =company.trim()}   else {    let error = {}
+                error.code=`user/no-company`
+                console.log(error)
+                errHandler(error)     }
+
+                console.log(updateStudent)
 
 
-  if(Object.keys(updateStudent).length!=0)
+  if((Object.keys(updateStudent).length==6)&&(photo))
   {
+    console.log(photo)
     studentsRef.update(updateStudent)
     .then(()=>{
         console.log(updateStudent)
@@ -721,12 +761,14 @@ function addStudent(){
   }
   else
   {
-    detectData=1
+    // detectData=1
   }
   
-  let photo = document.querySelector(".file-upload").files[0] 
+  
   if(photo)
-  {
+  {   
+    if(Object.keys(updateStudent).length==6)
+    {
       var studentPhotos=firebase.storage().ref(`Users/${userUid}/Students/${firstName}`.trim())
       document.querySelector(".photoProgress").style.visibility="visible"
       var task=studentPhotos.put(photo)
@@ -750,16 +792,16 @@ function addStudent(){
           ,2500)   
       })
       task.catch((error)=>{
-        console.log(error)
-        let errorTxt = document.querySelector(".error-message")
-          errorTxt.innerHTML=error.code;
-          let alertBox=document.querySelector(".errorMessage")
-          alertBox.style.display="block"
+        errHandler(error)
       })
+    }
   }
   else
   {
-    detectPhoto=1
+    let error = {}
+                error.code=`user/no-photo`
+                errHandler(error)
+    // detectPhoto=1
   }
   setInterval(()=>{
     console.log(detectPhoto,detectData)
@@ -772,4 +814,21 @@ function addStudent(){
   })
 
   
+}
+
+function errHandler(error)
+{
+  console.error("in error handler")
+ let errorTxt = document.querySelector(".error-message")
+//  errorTxt.innerHTML=``
+ errorTxt.innerHTML+=`<p>${authErrors[error.code]}</p>`;
+ console.log(errorTxt)
+ let alertBox=document.querySelector(".errorMessage")
+ alertBox.style.display="block"
+ setTimeout(()=>{
+   console.log("time")
+   alertBox.style.display="none"
+   errorTxt.innerHTML=``
+ },5500)
+ 
 }
